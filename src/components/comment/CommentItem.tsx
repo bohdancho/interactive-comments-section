@@ -19,7 +19,7 @@ export function CommentItem({
       <div>
         <CommentRating rating={comment.rating}></CommentRating>
       </div>
-      <CommentActions></CommentActions>
+      <CommentActions username={comment.user.username}></CommentActions>
     </div>
   )
 }
