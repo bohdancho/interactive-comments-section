@@ -1,7 +1,7 @@
 import * as types from '../../types'
 import { CommentActions } from './CommentActions'
 import { CommentInfo } from './CommentInfo'
-import { CommentVoting } from './CommentVoting'
+import { CommentRating } from './CommentRating'
 
 export function CommentItem({ comment }: { comment: types.Comment }) {
   const info = { user: comment.user, createdAt: comment.createdAt }
@@ -11,9 +11,9 @@ export function CommentItem({ comment }: { comment: types.Comment }) {
       <div className='col-span-2'>
         <CommentInfo info={info}></CommentInfo>
       </div>
-      <p className='col-span-2'>{comment.content}</p>
+      <p className='col-span-2 text-grayish-blue'>{comment.content}</p>
       <div>
-        <CommentVoting></CommentVoting>
+        <CommentRating rating={comment.rating}></CommentRating>
       </div>
       <CommentActions></CommentActions>
     </div>

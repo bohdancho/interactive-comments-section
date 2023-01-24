@@ -4,7 +4,7 @@ export interface Comment {
   id: number
   content: string
   createdAt: string
-  score: number
+  rating: number
   user: User
   replies: Reply[]
 }
