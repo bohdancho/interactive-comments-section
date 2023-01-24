@@ -1,7 +1,5 @@
+import { Image } from './image'
 export interface User {
-  image: {
-    png: string
-    webp: string
-  }
+  image: Image
   username: string
 }
