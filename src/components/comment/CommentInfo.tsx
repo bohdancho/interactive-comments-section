@@ -12,7 +12,6 @@ export function CommentInfo({
   return (
     <div className='flex items-center gap-16'>
       <div className='flex items-center'>
-        <img src='avatars/image-maxblagun.png' alt={info.user.username} />
         <picture className='block w-32 mr-16'>
           <source srcSet={info.user.image.webp} type='image/webp' />
           <img src={info.user.image.png} alt={info.user.username} />
