@@ -13,10 +13,15 @@ export function CommentsList({
   )
 
   const commentsWithReplies = commentsData.map((commentData) => {
-    const comments = [getComment(commentData)]
+    const comment = getComment(commentData)
+    const replies = commentData.replies.map((reply) => getComment(reply))
 
-    commentData.replies.forEach((reply) => comments.push(getComment(reply)))
-    return comments
+    return (
+      <>
+        {comment}
+        <div className='pl-16 border-l-[2px] border-light-gray'>{replies}</div>
+      </>
+    )
   })
 
   return <>{commentsWithReplies}</>
