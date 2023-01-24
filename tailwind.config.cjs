@@ -26,6 +26,7 @@ module.exports = {
         28: '28px',
         32: '32px',
       },
+      borderRadius: { sm: '2px', DEFAULT: '8px', large: '10px' },
     },
   },
   plugins: [],
