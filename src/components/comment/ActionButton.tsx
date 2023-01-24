@@ -3,7 +3,13 @@ import iconEdit from '../../assets/icon-edit.svg'
 import iconReply from '../../assets/icon-reply.svg'
 import SVG from 'react-inlinesvg'
 
-export function ActionButton({ type }: { type: 'delete' | 'edit' | 'reply' }) {
+export function ActionButton({
+  type,
+  onClick,
+}: {
+  type: 'delete' | 'edit' | 'reply'
+  onClick?: () => void
+}) {
   const text = type[0].toUpperCase() + type.slice(1)
   let icon
   let colorClass
@@ -23,7 +29,10 @@ export function ActionButton({ type }: { type: 'delete' | 'edit' | 'reply' }) {
   }
 
   return (
-    <button className={`flex items-center gap-8 base-transition ${colorClass}`}>
+    <button
+      className={`flex items-center gap-8 base-transition ${colorClass}`}
+      onClick={onClick}
+    >
       <SVG src={icon} />
       <span className='font-medium'>{text}</span>
     </button>

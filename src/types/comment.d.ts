@@ -10,3 +10,7 @@ export interface Comment {
 }
 
 export type Reply = Omit<Comment, 'replies'> & { replyingTo: string }
+
+export type ReplyContextType = {
+  toggleIsReplying: () => void
+}

@@ -1,5 +1,6 @@
 import * as types from '../types'
 import { CommentItem } from './comment/CommentItem'
+import { ReplyWrapper } from './comment/ReplyWrapper'
 
 export function CommentsList({
   commentsData,
@@ -8,7 +9,7 @@ export function CommentsList({
 }) {
   const getComment = (comment: types.Comment | types.Reply) => (
     <div key={comment.id} className='mb-16 last:mb-0'>
-      <CommentItem comment={comment}></CommentItem>
+      <ReplyWrapper comment={comment}></ReplyWrapper>
     </div>
   )
 
