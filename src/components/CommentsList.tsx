@@ -21,7 +21,7 @@ export function CommentsList({
     ) : null
 
     return (
-      <div key={commentData.id}>
+      <div key={commentData.id} className='mb-16 last:mb-0'>
         <>
           {rootComment}
           {replies}
