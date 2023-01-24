@@ -3,7 +3,11 @@ import { CommentActions } from './CommentActions'
 import { CommentInfo } from './CommentInfo'
 import { CommentRating } from './CommentRating'
 
-export function CommentItem({ comment }: { comment: types.Comment }) {
+export function CommentItem({
+  comment,
+}: {
+  comment: types.Comment | types.Reply
+}) {
   const info = { user: comment.user, createdAt: comment.createdAt }
 
   return (
