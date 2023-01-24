@@ -1,5 +1,6 @@
 import { useReducer } from 'react'
 import * as types from '../../types'
+import { AddComment } from '../AddComment'
 import { CommentActions } from './CommentActions'
 import { CommentInfo } from './CommentInfo'
 import { CommentRating } from './CommentRating'
@@ -28,7 +29,7 @@ export function CommentItem({
           toggleIsReplying={toggleIsReplying}
         ></CommentActions>
       </div>
-      {String(isReplying)}
+      {isReplying ? <AddComment></AddComment> : null}
     </>
   )
 }

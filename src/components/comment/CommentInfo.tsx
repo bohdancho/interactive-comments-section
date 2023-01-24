@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 import * as types from '../../types'
 import { UserContext } from '../CommentsSection'
-import { Image } from '../Image'
+import { Image } from '../../ui/Image'
 
 export function CommentInfo({
   info,
