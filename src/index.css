@@ -9,3 +9,7 @@ body {
 
   font-family: 'Rubik';
 }
+
+.base-transition {
+  @apply transition-colors duration-100 ease-in-out;
+}
