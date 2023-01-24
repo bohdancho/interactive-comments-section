@@ -8,7 +8,7 @@ export function CommentInfo({
 }: {
   info: Pick<types.Comment, 'user' | 'createdAt'>
 }) {
-  const user = useContext(UserContext)
+  const currentUser = useContext(UserContext) as types.User
 
   return (
     <div className='flex items-center gap-16'>
@@ -17,7 +17,7 @@ export function CommentInfo({
           <Image image={info.user.image} alt={info.user.username}></Image>
         </div>
         <span className='text-dark-blue font-medium'>{info.user.username}</span>
-        {info.user.username === user?.username && (
+        {info.user.username === currentUser.username && (
           <span className='ml-8 text-sm text-white text-medium bg-moderate-blue rounded-sm pt-[1px] px-[6px] pb-[3px]'>
             you
           </span>

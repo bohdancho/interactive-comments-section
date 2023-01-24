@@ -1,5 +1,6 @@
 import { createContext, useEffect, useState } from 'react'
 import * as types from '../types'
+import { AddComment } from './AddComment'
 import { CommentsList } from './CommentsList'
 
 export const UserContext = createContext<types.User | null>(null)
@@ -20,7 +21,10 @@ export function CommentsSection() {
 
   return data ? (
     <UserContext.Provider value={data.currentUser}>
-      <CommentsList commentsData={data.comments} />
+      <div className='mb-16'>
+        <CommentsList commentsData={data.comments}></CommentsList>
+      </div>
+      <AddComment></AddComment>
     </UserContext.Provider>
   ) : null
 }
