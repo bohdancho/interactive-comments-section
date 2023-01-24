@@ -7,8 +7,8 @@ export function CommentsList({
   commentsData: types.Comment[]
 }) {
   const comments = commentsData.map((comment) => (
-    <div className='mb-16 last:mb-0'>
-      <CommentItem key={comment.id} data={comment}></CommentItem>
+    <div key={comment.id} className='mb-16 last:mb-0'>
+      <CommentItem comment={comment}></CommentItem>
     </div>
   ))
 
