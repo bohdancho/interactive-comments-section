@@ -1,7 +1,7 @@
 export function Button({ placeholder }: { placeholder: string }) {
   return (
     <button
-      className='bg-moderate-blue hover:bg-light-grayish-blue base-transition text-white py-12 px-32 rounded'
+      className='block w-full bg-moderate-blue hover:bg-light-grayish-blue base-transition text-white p-12 rounded'
       onClick={(e) => e.preventDefault()}
     >
       {placeholder}

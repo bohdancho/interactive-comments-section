@@ -29,7 +29,11 @@ export function CommentItem({
           toggleIsReplying={toggleIsReplying}
         ></CommentActions>
       </div>
-      {isReplying ? <AddComment></AddComment> : null}
+      {isReplying ? (
+        <div className='mt-8'>
+          <AddComment isReply={true}></AddComment>
+        </div>
+      ) : null}
     </>
   )
 }
