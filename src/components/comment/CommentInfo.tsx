@@ -6,8 +6,8 @@ export function CommentInfo({
   info: Pick<types.Comment, 'user' | 'createdAt'>
 }) {
   return (
-    <div className='flex items-center'>
-      <picture className='block w-32 mr-16'>
+    <div className='flex items-center gap-16'>
+      <picture className='block w-32'>
         <source
           srcSet={`avatars/image-${info.user.username}.webp`}
           type='image/webp'
@@ -17,9 +17,7 @@ export function CommentInfo({
           alt={info.user.username}
         />
       </picture>
-      <span className='mr-16 text-dark-blue font-medium'>
-        {info.user.username}
-      </span>
+      <span className='text-dark-blue font-medium'>{info.user.username}</span>
       <span className='text-grayish-blue'>{info.createdAt}</span>
     </div>
   )
