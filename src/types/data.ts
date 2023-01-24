@@ -1,4 +1,5 @@
-import { User } from './user.model'
+import { User } from './user'
+import { Comment } from './comment'
 
 export interface Data {
   currentUser: User

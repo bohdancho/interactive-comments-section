@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
-import { Data } from '../models/data.model'
+import * as types from '../types'
+import { CommentsList } from './CommentsList'
 
 export function CommentsSection() {
-  const [data, setData] = useState<Data | undefined>()
+  const [data, setData] = useState<types.Data | undefined>()
 
   useEffect(() => {
     const dataFetch = async () => {
@@ -15,6 +16,6 @@ export function CommentsSection() {
     dataFetch()
   }, [])
 
-  return <div>Comments Section</div>
+  return data ? <CommentsList commentsData={data.comments} /> : null
 }
 

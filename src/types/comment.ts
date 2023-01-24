@@ -1,5 +1,4 @@
-import { Reply } from './reply.model'
-import { User } from './user.model'
+import { User } from './user'
 
 export interface Comment {
   id: number
@@ -9,3 +8,5 @@ export interface Comment {
   user: User
   replies: Reply[]
 }
+
+export type Reply = Omit<Comment, 'replies'> & { replyingTo: string }
