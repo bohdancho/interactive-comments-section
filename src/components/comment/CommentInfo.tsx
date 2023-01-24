@@ -13,14 +13,8 @@ export function CommentInfo({
     <div className='flex items-center gap-16'>
       <div className='flex items-center'>
         <picture className='block w-32 mr-16'>
-          <source
-            srcSet={`avatars/image-${info.user.username}.webp`}
-            type='image/webp'
-          />
-          <img
-            src={`avatars/image-${info.user.username}.png`}
-            alt={info.user.username}
-          />
+          <source srcSet={info.user.image.webp} type='image/webp' />
+          <img src={info.user.image.png} alt={info.user.username} />
         </picture>
         <span className='text-dark-blue font-medium'>{info.user.username}</span>
         {info.user.username === user?.username && (
