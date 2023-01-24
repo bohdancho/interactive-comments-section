@@ -29,6 +29,10 @@ module.exports = {
         40: '40px',
       },
       borderRadius: { sm: '2px', DEFAULT: '8px', large: '10px' },
+      fontSize: {
+        sm: '13px',
+        base: '16px',
+      },
     },
   },
   plugins: [],
