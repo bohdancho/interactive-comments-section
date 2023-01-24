@@ -18,6 +18,7 @@ module.exports = {
         white: 'hsl(0, 0%, 100%)',
       },
       spacing: {
+        4: '4px',
         8: '8px',
         12: '12px',
         16: '16px',
@@ -25,6 +26,7 @@ module.exports = {
         24: '24px',
         28: '28px',
         32: '32px',
+        40: '40px',
       },
       borderRadius: { sm: '2px', DEFAULT: '8px', large: '10px' },
     },
