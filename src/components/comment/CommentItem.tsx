@@ -11,6 +11,7 @@ export function CommentItem({
   comment: types.Comment | types.Reply
 }) {
   const [isReplying, toggleIsReplying] = useReducer((prev) => !prev, false)
+  const [isEditing, toggleIsEditing] = useReducer((prev) => !prev, false)
 
   return (
     <>
@@ -20,13 +21,18 @@ export function CommentItem({
             info={{ user: comment.user, createdAt: comment.createdAt }}
           ></CommentInfo>
         </div>
-        <p className='col-span-2 text-grayish-blue'>{comment.content}</p>
+        {isEditing ? (
+          'editing'
+        ) : (
+          <p className='col-span-2 text-grayish-blue'>{comment.content}</p>
+        )}
         <div>
           <CommentRating rating={comment.rating}></CommentRating>
         </div>
         <CommentActions
           username={comment.user.username}
           toggleIsReplying={toggleIsReplying}
+          toggleIsEditing={toggleIsEditing}
         ></CommentActions>
       </div>
       {isReplying ? (

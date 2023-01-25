@@ -6,9 +6,11 @@ import { ActionButton } from '../../ui'
 export function CommentActions({
   username,
   toggleIsReplying,
+  toggleIsEditing,
 }: {
   username: string
   toggleIsReplying: DispatchWithoutAction
+  toggleIsEditing: DispatchWithoutAction
 }) {
   const currentUser = useContext(UserContext) as types.User
 
@@ -16,7 +18,7 @@ export function CommentActions({
     currentUser.username === username ? (
       <>
         <ActionButton type='delete'></ActionButton>
-        <ActionButton type='edit'></ActionButton>
+        <ActionButton type='edit' onClick={toggleIsEditing}></ActionButton>
       </>
     ) : (
       <ActionButton type='reply' onClick={toggleIsReplying}></ActionButton>
