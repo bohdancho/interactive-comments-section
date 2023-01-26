@@ -18,22 +18,22 @@ export function CommentItem({
 
   return (
     <>
-      <div className='p-16 bg-white rounded grid grid-cols-[min-content_auto] gap-16'>
-        <div className='col-span-2'>
+      <div className='p-16 bg-white rounded grid grid-cols-[min-content_auto] gap-16 tablet:p-24 tablet:grid-cols-[min-content_auto_auto] tablet:gap-24'>
+        <div className='col-span-2 tablet:col-start-2 tablet:row-start-1'>
           <CommentInfo
             info={{ user: comment.user, createdAt: comment.createdAt }}
           ></CommentInfo>
         </div>
         <div className='col-span-2'>
           {isEditing ? (
-            <div className='flex flex-col items-end'>
+            <div className='flex flex-col items-end gap-16'>
               <Textarea
                 placeholder='Edit your comment...'
                 defaultValue={comment.content}
                 fixedValue={replyTo ? `@${replyTo} ` : undefined}
                 focusLastChar={true}
               ></Textarea>
-              <Button className='mt-16'>Update</Button>
+              <Button>Update</Button>
             </div>
           ) : (
             <p className='text-grayish-blue'>
@@ -46,14 +46,16 @@ export function CommentItem({
             </p>
           )}
         </div>
-        <div>
+        <div className='tablet:row-start-1 tablet:row-span-2'>
           <CommentRating rating={comment.rating}></CommentRating>
         </div>
-        <CommentActions
-          username={comment.user.username}
-          toggleIsReplying={toggleIsReplying}
-          toggleIsEditing={toggleIsEditing}
-        ></CommentActions>
+        <div className='flex justify-end tablet:col-start-3 tablet:row-start-1'>
+          <CommentActions
+            username={comment.user.username}
+            toggleIsReplying={toggleIsReplying}
+            toggleIsEditing={toggleIsEditing}
+          ></CommentActions>
+        </div>
       </div>
       {isReplying ? (
         <div className='mt-8'>

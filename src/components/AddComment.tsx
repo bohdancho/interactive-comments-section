@@ -7,21 +7,21 @@ export function AddComment({ replyingToUser }: { replyingToUser?: string }) {
   const currentUser = useContext(UserContext) as types.User
 
   return (
-    <form className='pt-16 px-16 pb-12 bg-white rounded'>
+    <form className='pt-16 px-16 pb-12 grid grid-cols-2 items-center gap-16 bg-white rounded tablet:p-24 tablet:grid-cols-[min-content_auto_min-content] tablet:items-start'>
       <Textarea
+        className='col-span-2 tablet:col-span-1 tablet:col-start-2'
         fixedValue={replyingToUser ? `@${replyingToUser} ` : undefined}
         focusLastChar={!!replyingToUser}
-        className='mb-16'
         placeholder={!replyingToUser ? 'Add a comment...' : undefined}
       ></Textarea>
-      <div className='flex justify-between items-center'>
-        <Image
-          className='w-32 h-32'
-          image={currentUser.image}
-          alt={currentUser.username}
-        ></Image>
-        <Button>{replyingToUser ? 'Reply' : 'Send'}</Button>
-      </div>
+      <Image
+        className='w-32 tablet:w-40 tablet:col-start-1 tablet:row-start-1 tablet:mt-4'
+        image={currentUser.image}
+        alt={currentUser.username}
+      ></Image>
+      <Button className='justify-self-end'>
+        {replyingToUser ? 'Reply' : 'Send'}
+      </Button>
     </form>
   )
 }

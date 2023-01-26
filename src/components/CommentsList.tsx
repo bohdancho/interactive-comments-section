@@ -15,7 +15,7 @@ export function CommentsList({
   const commentsWithReplies = commentsData.map((commentData) => {
     const rootComment = getComment(commentData)
     const replies = commentData.replies.length ? (
-      <div className='pl-16 border-l-[2px] border-light-gray'>
+      <div className='pl-16 border-l-[2px] border-light-gray tablet:pl-40 tablet:ml-40'>
         {commentData.replies.map((reply) => getComment(reply))}
       </div>
     ) : null
