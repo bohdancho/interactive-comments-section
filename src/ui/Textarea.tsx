@@ -1,11 +1,13 @@
 import { ChangeEvent, useEffect, useRef, useState } from 'react'
 
 export function Textarea({
-  children: defaultValue,
+  defaultValue,
+  className,
   placeholder,
 }: {
+  defaultValue?: string
+  className?: string
   placeholder: string
-  children?: string
 }) {
   const [val, setVal] = useState(defaultValue)
   const ref = useRef<HTMLTextAreaElement>(null)
@@ -28,7 +30,7 @@ export function Textarea({
     <textarea
       onInput={onInput}
       ref={ref}
-      className='py-12 px-24 overflow-y-hidden block w-full border border-light-gray border-1 rounded focus:placeholder-transparent focus:border-moderate-blue outline-none resize-none'
+      className={`${className} py-12 px-24 overflow-y-hidden block w-full border border-light-gray border-1 rounded focus:placeholder-transparent focus:border-moderate-blue outline-none resize-none`}
       placeholder={placeholder}
       value={val}
       rows={2}

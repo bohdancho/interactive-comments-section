@@ -25,9 +25,10 @@ export function CommentItem({
         <div className='col-span-2'>
           {isEditing ? (
             <>
-              <Textarea placeholder='Edit your comment...'>
-                {comment.content}
-              </Textarea>
+              <Textarea
+                placeholder='Edit your comment...'
+                defaultValue={comment.content}
+              ></Textarea>
               <Button className='mt-16'>Update</Button>
             </>
           ) : (

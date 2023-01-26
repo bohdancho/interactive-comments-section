@@ -8,15 +8,16 @@ export function AddComment({ isReply }: { isReply?: boolean }) {
 
   return (
     <form className='pt-16 px-16 pb-12 bg-white rounded'>
-      <div className='mb-16'>
-        <Textarea
-          placeholder={`Add a ${isReply ? 'reply' : 'comment'}...`}
-        ></Textarea>
-      </div>
+      <Textarea
+        className='mb-16'
+        placeholder={`Add a ${isReply ? 'reply' : 'comment'}...`}
+      ></Textarea>
       <div className='flex justify-between items-center'>
-        <div className='w-32 h-32'>
-          <Image image={currentUser.image} alt={currentUser.username}></Image>
-        </div>
+        <Image
+          className='w-32 h-32'
+          image={currentUser.image}
+          alt={currentUser.username}
+        ></Image>
         <Button>{isReply ? 'Reply' : 'Send'}</Button>
       </div>
     </form>
