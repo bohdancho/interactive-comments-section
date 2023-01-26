@@ -24,13 +24,13 @@ export function CommentItem({
         </div>
         <div className='col-span-2'>
           {isEditing ? (
-            <>
+            <div className='flex flex-col items-end'>
               <Textarea
                 placeholder='Edit your comment...'
                 defaultValue={comment.content}
               ></Textarea>
               <Button className='mt-16'>Update</Button>
-            </>
+            </div>
           ) : (
             <p className='text-grayish-blue'>{comment.content}</p>
           )}
