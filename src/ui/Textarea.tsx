@@ -2,14 +2,18 @@ import { ChangeEvent, useEffect, useRef, useState } from 'react'
 
 export function Textarea({
   defaultValue,
+  fixedValue,
+  focusLastChar,
   className,
   placeholder,
 }: {
   defaultValue?: string
+  fixedValue?: string
+  focusLastChar?: boolean
   className?: string
-  placeholder: string
+  placeholder?: string
 }) {
-  const [val, setVal] = useState(defaultValue)
+  const [val, setVal] = useState((fixedValue ?? '') + (defaultValue ?? ''))
   const ref = useRef<HTMLTextAreaElement>(null)
 
   const resize = () => {
@@ -21,10 +25,22 @@ export function Textarea({
   }
 
   const onInput = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    setVal(e.target.value)
+    const newValue = e.target.value
+
+    if (!fixedValue || newValue.startsWith(fixedValue)) {
+      setVal(newValue)
+    }
   }
 
   useEffect(resize, [val])
+  useEffect(() => {
+    if (!focusLastChar) {
+      return
+    }
+
+    ref.current?.setSelectionRange(val.length, val.length)
+    ref.current?.focus()
+  })
 
   return (
     <textarea

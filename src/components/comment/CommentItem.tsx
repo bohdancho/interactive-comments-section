@@ -14,6 +14,8 @@ export function CommentItem({
   const [isReplying, toggleIsReplying] = useReducer((prev) => !prev, false)
   const [isEditing, toggleIsEditing] = useReducer((prev) => !prev, false)
 
+  const replyTo = 'replyingTo' in comment ? comment.replyingTo : null
+
   return (
     <>
       <div className='p-16 bg-white rounded grid grid-cols-[min-content_auto] gap-16'>
@@ -28,11 +30,20 @@ export function CommentItem({
               <Textarea
                 placeholder='Edit your comment...'
                 defaultValue={comment.content}
+                fixedValue={replyTo ? `@${replyTo} ` : undefined}
+                focusLastChar={true}
               ></Textarea>
               <Button className='mt-16'>Update</Button>
             </div>
           ) : (
-            <p className='text-grayish-blue'>{comment.content}</p>
+            <p className='text-grayish-blue'>
+              {replyTo ? (
+                <span className='font-medium text-moderate-blue'>
+                  @{replyTo}{' '}
+                </span>
+              ) : null}
+              {comment.content}
+            </p>
           )}
         </div>
         <div>
@@ -46,7 +57,7 @@ export function CommentItem({
       </div>
       {isReplying ? (
         <div className='mt-8'>
-          <AddComment isReply={true}></AddComment>
+          <AddComment replyingToUser={comment.user.username}></AddComment>
         </div>
       ) : null}
     </>
