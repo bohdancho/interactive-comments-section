@@ -1,5 +1,6 @@
 import { useReducer } from 'react'
 import * as types from '../../types'
+import { Button, Textarea } from '../../ui'
 import { AddComment } from '../AddComment'
 import { CommentActions } from './CommentActions'
 import { CommentInfo } from './CommentInfo'
@@ -21,11 +22,18 @@ export function CommentItem({
             info={{ user: comment.user, createdAt: comment.createdAt }}
           ></CommentInfo>
         </div>
-        {isEditing ? (
-          'editing'
-        ) : (
-          <p className='col-span-2 text-grayish-blue'>{comment.content}</p>
-        )}
+        <div className='col-span-2'>
+          {isEditing ? (
+            <>
+              <Textarea placeholder='Edit your comment...'>
+                {comment.content}
+              </Textarea>
+              <Button className='mt-16'>Update</Button>
+            </>
+          ) : (
+            <p className='text-grayish-blue'>{comment.content}</p>
+          )}
+        </div>
         <div>
           <CommentRating rating={comment.rating}></CommentRating>
         </div>

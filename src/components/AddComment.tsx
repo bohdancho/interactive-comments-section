@@ -17,9 +17,7 @@ export function AddComment({ isReply }: { isReply?: boolean }) {
         <div className='w-32 h-32'>
           <Image image={currentUser.image} alt={currentUser.username}></Image>
         </div>
-        <div className='w-[104px]'>
-          <Button placeholder={isReply ? 'Reply' : 'Send'}></Button>
-        </div>
+        <Button>{isReply ? 'Reply' : 'Send'}</Button>
       </div>
     </form>
   )
