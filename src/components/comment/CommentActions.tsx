@@ -1,7 +1,7 @@
 import * as types from '../../types'
 import { DispatchWithoutAction, useContext } from 'react'
-import { UserContext } from '../CommentsSection'
 import { ActionButton } from '../../ui'
+import { UserContext } from '../../App'
 
 export function CommentActions({
   username,

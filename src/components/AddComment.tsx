@@ -1,7 +1,7 @@
 import * as types from '../types'
 import { useContext } from 'react'
-import { UserContext } from './CommentsSection'
 import { Button, Textarea, Image } from '../ui'
+import { UserContext } from '../App'
 
 export function AddComment({ replyingToUser }: { replyingToUser?: string }) {
   const currentUser = useContext(UserContext) as types.User
