@@ -32,7 +32,7 @@ export function CommentItem({
                 placeholder='Edit your comment...'
                 defaultValue={comment.content}
                 fixedValue={replyTo ? `@${replyTo} ` : undefined}
-                focusLastChar={true}
+                focusOnInit={true}
               ></Textarea>
               <Button>Update</Button>
             </div>

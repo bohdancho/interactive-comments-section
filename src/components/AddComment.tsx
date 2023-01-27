@@ -11,7 +11,7 @@ export function AddComment({ replyingToUser }: { replyingToUser?: string }) {
       <Textarea
         className='col-span-2 tablet:col-span-1 tablet:col-start-2'
         fixedValue={replyingToUser ? `@${replyingToUser} ` : undefined}
-        focusLastChar={!!replyingToUser}
+        focusOnInit={!!replyingToUser}
         placeholder={!replyingToUser ? 'Add a comment...' : undefined}
       ></Textarea>
       <Image

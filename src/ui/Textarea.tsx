@@ -1,19 +1,25 @@
-import { ChangeEvent, useEffect, useRef, useState } from 'react'
+import {
+  ChangeEvent,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react'
 
 export function Textarea({
   defaultValue,
   fixedValue,
-  focusLastChar,
+  focusOnInit,
   className,
   placeholder,
 }: {
   defaultValue?: string
   fixedValue?: string
-  focusLastChar?: boolean
+  focusOnInit?: boolean
   className?: string
   placeholder?: string
 }) {
-  const [val, setVal] = useState((fixedValue ?? '') + (defaultValue ?? ''))
+  const [val, setVal] = useState('')
   const ref = useRef<HTMLTextAreaElement>(null)
 
   const resize = () => {
@@ -33,14 +39,13 @@ export function Textarea({
   }
 
   useEffect(resize, [val])
-  useEffect(() => {
-    if (!focusLastChar) {
-      return
-    }
+  useLayoutEffect(() => {
+    setVal((fixedValue ?? '') + (defaultValue ?? ''))
 
-    ref.current?.setSelectionRange(val.length, val.length)
-    ref.current?.focus()
-  })
+    if (focusOnInit) {
+      ref.current?.focus()
+    }
+  }, [ref])
 
   return (
     <textarea
