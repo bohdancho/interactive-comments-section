@@ -15,6 +15,7 @@ export function CommentItem({
   const [isEditing, toggleIsEditing] = useReducer((prev) => !prev, false)
 
   const replyTo = 'replyingTo' in comment ? comment.replyingTo : null
+  const hasReplies = 'replies' in comment && comment.replies.length
 
   return (
     <>
@@ -60,6 +61,15 @@ export function CommentItem({
       {isReplying ? (
         <div className='mt-8'>
           <AddComment replyingToUser={comment.user.username}></AddComment>
+        </div>
+      ) : null}
+      {hasReplies ? (
+        <div className='mt-16 pl-16 border-l-[2px] border-light-gray tablet:mt-20 tablet:pl-40 tablet:ml-40'>
+          {comment.replies.map((reply) => (
+            <div key={reply.id} className='mb-16 last:mb-0 tablet:mb-20'>
+              <CommentItem comment={reply}></CommentItem>
+            </div>
+          ))}
         </div>
       ) : null}
     </>
