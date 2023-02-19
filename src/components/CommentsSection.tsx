@@ -12,4 +12,3 @@ export function CommentsSection({ comments }: { comments: types.Comment[] }) {
     </>
   )
 }
-
