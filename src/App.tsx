@@ -1,22 +1,37 @@
 import * as types from './types'
-import { useState, useEffect, createContext } from 'react'
+import { createContext, useEffect, useState } from 'react'
 import './App.css'
 import { CommentsSection } from './components/CommentsSection'
 
 export const UserContext = createContext<types.User | null>(null)
+const LS_DATA_KEY = 'data'
 
 function App() {
   const [data, setData] = useState<types.Data | null>(null)
 
   useEffect(() => {
-    const dataFetch = async () => {
-      const data = await (await fetch('./data.json')).json()
+    const localJSON = localStorage.getItem(LS_DATA_KEY)
+    if (localJSON && JSON.parse(localJSON)) {
+      const localData = JSON.parse(localJSON)
+      setData(localData)
+      return
+    }
 
-      setData(data)
+    const dataFetch = async () => {
+      const response = (await (await fetch('./data.json')).json()) as types.Data
+
+      setData(response)
+      localStorage.setItem(LS_DATA_KEY, JSON.stringify(response))
     }
 
     dataFetch()
-  })
+  }, [])
+
+  useEffect(() => {
+    if (data) {
+      localStorage.setItem(LS_DATA_KEY, JSON.stringify(data))
+    }
+  }, [data])
 
   return data ? (
     <UserContext.Provider value={data.currentUser}>
