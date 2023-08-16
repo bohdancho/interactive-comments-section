@@ -26,7 +26,7 @@ const dataReducer: DataReducer = (state, action) => {
               {
                 id: state.commentsCount + 1,
                 content: action.payload.text,
-                createdAt: Date.now().toString(), // todo implement time
+                createdAt: Date.now(),
                 rating: 0,
                 user: state.currentUser,
                 replies: [],

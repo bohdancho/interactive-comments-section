@@ -2,6 +2,7 @@ import { useContext } from 'react'
 import { UserContext } from '../../App'
 import * as types from '../../types'
 import { Image } from '../../ui/Image'
+import { formatTimeDifference } from '../../utils'
 
 export function CommentInfo({
   info,
@@ -25,7 +26,11 @@ export function CommentInfo({
           </span>
         )}
       </div>
-      <span className='text-grayish-blue'>{info.createdAt}</span>
+      <span className='text-grayish-blue'>
+        {typeof info.createdAt === 'number'
+          ? formatTimeDifference(info.createdAt)
+          : info.createdAt}
+      </span>
     </div>
   )
 }
