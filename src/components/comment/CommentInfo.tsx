@@ -26,7 +26,7 @@ export function CommentInfo({
           </span>
         )}
       </div>
-      <span className='text-grayish-blue'>
+      <span className='text-grayish-blue whitespace-nowrap'>
         {typeof info.createdAt === 'number'
           ? formatTimeDifference(info.createdAt)
           : info.createdAt}
