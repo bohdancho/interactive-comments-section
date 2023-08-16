@@ -31,7 +31,6 @@ function App() {
       const response = (await (await fetch('./data.json')).json()) as types.Data
 
       dispatchData({ type: 'init', payload: response })
-      localStorage.setItem(LS_DATA_KEY, JSON.stringify(response))
     }
 
     dataFetch()
