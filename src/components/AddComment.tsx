@@ -9,12 +9,12 @@ export function AddComment({ replyingToUser }: { replyingToUser?: string }) {
   const [focusTextarea, setFocusTextarea] = useState(false)
 
   const addComment = () => {
-    if (commentText.trim() === '') {
+    if (commentText === '') {
       setFocusTextarea(true)
       return
     }
 
-    dataDispatch({ type: 'comment', payload: { text: commentText.trim() } })
+    dataDispatch({ type: 'comment', payload: { text: commentText } })
     setCommentText('')
   }
 

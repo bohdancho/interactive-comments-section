@@ -16,9 +16,11 @@ export function CommentItem({
   const [isReplying, toggleIsReplying] = useReducer((prev) => !prev, false)
   const [isEditing, toggleIsEditing] = useReducer((prev) => !prev, false)
   const [editValue, setEditValue] = useState(comment.content)
+  const [focusEditTextarea, setFocusEditTextarea] = useState(false)
 
   const editComment = () => {
     if (editValue.trim() === '') {
+      setFocusEditTextarea(true)
       return
     }
 
@@ -48,6 +50,8 @@ export function CommentItem({
                 setValue={setEditValue}
                 value={editValue}
                 fixedValue={replyTo ? `@${replyTo} ` : undefined}
+                focusTrigger={focusEditTextarea}
+                setFocusTrigger={setFocusEditTextarea}
                 focusOnInit={true}
               ></Textarea>
               <Button onClick={editComment}>Update</Button>

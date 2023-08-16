@@ -48,7 +48,7 @@ export function Textarea({
     // if (!fixedValue || newValue.startsWith(fixedValue)) {
     // setVal(newValue)
     // }
-    setValue(newValue)
+    setValue(newValue.trim())
   }
 
   useEffect(resize, [value])
