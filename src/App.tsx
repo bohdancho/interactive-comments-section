@@ -1,23 +1,45 @@
-import * as types from './types'
-import { Action } from './types'
-import { createContext, useEffect, useReducer } from 'react'
+import { Dispatch, Reducer, createContext, useEffect, useReducer } from 'react'
 import './App.css'
 import { CommentsSection } from './components/CommentsSection'
+import * as types from './types'
+import { Action } from './types'
 
 export const UserContext = createContext<types.User | null>(null)
+export const CommentsContext = createContext<types.Comment[] | null>(null)
+export const DataDispatchContext = createContext<Dispatch<Action> | null>(null)
+
 const LS_DATA_KEY = 'data'
 
-const dataReducer = (state: null | types.Data, action: Action) => {
+type DataReducer = Reducer<null | types.Data, Action>
+
+const dataReducer: DataReducer = (state, action) => {
   switch (action.type) {
     case 'init':
       return action.payload
+    case 'comment':
+      return state
+        ? {
+            ...state,
+            comments: [
+              ...state.comments,
+              {
+                id: 1,
+                content: action.payload.text,
+                createdAt: Date.now().toString(),
+                rating: 0,
+                user: state.currentUser,
+                replies: [],
+              },
+            ],
+          }
+        : state
     default:
       return state
   }
 }
 
 function App() {
-  const [data, dispatchData] = useReducer(dataReducer, null)
+  const [data, dispatchData] = useReducer<DataReducer>(dataReducer, null)
 
   useEffect(() => {
     const localJSON = localStorage.getItem(LS_DATA_KEY)
@@ -44,11 +66,15 @@ function App() {
 
   return data ? (
     <UserContext.Provider value={data.currentUser}>
-      <div className='py-32 px-16 min-h-screen bg-very-light-gray flex justify-center'>
-        <div className='max-w-[730px]'>
-          <CommentsSection comments={data.comments} />
-        </div>
-      </div>
+      <CommentsContext.Provider value={data.comments}>
+        <DataDispatchContext.Provider value={dispatchData}>
+          <div className='py-32 px-16 min-h-screen bg-very-light-gray flex justify-center'>
+            <div className='max-w-[730px]'>
+              <CommentsSection />
+            </div>
+          </div>
+        </DataDispatchContext.Provider>
+      </CommentsContext.Provider>
     </UserContext.Provider>
   ) : null
 }

@@ -1,12 +1,11 @@
-import * as types from '../types'
 import { AddComment } from './AddComment'
 import { CommentsList } from './CommentsList'
 
-export function CommentsSection({ comments }: { comments: types.Comment[] }) {
+export function CommentsSection() {
   return (
     <>
       <div className='mb-16'>
-        <CommentsList comments={comments}></CommentsList>
+        <CommentsList></CommentsList>
       </div>
       <AddComment></AddComment>
     </>
