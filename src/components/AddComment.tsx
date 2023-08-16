@@ -6,9 +6,15 @@ import { Button, Image, Textarea } from '../ui'
 export function AddComment({ replyingToUser }: { replyingToUser?: string }) {
   const currentUser = useContext(UserContext) as types.User
   const dataDispatch = useContext(DataDispatchContext) as Dispatch<types.Action>
+  const [focusTextarea, setFocusTextarea] = useState(false)
 
   const addComment = () => {
-    dataDispatch({ type: 'comment', payload: { text: commentText } })
+    if (commentText.trim() === '') {
+      setFocusTextarea(true)
+      return
+    }
+
+    dataDispatch({ type: 'comment', payload: { text: commentText.trim() } })
     setCommentText('')
   }
 
@@ -22,6 +28,8 @@ export function AddComment({ replyingToUser }: { replyingToUser?: string }) {
         className='col-span-2 tablet:col-span-1 tablet:col-start-2'
         fixedValue={replyingToUser ? `@${replyingToUser} ` : undefined}
         focusOnInit={!!replyingToUser}
+        focusTrigger={focusTextarea}
+        setFocusTrigger={setFocusTextarea}
         placeholder={!replyingToUser ? 'Add a comment...' : undefined}
       ></Textarea>
       <Image

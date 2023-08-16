@@ -11,6 +11,8 @@ export function Textarea({
   value,
   setValue,
   fixedValue,
+  focusTrigger,
+  setFocusTrigger,
   focusOnInit,
   className,
   placeholder,
@@ -19,10 +21,18 @@ export function Textarea({
   setValue: Dispatch<SetStateAction<string>>
   fixedValue?: string
   focusOnInit?: boolean
+  focusTrigger?: boolean
+  setFocusTrigger?: Dispatch<SetStateAction<boolean>>
   className?: string
   placeholder?: string
 }) {
   const ref = useRef<HTMLTextAreaElement>(null)
+  useEffect(() => {
+    if (focusTrigger && setFocusTrigger) {
+      ref.current?.focus()
+      setFocusTrigger(false)
+    }
+  }, [focusTrigger])
 
   const resize = () => {
     if (!ref.current) {
