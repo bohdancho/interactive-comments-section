@@ -28,13 +28,13 @@ export function CommentItem({
         <div className='col-span-2'>
           {isEditing ? (
             <div className='flex flex-col items-end gap-16'>
-              <Textarea
+              {/* <Textarea
                 placeholder='Edit your comment...'
-                defaultValue={comment.content}
+                value={comment.content}
                 fixedValue={replyTo ? `@${replyTo} ` : undefined}
                 focusOnInit={true}
-              ></Textarea>
-              <Button>Update</Button>
+              ></Textarea> */}
+              <Button onClick={() => console.log('updated')}>Update</Button>
             </div>
           ) : (
             <p className='text-grayish-blue'>

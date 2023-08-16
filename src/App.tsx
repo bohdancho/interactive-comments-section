@@ -2,15 +2,16 @@ import { Dispatch, Reducer, createContext, useEffect, useReducer } from 'react'
 import './App.css'
 import { CommentsSection } from './components/CommentsSection'
 import * as types from './types'
-import { Action } from './types'
 
 export const UserContext = createContext<types.User | null>(null)
 export const CommentsContext = createContext<types.Comment[] | null>(null)
-export const DataDispatchContext = createContext<Dispatch<Action> | null>(null)
+export const DataDispatchContext = createContext<Dispatch<types.Action> | null>(
+  null
+)
 
 const LS_DATA_KEY = 'data'
 
-type DataReducer = Reducer<null | types.Data, Action>
+type DataReducer = Reducer<null | types.Data, types.Action>
 
 const dataReducer: DataReducer = (state, action) => {
   switch (action.type) {
@@ -23,9 +24,9 @@ const dataReducer: DataReducer = (state, action) => {
             comments: [
               ...state.comments,
               {
-                id: 1,
+                id: 1, // todo implement comments count and actual id here
                 content: action.payload.text,
-                createdAt: Date.now().toString(),
+                createdAt: Date.now().toString(), // todo implement time
                 rating: 0,
                 user: state.currentUser,
                 replies: [],
