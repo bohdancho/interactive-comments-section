@@ -24,7 +24,7 @@ const dataReducer: DataReducer = (state, action) => {
             comments: [
               ...state.comments,
               {
-                id: 1, // todo implement comments count and actual id here
+                id: state.commentsCount + 1,
                 content: action.payload.text,
                 createdAt: Date.now().toString(), // todo implement time
                 rating: 0,
@@ -32,6 +32,7 @@ const dataReducer: DataReducer = (state, action) => {
                 replies: [],
               },
             ],
+            commentsCount: state.commentsCount + 1,
           }
         : state
     default:
