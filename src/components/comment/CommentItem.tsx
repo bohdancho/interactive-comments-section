@@ -80,7 +80,11 @@ export function CommentItem({
       </div>
       {isReplying ? (
         <div className='mt-8'>
-          <AddComment replyingToUser={comment.user.username}></AddComment>
+          <AddComment
+            onReply={toggleIsReplying}
+            replyToUser={comment.user.username}
+            replyToId={comment.id}
+          ></AddComment>
         </div>
       ) : null}
       {hasReplies ? (

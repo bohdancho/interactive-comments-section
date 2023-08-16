@@ -3,7 +3,15 @@ import { DataDispatchContext, UserContext } from '../App'
 import * as types from '../types'
 import { Button, Image, Textarea } from '../ui'
 
-export function AddComment({ replyingToUser }: { replyingToUser?: string }) {
+export function AddComment({
+  replyToUser,
+  replyToId,
+  onReply,
+}: {
+  replyToUser?: string
+  replyToId?: number
+  onReply?: () => void
+}) {
   const currentUser = useContext(UserContext) as types.User
   const dataDispatch = useContext(DataDispatchContext) as Dispatch<types.Action>
   const [focusTextarea, setFocusTextarea] = useState(false)
@@ -14,7 +22,12 @@ export function AddComment({ replyingToUser }: { replyingToUser?: string }) {
       return
     }
 
-    dataDispatch({ type: 'comment', payload: { text: commentText } })
+    if (replyToId && onReply) {
+      onReply()
+      dataDispatch({ type: 'reply', payload: { text: commentText, replyToId } })
+    } else {
+      dataDispatch({ type: 'comment', payload: { text: commentText } })
+    }
     setCommentText('')
   }
 
@@ -26,11 +39,11 @@ export function AddComment({ replyingToUser }: { replyingToUser?: string }) {
         value={commentText}
         setValue={setCommentText}
         className='col-span-2 tablet:col-span-1 tablet:col-start-2'
-        fixedValue={replyingToUser ? `@${replyingToUser} ` : undefined}
-        focusOnInit={!!replyingToUser}
+        fixedValue={replyToUser ? `@${replyToUser} ` : undefined}
+        focusOnInit={!!replyToUser}
         focusTrigger={focusTextarea}
         setFocusTrigger={setFocusTextarea}
-        placeholder={!replyingToUser ? 'Add a comment...' : undefined}
+        placeholder={!replyToUser ? 'Add a comment...' : undefined}
       ></Textarea>
       <Image
         className='w-32 tablet:w-40 tablet:col-start-1 tablet:row-start-1 tablet:mt-4'
@@ -38,7 +51,7 @@ export function AddComment({ replyingToUser }: { replyingToUser?: string }) {
         alt={currentUser.username}
       ></Image>
       <Button onClick={addComment} className='justify-self-end'>
-        {replyingToUser ? 'Reply' : 'Send'}
+        {replyToUser ? 'Reply' : 'Send'}
       </Button>
     </form>
   )

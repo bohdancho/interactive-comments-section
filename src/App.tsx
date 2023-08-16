@@ -14,32 +14,63 @@ const LS_DATA_KEY = 'data'
 type DataReducer = Reducer<null | types.Data, types.Action>
 
 const dataReducer: DataReducer = (state, action) => {
+  if (action.type === 'init') {
+    return action.payload
+  }
+  if (!state) {
+    return state
+  }
+
   switch (action.type) {
-    case 'init':
-      return action.payload
     case 'comment':
-      return state
-        ? {
-            ...state,
-            comments: [
-              ...state.comments,
+      return {
+        ...state,
+        commentsCount: state.commentsCount + 1,
+        comments: [
+          ...state.comments,
+          {
+            id: state.commentsCount + 1,
+            content: action.payload.text,
+            createdAt: Date.now(),
+            rating: 0,
+            user: state.currentUser,
+            replies: [],
+          },
+        ],
+      }
+    case 'reply':
+      const { text, replyToId } = action.payload
+      return {
+        ...state,
+        commentsCount: state.commentsCount + 1,
+        comments: state.comments.map((comment) => {
+          const replyToIndex = comment.replies.findIndex(
+            (reply) => reply.id === replyToId
+          )
+
+          if (replyToId !== comment.id && replyToIndex === -1) {
+            return comment
+          }
+          return {
+            ...comment,
+            replies: [
+              ...comment.replies,
               {
+                user: state.currentUser,
                 id: state.commentsCount + 1,
-                content: action.payload.text,
+                content: text,
                 createdAt: Date.now(),
                 rating: 0,
-                user: state.currentUser,
-                replies: [],
+                replyingTo:
+                  replyToIndex === -1
+                    ? comment.user.username
+                    : comment.replies[replyToIndex].user.username,
               },
             ],
-            commentsCount: state.commentsCount + 1,
           }
-        : state
-    case 'editComment':
-      if (!state) {
-        return state
+        }),
       }
-
+    case 'editComment':
       const { id, newText: content } = action.payload
       return {
         ...state,

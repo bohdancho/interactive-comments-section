@@ -12,7 +12,7 @@ interface CommentAction {
 
 interface ReplyAction {
   type: 'reply'
-  payload: { text: string; replyToComment: number }
+  payload: { text: string; replyToId: number }
 }
 
 interface DeleteCommentAction {
