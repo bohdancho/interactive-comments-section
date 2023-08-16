@@ -1,6 +1,6 @@
 import { useReducer } from 'react'
 import * as types from '../../types'
-import { Button, Textarea } from '../../ui'
+import { Button } from '../../ui'
 import { AddComment } from '../AddComment'
 import { CommentActions } from './CommentActions'
 import { CommentInfo } from './CommentInfo'
