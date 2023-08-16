@@ -1,6 +1,7 @@
-import { useReducer } from 'react'
+import { Dispatch, useContext, useReducer, useState } from 'react'
+import { DataDispatchContext } from '../../App'
 import * as types from '../../types'
-import { Button } from '../../ui'
+import { Button, Textarea } from '../../ui'
 import { AddComment } from '../AddComment'
 import { CommentActions } from './CommentActions'
 import { CommentInfo } from './CommentInfo'
@@ -11,8 +12,22 @@ export function CommentItem({
 }: {
   comment: types.Comment | types.Reply
 }) {
+  const dataDispatch = useContext(DataDispatchContext) as Dispatch<types.Action>
   const [isReplying, toggleIsReplying] = useReducer((prev) => !prev, false)
   const [isEditing, toggleIsEditing] = useReducer((prev) => !prev, false)
+  const [editValue, setEditValue] = useState(comment.content)
+
+  const editComment = () => {
+    if (editValue.trim() === '') {
+      return
+    }
+
+    dataDispatch({
+      type: 'editComment',
+      payload: { id: comment.id, newText: editValue },
+    })
+    toggleIsEditing()
+  }
 
   const replyTo = 'replyingTo' in comment ? comment.replyingTo : null
   const hasReplies = 'replies' in comment && comment.replies.length
@@ -28,13 +43,14 @@ export function CommentItem({
         <div className='col-span-2'>
           {isEditing ? (
             <div className='flex flex-col items-end gap-16'>
-              {/* <Textarea
+              <Textarea
                 placeholder='Edit your comment...'
-                value={comment.content}
+                setValue={setEditValue}
+                value={editValue}
                 fixedValue={replyTo ? `@${replyTo} ` : undefined}
                 focusOnInit={true}
-              ></Textarea> */}
-              <Button onClick={() => console.log('updated')}>Update</Button>
+              ></Textarea>
+              <Button onClick={editComment}>Update</Button>
             </div>
           ) : (
             <p className='text-grayish-blue'>

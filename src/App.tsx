@@ -35,6 +35,26 @@ const dataReducer: DataReducer = (state, action) => {
             commentsCount: state.commentsCount + 1,
           }
         : state
+    case 'editComment':
+      if (!state) {
+        return state
+      }
+
+      const { id, newText: content } = action.payload
+      return {
+        ...state,
+        comments: state.comments.map((comment) => {
+          if (comment.id === id) {
+            return { ...comment, content }
+          }
+          return {
+            ...comment,
+            replies: comment.replies.map((reply) =>
+              reply.id === id ? { ...reply, content } : reply
+            ),
+          }
+        }),
+      }
     default:
       return state
   }
