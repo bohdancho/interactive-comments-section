@@ -31,19 +31,12 @@ export function Textarea({
   onEnter?: () => void
 }) {
   const [isControlKeyDown, setIsControlKeyDown] = useState(false)
+
   const textAreaRef = useRef<HTMLTextAreaElement>(null)
   const labelRef = useRef<HTMLLabelElement>(null)
 
   const [labelWidth, setLabelWidth] = useState(0)
-
-  useEffect(() => {
-    const textAreaElement = textAreaRef.current
-    if (focusTrigger && setFocusTrigger && textAreaElement) {
-      textAreaElement.focus()
-      textAreaElement.selectionStart = textAreaElement.value.length
-      setFocusTrigger(false)
-    }
-  }, [focusTrigger])
+  const randomId = useMemo(() => (Math.random() + 1).toString(36).substring(7), [])
 
   const resize = () => {
     if (!textAreaRef.current) {
@@ -51,6 +44,11 @@ export function Textarea({
     }
     textAreaRef.current.style.height = 'auto'
     textAreaRef.current.style.height = textAreaRef.current.scrollHeight + 'px'
+  }
+
+  const focus = (element: HTMLTextAreaElement) => {
+    element.focus()
+    element.selectionStart = element.value.length
   }
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -77,14 +75,21 @@ export function Textarea({
     setValue(newValue)
   }
 
-  useEffect(resize, [value])
+  useEffect(() => {
+    const textAreaElement = textAreaRef.current
+    if (focusTrigger && setFocusTrigger && textAreaElement) {
+      focus(textAreaElement)
+      setFocusTrigger(false)
+    }
+  }, [focusTrigger])
+
+  useLayoutEffect(resize, [value, textAreaRef])
   useLayoutEffect(() => {
     setValue(value)
 
     const textAreaElement = textAreaRef.current
     if (focusOnInit && textAreaElement) {
-      textAreaElement.focus()
-      textAreaElement.selectionStart = textAreaElement.value.length
+      focus(textAreaElement)
     }
   }, [textAreaRef])
 
@@ -93,8 +98,6 @@ export function Textarea({
       setLabelWidth(labelRef.current?.offsetWidth)
     }
   }, [labelRef])
-
-  const randomId = useMemo(() => (Math.random() + 1).toString(36).substring(7), [])
 
   return (
     <div className={`${className} relative`}>
