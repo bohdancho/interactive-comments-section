@@ -11,8 +11,42 @@ export const DataDispatchContext = createContext<Dispatch<types.Action> | null>(
 
 const LS_DATA_KEY = 'data'
 
-type DataReducer = Reducer<null | types.Data, types.Action>
+const handleVoting: <T extends types.Comment | types.Reply>(
+  comment: T,
+  isUpvote: boolean,
+  currentUsername: string
+) => T = (comment, isUpvote, currentUsername) => {
+  let tookVoteBack = false
+  const alreadyUpvoted = comment.upvotedBy.includes(currentUsername)
+  const alreadyDownvoted = comment.downvotedBy.includes(currentUsername)
 
+  if ((alreadyUpvoted && isUpvote) || (alreadyDownvoted && !isUpvote)) {
+    tookVoteBack = true
+  }
+
+  const newUpvotedBy = comment.upvotedBy.filter(
+    (username) => username !== currentUsername
+  )
+  const newDownvotedBy = comment.downvotedBy.filter(
+    (username) => username !== currentUsername
+  )
+
+  if (!tookVoteBack) {
+    if (isUpvote) {
+      newUpvotedBy.push(currentUsername)
+    } else {
+      newDownvotedBy.push(currentUsername)
+    }
+  }
+
+  return {
+    ...comment,
+    upvotedBy: newUpvotedBy,
+    downvotedBy: newDownvotedBy,
+  }
+}
+
+type DataReducer = Reducer<null | types.Data, types.Action>
 const dataReducer: DataReducer = (state, action) => {
   if (action.type === 'init') {
     return action.payload
@@ -32,7 +66,8 @@ const dataReducer: DataReducer = (state, action) => {
             id: state.commentsCount + 1,
             content: action.payload.text,
             createdAt: Date.now(),
-            rating: 0,
+            upvotedBy: [],
+            downvotedBy: [],
             user: state.currentUser,
             replies: [],
           },
@@ -61,7 +96,8 @@ const dataReducer: DataReducer = (state, action) => {
                 id: state.commentsCount + 1,
                 content: text,
                 createdAt: Date.now(),
-                rating: 0,
+                upvotedBy: [],
+                downvotedBy: [],
                 replyingTo:
                   replyToIndex === -1
                     ? comment.user.username
@@ -110,50 +146,25 @@ const dataReducer: DataReducer = (state, action) => {
         ),
       }
     }
-    case 'upvote':
-    case 'downvote': {
-      const id = action.payload.id
+    case 'vote': {
+      const { id, isUpvote } = action.payload
       const currentUsername = state.currentUser.username
 
       return {
         ...state,
         comments: state.comments.map((comment) => {
           if (comment.id !== id) {
-            return comment
-          }
-
-          let tookVoteBack = false
-
-          const wasUpvoted = comment.upvotedBy.includes(currentUsername)
-          const wasDownvoted = comment.downvotedBy.includes(currentUsername)
-
-          if (
-            (wasUpvoted && action.type === 'upvote') ||
-            (wasDownvoted && action.type === 'downvote')
-          ) {
-            tookVoteBack = true
-          }
-
-          const newUpvotedBy = comment.upvotedBy.filter(
-            (username) => username !== currentUsername
-          )
-          const newDownvotedBy = comment.downvotedBy.filter(
-            (username) => username !== currentUsername
-          )
-
-          if (!tookVoteBack) {
-            if (action.type === 'upvote') {
-              newUpvotedBy.push(currentUsername)
-            } else {
-              newDownvotedBy.push(currentUsername)
+            return {
+              ...comment,
+              replies: comment.replies.map((reply) =>
+                reply.id === id
+                  ? handleVoting(reply, isUpvote, currentUsername)
+                  : reply
+              ),
             }
           }
 
-          return {
-            ...comment,
-            upvotedBy: newUpvotedBy,
-            downvotedBy: newDownvotedBy,
-          }
+          return handleVoting(comment, isUpvote, currentUsername)
         }),
       }
     }

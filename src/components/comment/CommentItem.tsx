@@ -69,7 +69,10 @@ export function CommentItem({
           )}
         </div>
         <div className='tablet:row-start-1 tablet:row-span-2'>
-          <CommentRating rating={comment.rating}></CommentRating>
+          <CommentRating
+            id={comment.id}
+            rating={comment.upvotedBy.length - comment.downvotedBy.length}
+          ></CommentRating>
         </div>
         <div className='flex justify-end tablet:col-start-3 tablet:row-start-1'>
           <CommentActions

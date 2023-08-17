@@ -25,14 +25,9 @@ interface EditCommentAction {
   payload: { id: number; newText: string }
 }
 
-interface UpvoteAction {
-  type: 'upvote'
-  payload: { id: number }
-}
-
-interface DownvoteAction {
-  type: 'downvote'
-  payload: { id: number }
+interface VoteAction {
+  type: 'vote'
+  payload: { id: number; isUpvote: boolean }
 }
 
 export type Action =
@@ -41,5 +36,4 @@ export type Action =
   | ReplyAction
   | DeleteCommentAction
   | EditCommentAction
-  | UpvoteAction
-  | DownvoteAction
+  | VoteAction
