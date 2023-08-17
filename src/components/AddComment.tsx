@@ -40,7 +40,7 @@ export function AddComment({
         value={commentText}
         setValue={setCommentText}
         className='col-span-2 tablet:col-span-1 tablet:col-start-2'
-        fixedValue={replyToUser ? `@${replyToUser} ` : undefined}
+        prefix={replyToUser ? `@${replyToUser} ` : undefined}
         focusOnInit={!!replyToUser}
         focusTrigger={focusTextarea}
         setFocusTrigger={setFocusTextarea}

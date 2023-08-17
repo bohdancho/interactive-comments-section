@@ -40,17 +40,20 @@ export function CommentItem({ comment }: { comment: types.Comment | types.Reply 
         </div>
         <div className='col-span-2'>
           {isEditing ? (
-            <div className='flex flex-col items-end gap-16'>
+            <div className='flex flex-col gap-16'>
               <Textarea
                 placeholder='Edit your comment...'
                 setValue={setEditValue}
                 value={editValue}
-                fixedValue={replyTo ? `@${replyTo} ` : undefined}
+                prefix={replyTo ? `@${replyTo} ` : undefined}
                 focusTrigger={focusEditTextarea}
                 setFocusTrigger={setFocusEditTextarea}
                 focusOnInit={true}
+                className='self-stretch'
               ></Textarea>
-              <Button onClick={editComment}>Update</Button>
+              <Button onClick={editComment} className='self-end'>
+                Update
+              </Button>
             </div>
           ) : (
             <p className='text-grayish-blue'>
