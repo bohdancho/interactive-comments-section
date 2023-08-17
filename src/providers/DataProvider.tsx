@@ -1,6 +1,5 @@
 import { Dispatch, ReactNode, Reducer, createContext, useEffect, useReducer } from 'react'
 import * as types from '../types'
-import { UserProvider } from './UserProvider'
 
 export const DataDispatchContext = createContext<Dispatch<types.Action> | null>(null)
 export const DataContext = createContext<types.Data | null>(null)
@@ -35,9 +34,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
 
   return data ? (
     <DataDispatchContext.Provider value={dispatchData}>
-      <DataContext.Provider value={data}>
-        <UserProvider user={data.currentUser}>{children}</UserProvider>
-      </DataContext.Provider>
+      <DataContext.Provider value={data}>{children}</DataContext.Provider>
     </DataDispatchContext.Provider>
   ) : null
 }
