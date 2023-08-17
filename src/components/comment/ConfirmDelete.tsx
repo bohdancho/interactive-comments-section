@@ -2,18 +2,18 @@ import { DispatchWithoutAction, MouseEventHandler } from 'react'
 
 export function ConfirmDelete({
   deleteComment,
-  toggleIsDeleting,
+  toggleDeleting,
 }: {
   deleteComment: () => void
-  toggleIsDeleting: DispatchWithoutAction
+  toggleDeleting: DispatchWithoutAction
 }) {
   const deleteAndClose = () => {
-    toggleIsDeleting()
+    toggleDeleting()
     deleteComment()
   }
   const onBackgroundClick: MouseEventHandler = (event) => {
     if (event.target === event.currentTarget) {
-      toggleIsDeleting()
+      toggleDeleting()
     }
   }
 
@@ -31,7 +31,7 @@ export function ConfirmDelete({
           undone.
         </p>
         <div className='grid grid-cols-2 gap-12 tablet:gap-16'>
-          <button className={`${buttonClasses} bg-grayish-blue`} onClick={toggleIsDeleting}>
+          <button className={`${buttonClasses} bg-grayish-blue`} onClick={toggleDeleting}>
             no, cancel
           </button>
           <button className={`${buttonClasses} bg-soft-red`} onClick={deleteAndClose}>

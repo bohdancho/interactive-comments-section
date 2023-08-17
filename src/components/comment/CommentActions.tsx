@@ -7,25 +7,25 @@ import { ConfirmDelete } from './ConfirmDelete'
 export function CommentActions({
   commentId,
   isOwnComment,
-  toggleIsReplying,
-  toggleIsEditing,
+  toggleReplying,
+  toggleEditing,
 }: {
   commentId: number
   isOwnComment: boolean
-  toggleIsReplying: DispatchWithoutAction
-  toggleIsEditing: DispatchWithoutAction
+  toggleReplying: DispatchWithoutAction
+  toggleEditing: DispatchWithoutAction
 }) {
   const dataDispatch = useContext(DataDispatchContext) as Dispatch<types.Action>
   const deleteComment = () => dataDispatch({ type: 'deleteComment', payload: { id: commentId } })
-  const [isDeleting, toggleisDeleting] = useReducer((prev) => !prev, false)
+  const [isDeleting, toggleDeleting] = useReducer((prev) => !prev, false)
 
   const buttons = isOwnComment ? (
     <>
-      <ActionButton type='delete' onClick={toggleisDeleting}></ActionButton>
-      <ActionButton type='edit' onClick={toggleIsEditing}></ActionButton>
+      <ActionButton type='delete' onClick={toggleDeleting}></ActionButton>
+      <ActionButton type='edit' onClick={toggleEditing}></ActionButton>
     </>
   ) : (
-    <ActionButton type='reply' onClick={toggleIsReplying}></ActionButton>
+    <ActionButton type='reply' onClick={toggleReplying}></ActionButton>
   )
 
   return (
@@ -33,7 +33,7 @@ export function CommentActions({
       {isDeleting ? (
         <ConfirmDelete
           deleteComment={deleteComment}
-          toggleIsDeleting={toggleisDeleting}
+          toggleDeleting={toggleDeleting}
         ></ConfirmDelete>
       ) : null}
       <div className='flex justify-end gap-16'>{buttons}</div>

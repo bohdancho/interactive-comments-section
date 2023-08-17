@@ -1,4 +1,4 @@
-import { Dispatch, useContext, useReducer, useState } from 'react'
+import { Dispatch, useContext, useState } from 'react'
 import { DataDispatchContext } from '../../providers/DataProvider'
 import { UserContext } from '../../providers/UserProvider'
 import * as types from '../../types'
@@ -8,11 +8,21 @@ import { CommentActions } from './CommentActions'
 import { CommentInfo } from './CommentInfo'
 import { CommentRating } from './CommentRating'
 
-export function CommentItem({ comment }: { comment: types.Comment | types.Reply }) {
+export function CommentItem({
+  comment,
+  isReplying,
+  isEditing,
+  toggleReplying,
+  toggleEditing,
+}: {
+  comment: types.Comment | types.Reply
+  isReplying: boolean
+  isEditing: boolean
+  toggleReplying: () => void
+  toggleEditing: () => void
+}) {
   const currentUser = useContext(UserContext) as types.User
   const dataDispatch = useContext(DataDispatchContext) as Dispatch<types.Action>
-  const [isReplying, toggleIsReplying] = useReducer((prev) => !prev, false)
-  const [isEditing, toggleIsEditing] = useReducer((prev) => !prev, false)
   const [editValue, setEditValue] = useState(comment.content)
   const [focusEditTextarea, setFocusEditTextarea] = useState(false)
 
@@ -29,7 +39,7 @@ export function CommentItem({ comment }: { comment: types.Comment | types.Reply 
       type: 'editComment',
       payload: { id: comment.id, newText: editValue },
     })
-    toggleIsEditing()
+    toggleEditing()
     setEditValue(editValue.trim())
   }
 
@@ -76,15 +86,15 @@ export function CommentItem({ comment }: { comment: types.Comment | types.Reply 
           <CommentActions
             isOwnComment={comment.user.username === currentUser.username}
             commentId={comment.id}
-            toggleIsReplying={toggleIsReplying}
-            toggleIsEditing={toggleIsEditing}
+            toggleReplying={toggleReplying}
+            toggleEditing={toggleEditing}
           ></CommentActions>
         </div>
       </div>
       {isReplying ? (
         <div className='mt-8'>
           <AddComment
-            onReply={toggleIsReplying}
+            onReply={toggleReplying}
             replyToUser={comment.user.username}
             replyToId={comment.id}
           ></AddComment>
