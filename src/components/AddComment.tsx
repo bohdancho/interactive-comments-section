@@ -16,23 +16,25 @@ export function AddComment({
   const currentUser = useContext(UserContext) as types.User
   const dataDispatch = useContext(DataDispatchContext) as Dispatch<types.Action>
   const [focusTextarea, setFocusTextarea] = useState(false)
+  const [commentText, setCommentText] = useState('')
 
   const addComment = () => {
-    if (commentText === '') {
+    const trimmedValue = commentText.trim()
+
+    if (trimmedValue === '') {
+      setCommentText('')
       setFocusTextarea(true)
       return
     }
 
     if (replyToId && onReply) {
       onReply()
-      dataDispatch({ type: 'reply', payload: { text: commentText, replyToId } })
+      dataDispatch({ type: 'reply', payload: { text: trimmedValue, replyToId } })
     } else {
-      dataDispatch({ type: 'comment', payload: { text: commentText } })
+      dataDispatch({ type: 'comment', payload: { text: trimmedValue } })
     }
     setCommentText('')
   }
-
-  const [commentText, setCommentText] = useState('')
 
   return (
     <form className='pt-16 px-16 pb-12 grid grid-cols-2 items-center gap-16 bg-white rounded tablet:p-24 tablet:grid-cols-[min-content_auto_min-content] tablet:items-start'>

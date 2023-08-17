@@ -17,7 +17,10 @@ export function CommentItem({ comment }: { comment: types.Comment | types.Reply 
   const [focusEditTextarea, setFocusEditTextarea] = useState(false)
 
   const editComment = () => {
-    if (editValue.trim() === '') {
+    const trimmedValue = editValue.trim()
+
+    if (trimmedValue === '') {
+      setEditValue('')
       setFocusEditTextarea(true)
       return
     }
@@ -27,6 +30,7 @@ export function CommentItem({ comment }: { comment: types.Comment | types.Reply 
       payload: { id: comment.id, newText: editValue },
     })
     toggleIsEditing()
+    setEditValue(editValue.trim())
   }
 
   const replyTo = 'replyingTo' in comment ? comment.replyingTo : null

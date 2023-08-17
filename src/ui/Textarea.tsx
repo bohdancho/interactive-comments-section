@@ -30,14 +30,17 @@ export function Textarea({
   placeholder?: string
   onEnter?: () => void
 }) {
+  const [isControlKeyDown, setIsControlKeyDown] = useState(false)
   const textAreaRef = useRef<HTMLTextAreaElement>(null)
   const labelRef = useRef<HTMLLabelElement>(null)
 
   const [labelWidth, setLabelWidth] = useState(0)
 
   useEffect(() => {
-    if (focusTrigger && setFocusTrigger) {
-      textAreaRef.current?.focus()
+    const textAreaElement = textAreaRef.current
+    if (focusTrigger && setFocusTrigger && textAreaElement) {
+      textAreaElement.focus()
+      textAreaElement.selectionStart = textAreaElement.value.length
       setFocusTrigger(false)
     }
   }, [focusTrigger])
@@ -51,22 +54,37 @@ export function Textarea({
   }
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.code === 'Enter') {
-      onEnter()
+    switch (e.key) {
+      case 'Enter':
+        if (isControlKeyDown && onEnter) {
+          onEnter()
+        }
+        return
+      case 'Control':
+        setIsControlKeyDown(true)
+        return
+    }
+  }
+
+  const onKeyUp = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Control') {
+      setIsControlKeyDown(false)
     }
   }
 
   const onInput = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const newValue = e.target.value
-    setValue(newValue.trim())
+    setValue(newValue)
   }
 
   useEffect(resize, [value])
   useLayoutEffect(() => {
     setValue(value)
 
-    if (focusOnInit) {
-      textAreaRef.current?.focus()
+    const textAreaElement = textAreaRef.current
+    if (focusOnInit && textAreaElement) {
+      textAreaElement.focus()
+      textAreaElement.selectionStart = textAreaElement.value.length
     }
   }, [textAreaRef])
 
@@ -87,6 +105,7 @@ export function Textarea({
       ) : null}
       <textarea
         onKeyDown={onKeyDown}
+        onKeyUp={onKeyUp}
         onInput={onInput}
         id={randomId}
         ref={textAreaRef}
