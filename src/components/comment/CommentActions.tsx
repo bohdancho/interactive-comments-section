@@ -1,5 +1,5 @@
 import { Dispatch, DispatchWithoutAction, useContext } from 'react'
-import { DataDispatchContext } from '../../App'
+import { DataDispatchContext } from '../../providers/DataProvider'
 import * as types from '../../types'
 import { ActionButton } from '../../ui'
 
@@ -15,8 +15,7 @@ export function CommentActions({
   toggleIsEditing: DispatchWithoutAction
 }) {
   const dataDispatch = useContext(DataDispatchContext) as Dispatch<types.Action>
-  const deleteComment = () =>
-    dataDispatch({ type: 'deleteComment', payload: { id: commentId } })
+  const deleteComment = () => dataDispatch({ type: 'deleteComment', payload: { id: commentId } })
 
   const buttons = isOwnComment ? (
     <>

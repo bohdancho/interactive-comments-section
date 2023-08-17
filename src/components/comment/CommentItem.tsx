@@ -1,5 +1,6 @@
 import { Dispatch, useContext, useReducer, useState } from 'react'
-import { DataDispatchContext, UserContext } from '../../App'
+import { DataDispatchContext } from '../../providers/DataProvider'
+import { UserContext } from '../../providers/UserProvider'
 import * as types from '../../types'
 import { Button, Textarea } from '../../ui'
 import { AddComment } from '../AddComment'
@@ -7,11 +8,7 @@ import { CommentActions } from './CommentActions'
 import { CommentInfo } from './CommentInfo'
 import { CommentRating } from './CommentRating'
 
-export function CommentItem({
-  comment,
-}: {
-  comment: types.Comment | types.Reply
-}) {
+export function CommentItem({ comment }: { comment: types.Comment | types.Reply }) {
   const currentUser = useContext(UserContext) as types.User
   const dataDispatch = useContext(DataDispatchContext) as Dispatch<types.Action>
   const [isReplying, toggleIsReplying] = useReducer((prev) => !prev, false)
@@ -39,9 +36,7 @@ export function CommentItem({
     <>
       <div className='p-16 bg-white rounded grid grid-cols-[min-content_auto] gap-16 tablet:p-24 tablet:grid-cols-[min-content_auto_auto] tablet:gap-24'>
         <div className='col-span-2 tablet:col-start-2 tablet:row-start-1'>
-          <CommentInfo
-            info={{ user: comment.user, createdAt: comment.createdAt }}
-          ></CommentInfo>
+          <CommentInfo info={{ user: comment.user, createdAt: comment.createdAt }}></CommentInfo>
         </div>
         <div className='col-span-2'>
           {isEditing ? (
@@ -59,11 +54,7 @@ export function CommentItem({
             </div>
           ) : (
             <p className='text-grayish-blue'>
-              {replyTo ? (
-                <span className='font-medium text-moderate-blue'>
-                  @{replyTo}{' '}
-                </span>
-              ) : null}
+              {replyTo ? <span className='font-medium text-moderate-blue'>@{replyTo} </span> : null}
               {comment.content}
             </p>
           )}

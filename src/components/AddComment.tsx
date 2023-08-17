@@ -1,5 +1,6 @@
 import { Dispatch, useContext, useState } from 'react'
-import { DataDispatchContext, UserContext } from '../App'
+import { DataDispatchContext } from '../providers/DataProvider'
+import { UserContext } from '../providers/UserProvider'
 import * as types from '../types'
 import { Button, Image, Textarea } from '../ui'
 

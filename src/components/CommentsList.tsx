@@ -1,9 +1,10 @@
 import { useContext } from 'react'
-import { CommentsContext } from '../App'
+import { DataContext } from '../providers/DataProvider'
 import { CommentItem } from './comment/CommentItem'
 
 export function CommentsList() {
-  const comments = useContext(CommentsContext)
+  const data = useContext(DataContext)
+  const comments = data?.comments
 
   return (
     <>

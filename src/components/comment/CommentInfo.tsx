@@ -1,14 +1,10 @@
 import { useContext } from 'react'
-import { UserContext } from '../../App'
+import { UserContext } from '../../providers/UserProvider'
 import * as types from '../../types'
 import { Image } from '../../ui/Image'
 import { formatTimeDifference } from '../../utils'
 
-export function CommentInfo({
-  info,
-}: {
-  info: Pick<types.Comment, 'user' | 'createdAt'>
-}) {
+export function CommentInfo({ info }: { info: Pick<types.Comment, 'user' | 'createdAt'> }) {
   const currentUser = useContext(UserContext) as types.User
 
   return (
@@ -27,9 +23,7 @@ export function CommentInfo({
         )}
       </div>
       <span className='text-grayish-blue whitespace-nowrap'>
-        {typeof info.createdAt === 'number'
-          ? formatTimeDifference(info.createdAt)
-          : info.createdAt}
+        {typeof info.createdAt === 'number' ? formatTimeDifference(info.createdAt) : info.createdAt}
       </span>
     </div>
   )
