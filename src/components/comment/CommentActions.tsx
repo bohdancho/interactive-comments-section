@@ -1,28 +1,31 @@
+import { Dispatch, DispatchWithoutAction, useContext } from 'react'
+import { DataDispatchContext } from '../../App'
 import * as types from '../../types'
-import { DispatchWithoutAction, useContext } from 'react'
 import { ActionButton } from '../../ui'
-import { UserContext } from '../../App'
 
 export function CommentActions({
-  username,
+  commentId,
+  isOwnComment,
   toggleIsReplying,
   toggleIsEditing,
 }: {
-  username: string
+  commentId: number
+  isOwnComment: boolean
   toggleIsReplying: DispatchWithoutAction
   toggleIsEditing: DispatchWithoutAction
 }) {
-  const currentUser = useContext(UserContext) as types.User
+  const dataDispatch = useContext(DataDispatchContext) as Dispatch<types.Action>
+  const deleteComment = () =>
+    dataDispatch({ type: 'deleteComment', payload: { id: commentId } })
 
-  const buttons =
-    currentUser.username === username ? (
-      <>
-        <ActionButton type='delete'></ActionButton>
-        <ActionButton type='edit' onClick={toggleIsEditing}></ActionButton>
-      </>
-    ) : (
-      <ActionButton type='reply' onClick={toggleIsReplying}></ActionButton>
-    )
+  const buttons = isOwnComment ? (
+    <>
+      <ActionButton type='delete' onClick={deleteComment}></ActionButton>
+      <ActionButton type='edit' onClick={toggleIsEditing}></ActionButton>
+    </>
+  ) : (
+    <ActionButton type='reply' onClick={toggleIsReplying}></ActionButton>
+  )
 
   return <div className='flex justify-end gap-16'>{buttons}</div>
 }

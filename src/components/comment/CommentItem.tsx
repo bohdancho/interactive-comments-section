@@ -1,5 +1,5 @@
 import { Dispatch, useContext, useReducer, useState } from 'react'
-import { DataDispatchContext } from '../../App'
+import { DataDispatchContext, UserContext } from '../../App'
 import * as types from '../../types'
 import { Button, Textarea } from '../../ui'
 import { AddComment } from '../AddComment'
@@ -12,6 +12,7 @@ export function CommentItem({
 }: {
   comment: types.Comment | types.Reply
 }) {
+  const currentUser = useContext(UserContext) as types.User
   const dataDispatch = useContext(DataDispatchContext) as Dispatch<types.Action>
   const [isReplying, toggleIsReplying] = useReducer((prev) => !prev, false)
   const [isEditing, toggleIsEditing] = useReducer((prev) => !prev, false)
@@ -72,7 +73,8 @@ export function CommentItem({
         </div>
         <div className='flex justify-end tablet:col-start-3 tablet:row-start-1'>
           <CommentActions
-            username={comment.user.username}
+            isOwnComment={comment.user.username === currentUser.username}
+            commentId={comment.id}
             toggleIsReplying={toggleIsReplying}
             toggleIsEditing={toggleIsEditing}
           ></CommentActions>

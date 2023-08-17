@@ -22,7 +22,7 @@ const dataReducer: DataReducer = (state, action) => {
   }
 
   switch (action.type) {
-    case 'comment':
+    case 'comment': {
       return {
         ...state,
         commentsCount: state.commentsCount + 1,
@@ -38,7 +38,8 @@ const dataReducer: DataReducer = (state, action) => {
           },
         ],
       }
-    case 'reply':
+    }
+    case 'reply': {
       const { text, replyToId } = action.payload
       return {
         ...state,
@@ -70,7 +71,8 @@ const dataReducer: DataReducer = (state, action) => {
           }
         }),
       }
-    case 'editComment':
+    }
+    case 'editComment': {
       const { id, newText: content } = action.payload
       return {
         ...state,
@@ -86,6 +88,28 @@ const dataReducer: DataReducer = (state, action) => {
           }
         }),
       }
+    }
+    case 'deleteComment': {
+      const id = action.payload.id
+      return {
+        ...state,
+        comments: state.comments.reduce<types.Comment[]>(
+          (comments, comment) => {
+            if (comment.id === id) {
+              return comments
+            }
+            return [
+              ...comments,
+              {
+                ...comment,
+                replies: comment.replies.filter((reply) => reply.id !== id),
+              },
+            ]
+          },
+          []
+        ),
+      }
+    }
     default:
       return state
   }
