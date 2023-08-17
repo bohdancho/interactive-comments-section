@@ -80,6 +80,8 @@ export function CommentItem({
           <CommentRating
             id={comment.id}
             rating={comment.upvotedBy.length - comment.downvotedBy.length}
+            upvotedByMe={comment.upvotedBy.includes(currentUser.username)}
+            downvotedByMe={comment.downvotedBy.includes(currentUser.username)}
           ></CommentRating>
         </div>
         <div className='flex justify-end tablet:col-start-3 tablet:row-start-1'>
