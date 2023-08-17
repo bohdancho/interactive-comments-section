@@ -22,7 +22,7 @@ export function CommentInfo({ info }: { info: Pick<types.Comment, 'user' | 'crea
           </span>
         )}
       </div>
-      <span className='text-grayish-blue whitespace-nowrap'>
+      <span className='text-grayish-blue'>
         {typeof info.createdAt === 'number' ? formatTimeDifference(info.createdAt) : info.createdAt}
       </span>
     </div>

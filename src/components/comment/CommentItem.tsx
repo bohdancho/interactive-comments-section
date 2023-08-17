@@ -47,8 +47,8 @@ export function CommentItem({
 
   return (
     <>
-      <div className='p-16 bg-white rounded grid grid-cols-[min-content_auto] gap-16 tablet:p-24 tablet:grid-cols-[min-content_auto_auto] tablet:gap-24'>
-        <div className='col-span-2 tablet:col-start-2 tablet:row-start-1'>
+      <div className='p-16 bg-white rounded grid grid-cols-[min-content_auto] gap-16 tablet:p-24 tablet:grid-cols-[min-content_auto_min-content] tablet:gap-24'>
+        <div className='col-span-2 tablet:col-start-2 tablet:col-span-1 tablet:row-start-1'>
           <CommentInfo info={{ user: comment.user, createdAt: comment.createdAt }}></CommentInfo>
         </div>
         <div className='col-span-2'>
