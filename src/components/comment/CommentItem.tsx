@@ -42,6 +42,7 @@ export function CommentItem({ comment }: { comment: types.Comment | types.Reply 
           {isEditing ? (
             <div className='flex flex-col gap-16'>
               <Textarea
+                onEnter={editComment}
                 placeholder='Edit your comment...'
                 setValue={setEditValue}
                 value={editValue}

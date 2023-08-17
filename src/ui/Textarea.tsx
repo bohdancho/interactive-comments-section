@@ -18,6 +18,7 @@ export function Textarea({
   focusOnInit,
   className,
   placeholder,
+  onEnter,
 }: {
   value: string
   setValue: Dispatch<SetStateAction<string>>
@@ -27,6 +28,7 @@ export function Textarea({
   setFocusTrigger?: Dispatch<SetStateAction<boolean>>
   className?: string
   placeholder?: string
+  onEnter?: () => void
 }) {
   const textAreaRef = useRef<HTMLTextAreaElement>(null)
   const labelRef = useRef<HTMLLabelElement>(null)
@@ -46,6 +48,12 @@ export function Textarea({
     }
     textAreaRef.current.style.height = 'auto'
     textAreaRef.current.style.height = textAreaRef.current.scrollHeight + 'px'
+  }
+
+  const onKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.code === 'Enter') {
+      onEnter()
+    }
   }
 
   const onInput = (e: ChangeEvent<HTMLTextAreaElement>) => {
@@ -78,6 +86,7 @@ export function Textarea({
         </label>
       ) : null}
       <textarea
+        onKeyDown={onKeyDown}
         onInput={onInput}
         id={randomId}
         ref={textAreaRef}

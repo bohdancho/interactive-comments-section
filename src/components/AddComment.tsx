@@ -45,6 +45,7 @@ export function AddComment({
         focusTrigger={focusTextarea}
         setFocusTrigger={setFocusTextarea}
         placeholder={!replyToUser ? 'Add a comment...' : undefined}
+        onEnter={addComment}
       ></Textarea>
       <Image
         className='w-32 tablet:w-40 tablet:col-start-1 tablet:row-start-1 tablet:mt-4'
