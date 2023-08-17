@@ -110,6 +110,53 @@ const dataReducer: DataReducer = (state, action) => {
         ),
       }
     }
+    case 'upvote':
+    case 'downvote': {
+      const id = action.payload.id
+      const currentUsername = state.currentUser.username
+
+      return {
+        ...state,
+        comments: state.comments.map((comment) => {
+          if (comment.id !== id) {
+            return comment
+          }
+
+          let tookVoteBack = false
+
+          const wasUpvoted = comment.upvotedBy.includes(currentUsername)
+          const wasDownvoted = comment.downvotedBy.includes(currentUsername)
+
+          if (
+            (wasUpvoted && action.type === 'upvote') ||
+            (wasDownvoted && action.type === 'downvote')
+          ) {
+            tookVoteBack = true
+          }
+
+          const newUpvotedBy = comment.upvotedBy.filter(
+            (username) => username !== currentUsername
+          )
+          const newDownvotedBy = comment.downvotedBy.filter(
+            (username) => username !== currentUsername
+          )
+
+          if (!tookVoteBack) {
+            if (action.type === 'upvote') {
+              newUpvotedBy.push(currentUsername)
+            } else {
+              newDownvotedBy.push(currentUsername)
+            }
+          }
+
+          return {
+            ...comment,
+            upvotedBy: newUpvotedBy,
+            downvotedBy: newDownvotedBy,
+          }
+        }),
+      }
+    }
     default:
       return state
   }

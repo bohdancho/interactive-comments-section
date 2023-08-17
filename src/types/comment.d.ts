@@ -4,7 +4,8 @@ export interface Comment {
   id: number
   content: string
   createdAt: string | number
-  rating: number
+  upvotedBy: string[]
+  downvotedBy: string[]
   user: User
   replies: Reply[]
 }
