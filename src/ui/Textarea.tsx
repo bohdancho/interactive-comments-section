@@ -73,11 +73,7 @@ export function Textarea({
   return (
     <div className={`${className} relative`}>
       {prefix ? (
-        <label
-          ref={labelRef}
-          className='absolute top-12 left-24 leading-24 pt-[1px]'
-          htmlFor={randomId}
-        >
+        <label ref={labelRef} className='absolute top-12 left-24 pt-[1px]' htmlFor={randomId}>
           {prefix}
         </label>
       ) : null}
@@ -86,7 +82,7 @@ export function Textarea({
         id={randomId}
         ref={textAreaRef}
         style={{ textIndent: labelWidth + 2 }}
-        className='py-12 px-24 leading-24 overflow-y-hidden w-full h-full border border-light-gray border-1 rounded focus:placeholder-transparent focus:border-moderate-blue outline-none resize-none'
+        className='py-12 px-24 overflow-y-hidden w-full h-full border border-light-gray border-1 rounded focus:placeholder-transparent focus:border-moderate-blue outline-none resize-none'
         placeholder={prefix ? undefined : placeholder}
         value={value}
         rows={2}
