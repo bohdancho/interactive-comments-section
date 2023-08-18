@@ -38,12 +38,17 @@ export function Textarea({
   const [labelWidth, setLabelWidth] = useState(0)
   const randomId = useMemo(() => (Math.random() + 1).toString(36).substring(7), [])
 
-  const resize = () => {
-    if (!textAreaRef.current) {
+  const handleHeight = () => {
+    const textAreaElem = textAreaRef.current
+    if (!textAreaElem) {
       return
     }
-    textAreaRef.current.style.height = 'auto'
-    textAreaRef.current.style.height = textAreaRef.current.scrollHeight + 'px'
+    textAreaElem.style.height = textAreaElem.scrollHeight + 'px'
+    return () => {
+      if (textAreaElem) {
+        textAreaElem.style.height = 'auto'
+      }
+    }
   }
 
   const focus = (element: HTMLTextAreaElement) => {
@@ -83,21 +88,17 @@ export function Textarea({
     }
   }, [focusTrigger])
 
-  useLayoutEffect(resize, [value, textAreaRef])
+  useEffect(handleHeight, [value])
   useLayoutEffect(() => {
-    setValue(value)
-
-    const textAreaElement = textAreaRef.current
-    if (focusOnInit && textAreaElement) {
-      focus(textAreaElement)
+    const textAreaElem = textAreaRef.current
+    if (focusOnInit && textAreaElem) {
+      focus(textAreaElem)
     }
-  }, [textAreaRef])
 
-  useLayoutEffect(() => {
     if (labelRef.current) {
       setLabelWidth(labelRef.current?.offsetWidth)
     }
-  }, [labelRef])
+  }, [])
 
   return (
     <div className={`${className} relative`}>
@@ -112,11 +113,10 @@ export function Textarea({
         onInput={onInput}
         id={randomId}
         ref={textAreaRef}
-        style={{ textIndent: labelWidth + 2 }}
-        className='py-12 px-24 overflow-y-hidden w-full h-full border border-light-gray border-1 rounded focus:placeholder-transparent focus:border-moderate-blue outline-none resize-none'
+        style={prefix ? { textIndent: labelWidth + 2 } : undefined}
+        className='py-12 px-24 overflow-y-hidden w-full min-h-[72px] border border-light-gray border-1 rounded focus:placeholder-transparent focus:border-moderate-blue outline-none resize-none'
         placeholder={prefix ? undefined : placeholder}
         value={value}
-        rows={2}
       ></textarea>
     </div>
   )
