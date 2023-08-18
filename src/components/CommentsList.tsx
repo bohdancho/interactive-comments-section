@@ -1,6 +1,13 @@
 import { useContext, useState } from 'react'
 import { DataContext } from '../providers/DataProvider'
+import * as types from '../types'
 import { CommentItem } from './comment/CommentItem'
+
+const sortByScore: (a: types.Comment, b: types.Comment) => number = (a, b) => {
+  const ratingA = a.upvotedBy.length - a.downvotedBy.length
+  const ratingB = b.upvotedBy.length - b.downvotedBy.length
+  return ratingB - ratingA
+}
 
 export function CommentsList() {
   const data = useContext(DataContext)
@@ -27,15 +34,10 @@ export function CommentsList() {
     }
   }
 
-  const closeAllInterfaces = () => {
-    setEditingCommentId(null)
-    setReplyingCommentId(null)
-  }
-
   return (
     <>
       {comments
-        ? comments.map((comment) => (
+        ? comments.sort(sortByScore).map((comment) => (
             <div key={comment.id} className='mb-16 last:mb-0 tablet:mb-20'>
               <CommentItem
                 comment={comment}
