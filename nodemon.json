@@ -1,8 +1,7 @@
 {
-  "watch": ["server"],
+  "watch": ["src/api"],
   "ext": "ts",
   "execMap": {
     "ts": "ts-node-esm"
-  },
-  "ignore": ["src/**/*.spec.ts"]
+  }
 }
