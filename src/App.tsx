@@ -7,7 +7,7 @@ function App() {
   return (
     <DataProvider>
       <UserProvider>
-        <div className='py-32 px-16 min-h-screen bg-very-light-gray flex justify-center'>
+        <div className='flex min-h-screen justify-center bg-very-light-gray py-32 px-16'>
           <div className='max-w-[730px]'>
             <CommentsSection />
           </div>

@@ -30,10 +30,4 @@ interface VoteAction {
   payload: { id: number; isUpvote: boolean }
 }
 
-export type Action =
-  | InitAction
-  | CommentAction
-  | ReplyAction
-  | DeleteCommentAction
-  | EditCommentAction
-  | VoteAction
+export type Action = InitAction | CommentAction | ReplyAction | DeleteCommentAction | EditCommentAction | VoteAction
