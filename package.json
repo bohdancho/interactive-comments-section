@@ -7,14 +7,12 @@
   "scripts": {
     "dev": "concurrently npm:dev:*",
     "dev:frontend": "vite",
-    "dev:backend": "nodemon src/api/index.ts",
+    "dev:backend": "nodemon server/index.ts",
     "prebuild": "rimraf dist",
-    "build": "npm run build:frontend && npm run build:backend",
-    "build:frontend": "tsc && vite build",
-    "build:backend": "babel src/api/index.ts --out-dir ./dist --extensions .ts",
+    "build": "tsc && vite build",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
-    "start": "NODE_ENV=production PORT=1400 node dist/index.js",
+    "start": "NODE_ENV=production PORT=3001 nodemon server/index.ts",
     "preview": "concurrently npm:preview:frontend npm:start",
     "preview:frontend": "vite preview"
   },

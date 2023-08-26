@@ -1,13 +1,12 @@
 import express from 'express'
 import path from 'path'
+import api from './api.js'
 
 const port = process.env.PORT || 3000
 
 const app = express()
 
-app.get('/api', (_req, res) => {
-  res.json({ message: 'Hello, api!' })
-})
+app.use('/api', api)
 
 app.use(express.static('dist/app'))
 app.get('*', (_req, res) => {
