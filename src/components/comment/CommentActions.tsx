@@ -1,8 +1,8 @@
+import { DataDispatchContext } from '@/providers'
+import * as types from '@/types'
+import { UIActionButton } from '@/ui'
 import { Dispatch, DispatchWithoutAction, useContext, useReducer } from 'react'
-import { DataDispatchContext } from '../../providers/DataProvider'
-import * as types from '../../types'
-import { ActionButton } from '../../ui'
-import { ConfirmDelete } from './ConfirmDelete'
+import { ConfirmDelete } from '.'
 
 export function CommentActions({
   commentId,
@@ -21,20 +21,17 @@ export function CommentActions({
 
   const buttons = isOwnComment ? (
     <>
-      <ActionButton type='delete' onClick={toggleDeleting}></ActionButton>
-      <ActionButton type='edit' onClick={toggleEditing}></ActionButton>
+      <UIActionButton type='delete' onClick={toggleDeleting}></UIActionButton>
+      <UIActionButton type='edit' onClick={toggleEditing}></UIActionButton>
     </>
   ) : (
-    <ActionButton type='reply' onClick={toggleReplying}></ActionButton>
+    <UIActionButton type='reply' onClick={toggleReplying}></UIActionButton>
   )
 
   return (
     <>
       {isDeleting ? (
-        <ConfirmDelete
-          deleteComment={deleteComment}
-          toggleDeleting={toggleDeleting}
-        ></ConfirmDelete>
+        <ConfirmDelete deleteComment={deleteComment} toggleDeleting={toggleDeleting}></ConfirmDelete>
       ) : null}
       <div className='flex justify-end gap-16'>{buttons}</div>
     </>

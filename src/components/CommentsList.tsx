@@ -1,7 +1,7 @@
+import { DataContext } from '@/providers'
+import * as types from '@/types'
 import { useContext, useState } from 'react'
-import { DataContext } from '../providers/DataProvider'
-import * as types from '../types'
-import { CommentItem } from './comment/CommentItem'
+import { CommentItem } from '.'
 
 const sortByScore: (a: types.Comment, b: types.Comment) => number = (a, b) => {
   const ratingA = a.upvotedBy.length - a.downvotedBy.length
@@ -47,7 +47,7 @@ export function CommentsList() {
                 toggleReplying={() => toggleReplying(comment.id)}
               ></CommentItem>
               {comment.replies.length ? (
-                <div className='mt-16 pl-16 border-l-[2px] border-light-gray tablet:mt-20 tablet:pl-40 tablet:ml-40'>
+                <div className='mt-16 border-l-[2px] border-light-gray pl-16 tablet:mt-20 tablet:ml-40 tablet:pl-40'>
                   {comment.replies.map((reply) => (
                     <div key={reply.id} className='mb-16 last:mb-0 tablet:mb-20'>
                       <CommentItem

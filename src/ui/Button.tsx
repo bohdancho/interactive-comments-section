@@ -1,6 +1,6 @@
 import { MouseEventHandler } from 'react'
 
-export function Button({
+export function UIButton({
   children: placeholder,
   className,
   onClick,
@@ -16,7 +16,7 @@ export function Button({
 
   return (
     <button
-      className={`${className} w-[104px] bg-moderate-blue hover:bg-light-grayish-blue base-transition text-white p-12 rounded`}
+      className={`${className} base-transition w-[104px] rounded bg-moderate-blue p-12 text-white hover:bg-light-grayish-blue`}
       onClick={onClickPreventDefault}
     >
       {placeholder}

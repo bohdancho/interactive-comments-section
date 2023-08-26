@@ -1,15 +1,9 @@
-import iconDelete from '../assets/icon-delete.svg'
-import iconEdit from '../assets/icon-edit.svg'
-import iconReply from '../assets/icon-reply.svg'
+import iconDelete from '@/assets/icon-delete.svg'
+import iconEdit from '@/assets/icon-edit.svg'
+import iconReply from '@/assets/icon-reply.svg'
 import SVG from 'react-inlinesvg'
 
-export function ActionButton({
-  type,
-  onClick,
-}: {
-  type: 'delete' | 'edit' | 'reply'
-  onClick?: () => void
-}) {
+export function UIActionButton({ type, onClick }: { type: 'delete' | 'edit' | 'reply'; onClick?: () => void }) {
   const text = type[0].toUpperCase() + type.slice(1)
   let icon
   let colorClass
@@ -29,10 +23,7 @@ export function ActionButton({
   }
 
   return (
-    <button
-      className={`flex items-center gap-8 base-transition ${colorClass}`}
-      onClick={onClick}
-    >
+    <button className={`base-transition flex items-center gap-8 ${colorClass}`} onClick={onClick}>
       <SVG src={icon} />
       <span className='font-medium'>{text}</span>
     </button>

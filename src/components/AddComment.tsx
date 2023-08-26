@@ -1,8 +1,7 @@
+import { DataDispatchContext, UserContext } from '@/providers'
+import * as types from '@/types'
+import { UIButton, UIImage, UITextarea } from '@/ui'
 import { Dispatch, useContext, useState } from 'react'
-import { DataDispatchContext } from '../providers/DataProvider'
-import { UserContext } from '../providers/UserProvider'
-import * as types from '../types'
-import { Button, Image, Textarea } from '../ui'
 
 export function AddComment({
   replyToUser,
@@ -37,8 +36,8 @@ export function AddComment({
   }
 
   return (
-    <form className='pt-16 px-16 pb-12 grid grid-cols-2 items-center gap-16 bg-white rounded tablet:p-24 tablet:grid-cols-[min-content_auto_min-content] tablet:items-start'>
-      <Textarea
+    <form className='grid grid-cols-2 items-center gap-16 rounded bg-white px-16 pt-16 pb-12 tablet:grid-cols-[min-content_auto_min-content] tablet:items-start tablet:p-24'>
+      <UITextarea
         value={commentText}
         setValue={setCommentText}
         className='col-span-2 tablet:col-span-1 tablet:col-start-2'
@@ -48,15 +47,15 @@ export function AddComment({
         setFocusTrigger={setFocusTextarea}
         placeholder={!replyToUser ? 'Add a comment...' : undefined}
         onEnter={addComment}
-      ></Textarea>
-      <Image
-        className='w-32 tablet:w-40 tablet:col-start-1 tablet:row-start-1 tablet:mt-4'
+      ></UITextarea>
+      <UIImage
+        className='w-32 tablet:col-start-1 tablet:row-start-1 tablet:mt-4 tablet:w-40'
         image={currentUser.image}
         alt={currentUser.username}
-      ></Image>
-      <Button onClick={addComment} className='justify-self-end'>
+      ></UIImage>
+      <UIButton onClick={addComment} className='justify-self-end'>
         {replyToUser ? 'Reply' : 'Send'}
-      </Button>
+      </UIButton>
     </form>
   )
 }

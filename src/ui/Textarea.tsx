@@ -1,15 +1,6 @@
-import {
-  ChangeEvent,
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react'
+import { ChangeEvent, Dispatch, SetStateAction, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 
-export function Textarea({
+export function UITextarea({
   value,
   setValue,
   prefix,
@@ -86,7 +77,7 @@ export function Textarea({
       focus(textAreaElement)
       setFocusTrigger(false)
     }
-  }, [focusTrigger])
+  }, [focusTrigger, setFocusTrigger])
 
   useEffect(handleHeight, [value])
   useLayoutEffect(() => {
@@ -98,7 +89,7 @@ export function Textarea({
     if (labelRef.current) {
       setLabelWidth(labelRef.current?.offsetWidth)
     }
-  }, [])
+  }, [focusOnInit])
 
   return (
     <div className={`${className} relative`}>
@@ -114,7 +105,7 @@ export function Textarea({
         id={randomId}
         ref={textAreaRef}
         style={prefix ? { textIndent: labelWidth + 2 } : undefined}
-        className='py-12 px-24 overflow-y-hidden w-full min-h-[72px] border border-light-gray border-1 rounded focus:placeholder-transparent focus:border-moderate-blue outline-none resize-none'
+        className='border-1 min-h-[72px] w-full resize-none overflow-y-hidden rounded border border-light-gray py-12 px-24 outline-none focus:border-moderate-blue focus:placeholder-transparent'
         placeholder={prefix ? undefined : placeholder}
         value={value}
       ></textarea>

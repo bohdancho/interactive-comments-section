@@ -1,9 +1,9 @@
+import iconMinus from '@/assets/icon-minus.svg'
+import iconPlus from '@/assets/icon-plus.svg'
+import { DataDispatchContext } from '@/providers'
+import * as types from '@/types'
 import { Dispatch, useContext } from 'react'
 import SVG from 'react-inlinesvg'
-import iconMinus from '../../assets/icon-minus.svg'
-import iconPlus from '../../assets/icon-plus.svg'
-import { DataDispatchContext } from '../../providers/DataProvider'
-import * as types from '../../types'
 
 export function CommentRating({
   id,
@@ -27,7 +27,7 @@ export function CommentRating({
         onClick={() => vote(isUpvote)}
         className={`${
           isActive ? 'text-moderate-blue' : 'text-light-grayish-blue'
-        } w-40 h-40 flex items-center justify-center base-transition hover:text-moderate-blue active:text-dark-blue`}
+        } base-transition flex h-40 w-40 items-center justify-center hover:text-moderate-blue active:text-dark-blue`}
       >
         <SVG src={isUpvote ? iconPlus : iconMinus} />
       </button>
@@ -37,7 +37,7 @@ export function CommentRating({
   return (
     <div className='inline-flex items-center gap-4 rounded-large bg-very-light-gray font-medium tablet:flex-col tablet:gap-0'>
       {getButton(true)}
-      <span className='text-moderate-blue font-medium'>{rating}</span>
+      <span className='font-medium text-moderate-blue'>{rating}</span>
       {getButton(false)}
     </div>
   )

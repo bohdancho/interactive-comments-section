@@ -1,8 +1,8 @@
+import { UserContext } from '@/providers'
+import * as types from '@/types'
+import { UIImage } from '@/ui'
+import { formatTimeDifference } from '@/utils'
 import { useContext } from 'react'
-import { UserContext } from '../../providers/UserProvider'
-import * as types from '../../types'
-import { Image } from '../../ui/Image'
-import { formatTimeDifference } from '../../utils'
 
 export function CommentInfo({ info }: { info: Pick<types.Comment, 'user' | 'createdAt'> }) {
   const currentUser = useContext(UserContext) as types.User
@@ -10,14 +10,10 @@ export function CommentInfo({ info }: { info: Pick<types.Comment, 'user' | 'crea
   return (
     <div className='flex items-center gap-16'>
       <div className='flex items-center'>
-        <Image
-          className='block w-32 mr-16'
-          image={info.user.image}
-          alt={info.user.username}
-        ></Image>
-        <span className='text-dark-blue font-medium'>{info.user.username}</span>
+        <UIImage className='mr-16 block w-32' image={info.user.image} alt={info.user.username}></UIImage>
+        <span className='font-medium text-dark-blue'>{info.user.username}</span>
         {info.user.username === currentUser.username && (
-          <span className='ml-8 text-sm text-white text-medium bg-moderate-blue rounded-sm pt-[1px] px-[6px] pb-[3px]'>
+          <span className='text-medium ml-8 rounded-sm bg-moderate-blue px-[6px] pt-[1px] pb-[3px] text-sm text-white'>
             you
           </span>
         )}

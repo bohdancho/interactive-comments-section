@@ -1,12 +1,9 @@
+import { DataDispatchContext, UserContext } from '@/providers'
+import * as types from '@/types'
+import { UIButton, UITextarea } from '@/ui'
 import { Dispatch, useContext, useState } from 'react'
-import { DataDispatchContext } from '../../providers/DataProvider'
-import { UserContext } from '../../providers/UserProvider'
-import * as types from '../../types'
-import { Button, Textarea } from '../../ui'
-import { AddComment } from '../AddComment'
-import { CommentActions } from './CommentActions'
-import { CommentInfo } from './CommentInfo'
-import { CommentRating } from './CommentRating'
+import { CommentActions, CommentInfo, CommentRating } from '.'
+import { AddComment } from '..'
 
 export function CommentItem({
   comment,
@@ -47,14 +44,14 @@ export function CommentItem({
 
   return (
     <>
-      <div className='p-16 bg-white rounded grid grid-cols-[auto_auto] gap-16 tablet:p-24 tablet:grid-cols-[min-content_1fr_min-content] tablet:grid-rows-[min-content_1fr] tablet:gap-24'>
-        <div className='col-span-2 tablet:col-start-2 tablet:col-span-1 tablet:row-start-1'>
+      <div className='grid grid-cols-[auto_auto] gap-16 rounded bg-white p-16 tablet:grid-cols-[min-content_1fr_min-content] tablet:grid-rows-[min-content_1fr] tablet:gap-24 tablet:p-24'>
+        <div className='col-span-2 tablet:col-span-1 tablet:col-start-2 tablet:row-start-1'>
           <CommentInfo info={{ user: comment.user, createdAt: comment.createdAt }}></CommentInfo>
         </div>
         <div className='col-span-2'>
           {isEditing ? (
             <div className='flex flex-col gap-16'>
-              <Textarea
+              <UITextarea
                 onEnter={editComment}
                 placeholder='Edit your comment...'
                 setValue={setEditValue}
@@ -64,10 +61,10 @@ export function CommentItem({
                 setFocusTrigger={setFocusEditTextarea}
                 focusOnInit={true}
                 className='self-stretch'
-              ></Textarea>
-              <Button onClick={editComment} className='self-end'>
+              ></UITextarea>
+              <UIButton onClick={editComment} className='self-end'>
                 Update
-              </Button>
+              </UIButton>
             </div>
           ) : (
             <p className='text-grayish-blue'>
@@ -76,7 +73,7 @@ export function CommentItem({
             </p>
           )}
         </div>
-        <div className='tablet:row-start-1 tablet:row-span-2'>
+        <div className='tablet:row-span-2 tablet:row-start-1'>
           <CommentRating
             id={comment.id}
             rating={comment.upvotedBy.length - comment.downvotedBy.length}
@@ -95,11 +92,7 @@ export function CommentItem({
       </div>
       {isReplying ? (
         <div className='mt-8'>
-          <AddComment
-            onReply={toggleReplying}
-            replyToUser={comment.user.username}
-            replyToId={comment.id}
-          ></AddComment>
+          <AddComment onReply={toggleReplying} replyToUser={comment.user.username} replyToId={comment.id}></AddComment>
         </div>
       ) : null}
     </>
