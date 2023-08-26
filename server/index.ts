@@ -1,6 +1,6 @@
 import express from 'express'
 import path from 'path'
-import api from './api.js'
+import api from './api/api'
 
 const port = process.env.PORT || 3000
 
