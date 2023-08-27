@@ -1,13 +1,10 @@
-import { config } from 'dotenv'
 import express from 'express'
-
-config()
-console.log(process.env.DB_SERVER)
+import { UserModel } from '../modules/user'
 
 const router = express.Router()
 
-router.get('/test', async (_req, res) => {
-  res.status(200).json({ message: 'test success1' })
+router.get('/users', async (_req, res) => {
+  res.status(200).json({ users: await UserModel.find() })
 })
 
 export default router

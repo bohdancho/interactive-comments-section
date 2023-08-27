@@ -1,3 +1,3 @@
 import { UserData } from '../types'
 
-export type CreateUserDto = UserData
+export type CreateUserDto = Omit<UserData, '_id'>

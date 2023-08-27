@@ -7,12 +7,12 @@
   "scripts": {
     "dev": "concurrently npm:dev:*",
     "dev:frontend": "vite",
-    "dev:backend": "nodemon server/app.ts",
+    "dev:backend": "NODE_ENV=development nodemon server/app.ts",
     "prebuild": "rimraf dist",
     "build": "tsc && vite build",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
-    "start": "NODE_ENV=production PORT=3001 nodemon server/app.ts",
+    "start": "NODE_ENV=production nodemon server/app.ts",
     "preview": "concurrently npm:preview:frontend npm:start",
     "preview:frontend": "vite preview"
   },
