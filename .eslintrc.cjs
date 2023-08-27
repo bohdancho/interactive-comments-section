@@ -26,7 +26,7 @@ module.exports = {
     'import-alias/import-alias': [
       'error',
       {
-        relativeDepth: 0,
+        relativeDepth: 1,
         aliases: [
           { alias: '@/', matcher: '^src' }, // src/modules/app/test -> @src/modules/app/test
         ],
