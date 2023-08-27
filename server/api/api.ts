@@ -1,4 +1,8 @@
+import { config } from 'dotenv'
 import express from 'express'
+
+config()
+console.log(process.env.DB_SERVER)
 
 const router = express.Router()
 

@@ -28,7 +28,8 @@
     // "baseUrl": "src",
     "paths": {
       "@src/*": ["./src/*"],
-      "@shared/*": ["./src/*"]
+      "@shared/types": ["./shared/types/index.ts"],
+      "@shared/dto": ["./shared/dto/index.ts"]
     }
   },
   "include": ["src", "server"],

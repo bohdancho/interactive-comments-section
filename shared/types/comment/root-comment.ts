@@ -1,3 +1,4 @@
-import { CommentData, ReplyCommentData } from '.'
+import { ObjectId } from 'mongoose'
+import { CommentData } from '.'
 
-export type RootCommentData = CommentData & { replies: ReplyCommentData }
+export type RootCommentData = CommentData & { replies: ObjectId[] }

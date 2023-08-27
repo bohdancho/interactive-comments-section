@@ -28,7 +28,8 @@ module.exports = {
       {
         relativeDepth: 1,
         aliases: [
-          { alias: '@/', matcher: '^src' }, // src/modules/app/test -> @src/modules/app/test
+          { alias: '@src/', matcher: '^src' }, // src/modules/app/test -> @src/modules/app/test
+          { alias: '@shared/', matcher: '^shared' }, // src/modules/app/test -> @src/modules/app/test
         ],
       },
     ],
