@@ -1,7 +1,7 @@
-import { UserContext } from '@/providers'
-import * as types from '@/types'
-import { UIImage } from '@/ui'
-import { formatTimeDifference } from '@/utils'
+import { UserContext } from '@src/providers'
+import * as types from '@src/types'
+import { UIImage } from '@src/ui'
+import { formatTimeDifference } from '@src/utils'
 import { useContext } from 'react'
 
 export function CommentInfo({ info }: { info: Pick<types.Comment, 'user' | 'createdAt'> }) {

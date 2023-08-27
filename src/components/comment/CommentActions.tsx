@@ -1,6 +1,6 @@
-import { DataDispatchContext } from '@/providers'
-import * as types from '@/types'
-import { UIActionButton } from '@/ui'
+import { DataDispatchContext } from '@src/providers'
+import * as types from '@src/types'
+import { UIActionButton } from '@src/ui'
 import { Dispatch, DispatchWithoutAction, useContext, useReducer } from 'react'
 import { ConfirmDelete } from '.'
 

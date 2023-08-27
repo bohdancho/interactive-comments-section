@@ -1,4 +1,4 @@
-import * as types from '@/types'
+import * as types from '@src/types'
 export function UIImage({ className, image, alt }: { className?: string; image: types.Image; alt: string }) {
   return (
     <picture className={className}>

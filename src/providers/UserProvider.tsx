@@ -1,4 +1,4 @@
-import * as types from '@/types'
+import * as types from '@src/types'
 import { ReactNode, createContext, useContext } from 'react'
 import { DataContext } from './DataProvider'
 

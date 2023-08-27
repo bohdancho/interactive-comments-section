@@ -1,6 +1,6 @@
-import { DataDispatchContext, UserContext } from '@/providers'
-import * as types from '@/types'
-import { UIButton, UIImage, UITextarea } from '@/ui'
+import { DataDispatchContext, UserContext } from '@src/providers'
+import * as types from '@src/types'
+import { UIButton, UIImage, UITextarea } from '@src/ui'
 import { Dispatch, useContext, useState } from 'react'
 
 export function AddComment({
