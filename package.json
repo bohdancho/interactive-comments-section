@@ -7,12 +7,12 @@
   "scripts": {
     "dev": "concurrently npm:dev:*",
     "dev:frontend": "vite",
-    "dev:backend": "NODE_ENV=development nodemon server/app.ts",
+    "dev:backend": "NODE_ENV=development nodemon server/index.ts",
     "prebuild": "rimraf dist",
     "build": "tsc && vite build",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
-    "start": "NODE_ENV=production nodemon server/app.ts",
+    "start": "NODE_ENV=production nodemon server/index.ts",
     "preview": "concurrently npm:preview:frontend npm:start",
     "preview:frontend": "vite preview"
   },
@@ -54,6 +54,7 @@
     "ts-node": "^10.9.1",
     "typescript": "^5.0.2",
     "vite": "^4.0.0",
+    "vite-node": "^0.34.3",
     "vite-plugin-eslint": "^1.8.1"
   }
 }

@@ -2,7 +2,7 @@ import { config } from 'dotenv'
 import express from 'express'
 import mongoose, { Mongoose } from 'mongoose'
 import path from 'path'
-import api from './api/api'
+import { apiRouteMiddleware } from './src/app'
 
 config()
 const { DB_URL, PORT } = process.env as { DB_URL: string; PORT: string }
@@ -20,7 +20,7 @@ try {
 }
 
 const app = express()
-app.use('/api', api)
+app.use('/api', apiRouteMiddleware)
 
 app.use(express.static('dist/app'))
 app.get('*', (_req, res) => {
