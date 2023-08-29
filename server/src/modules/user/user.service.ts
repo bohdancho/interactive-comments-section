@@ -1,9 +1,9 @@
-import { CreateUserDto } from '@shared/dto'
+import { UserData } from '@shared/types'
 import { Types } from 'mongoose'
 import { UserDocument, UserModel } from '.'
 
 export class UserService {
-  async create({ username, avatar }: CreateUserDto): Promise<UserDocument> {
+  async create({ username, avatar }: Omit<UserData, '_id'>): Promise<UserDocument> {
     const user = new UserModel({ username, avatar })
 
     await user.save()
@@ -11,9 +11,8 @@ export class UserService {
     return user
   }
 
-  async findOne(id: Types.ObjectId): Promise<UserDocument> {
+  async findOne(id: Types.ObjectId): Promise<UserDocument | null> {
     const user = await UserModel.findById(id)
-    if (!user) throw new Error('User not found.')
     return user
   }
 }
