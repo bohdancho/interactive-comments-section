@@ -5,9 +5,12 @@ import { UserDocument, UserModel } from '.'
 export class UserService {
   async create({ username, avatar }: Omit<UserData, '_id'>): Promise<UserDocument> {
     const user = new UserModel({ username, avatar })
-
     await user.save()
+    return user
+  }
 
+  async delete(id: Types.ObjectId): Promise<UserDocument | null> {
+    const user = await UserModel.findByIdAndDelete(id)
     return user
   }
 
