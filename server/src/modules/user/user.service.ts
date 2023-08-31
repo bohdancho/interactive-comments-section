@@ -15,6 +15,7 @@ export class UserService {
   }
 
   async update(id: Types.ObjectId, payload: UpdateUserDto): Promise<UserDocument | null> {
+    console.log(payload)
     return await UserModel.findByIdAndUpdate(id, payload, { new: true })
   }
 

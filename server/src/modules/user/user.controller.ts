@@ -34,7 +34,7 @@ export const createUser = async (req: Request, res: Response) => {
 
 export const updateUser = async (req: Request, res: Response) => {
   const objectId = new mongoose.Types.ObjectId(req.params.id)
-  const payload = <UpdateUserDto>req.params.body
+  const payload = <UpdateUserDto>req.body
 
   const user = await userService.update(objectId, payload)
   if (!user) {
