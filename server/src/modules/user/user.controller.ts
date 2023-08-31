@@ -1,14 +1,15 @@
 import { Request, Response } from 'express'
 import mongoose, { isValidObjectId } from 'mongoose'
 import { userService } from './user.service'
+import { CreateUserDto, UpdateUserDto } from './user.types'
 
 export const getUser = async (req: Request, res: Response) => {
-  const id = req.params.id
-  if (!isValidObjectId(id)) {
+  const stringId = req.params.id
+  if (!isValidObjectId(stringId)) {
     return res.sendStatus(400)
   }
+  const objectId = new mongoose.Types.ObjectId(stringId)
 
-  const objectId = new mongoose.Types.ObjectId(id)
   const user = await userService.findOne(objectId)
   if (!user) {
     return res.sendStatus(404)
@@ -17,13 +18,48 @@ export const getUser = async (req: Request, res: Response) => {
   res.send(user)
 }
 
-export const deleteUser = async (req: Request, res: Response) => {
-  const id = req.params.id
-  if (!isValidObjectId(id)) {
-    return res.sendStatus(400)
+export const getAllUsers = async (req: Request, res: Response) => {
+  const users = await userService.findAll()
+  if (!users) {
+    return res.sendStatus(500)
   }
 
-  const objectId = new mongoose.Types.ObjectId(id)
+  res.send(users)
+}
+
+export const createUser = async (req: Request, res: Response) => {
+  const payload = <CreateUserDto>req.body
+  const user = await userService.create(payload)
+  if (!user) {
+    return res.sendStatus(404)
+  }
+
+  res.send(user)
+}
+
+export const updateUser = async (req: Request, res: Response) => {
+  const stringId = req.params.id
+  if (!isValidObjectId(stringId)) {
+    return res.sendStatus(400)
+  }
+  const objectId = new mongoose.Types.ObjectId(stringId)
+  const payload = <UpdateUserDto>req.params.body
+
+  const user = await userService.update(objectId, payload)
+  if (!user) {
+    return res.sendStatus(404)
+  }
+
+  res.send(user)
+}
+
+export const deleteUser = async (req: Request, res: Response) => {
+  const stringId = req.params.id
+  if (!isValidObjectId(stringId)) {
+    return res.sendStatus(400)
+  }
+  const objectId = new mongoose.Types.ObjectId(stringId)
+
   const user = await userService.delete(objectId)
   if (!user) {
     return res.sendStatus(404)

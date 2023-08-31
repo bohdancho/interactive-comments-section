@@ -1,22 +1,25 @@
-import { UserData } from '@shared/types'
 import { Types } from 'mongoose'
-import { UserDocument, UserModel } from '.'
+import { CreateUserDto, UpdateUserDto, UserDocument, UserModel } from '.'
 
 export class UserService {
-  async create({ username, avatar }: Omit<UserData, '_id'>): Promise<UserDocument> {
-    const user = new UserModel({ username, avatar })
-    await user.save()
-    return user
+  async findOne(id: Types.ObjectId): Promise<UserDocument | null> {
+    return await UserModel.findById(id)
+  }
+
+  async findAll(): Promise<UserDocument[]> {
+    return await UserModel.find()
+  }
+
+  async create({ username, avatar }: CreateUserDto): Promise<UserDocument> {
+    return await new UserModel({ username, avatar }).save()
+  }
+
+  async update(id: Types.ObjectId, payload: UpdateUserDto): Promise<UserDocument | null> {
+    return await UserModel.findByIdAndUpdate(id, payload, { new: true })
   }
 
   async delete(id: Types.ObjectId): Promise<UserDocument | null> {
-    const user = await UserModel.findByIdAndDelete(id)
-    return user
-  }
-
-  async findOne(id: Types.ObjectId): Promise<UserDocument | null> {
-    const user = await UserModel.findById(id)
-    return user
+    return await UserModel.findByIdAndDelete(id)
   }
 }
 

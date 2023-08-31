@@ -1,12 +1,12 @@
 import express from 'express'
-import { UserModel, deleteUser, getUser } from '.'
+import { createUser, deleteUser, getAllUsers, getUser, updateUser } from '.'
 
 const userRouter = express.Router()
 
-userRouter.get('/', async (req, res) => {
-  res.send(await UserModel.find())
-})
+userRouter.post('/', createUser)
+userRouter.get('/', getAllUsers)
 userRouter.get('/:id', getUser)
+userRouter.put('/:id', updateUser)
 userRouter.delete('/:id', deleteUser)
 
 export const userRouteMiddleware = userRouter

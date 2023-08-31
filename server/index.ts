@@ -20,6 +20,8 @@ try {
 }
 
 const app = express()
+// app.use(express.json())
+
 app.use('/api', apiRouteMiddleware)
 
 app.use(express.static('dist/app'))
