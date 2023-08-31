@@ -1,15 +1,10 @@
 import { Request, Response } from 'express'
-import mongoose, { isValidObjectId } from 'mongoose'
+import mongoose from 'mongoose'
 import { userService } from './user.service'
 import { CreateUserDto, UpdateUserDto } from './user.types'
 
 export const getUser = async (req: Request, res: Response) => {
-  const stringId = req.params.id
-  if (!isValidObjectId(stringId)) {
-    return res.sendStatus(400)
-  }
-  const objectId = new mongoose.Types.ObjectId(stringId)
-
+  const objectId = new mongoose.Types.ObjectId(req.params.id)
   const user = await userService.findOne(objectId)
   if (!user) {
     return res.sendStatus(404)
@@ -38,11 +33,7 @@ export const createUser = async (req: Request, res: Response) => {
 }
 
 export const updateUser = async (req: Request, res: Response) => {
-  const stringId = req.params.id
-  if (!isValidObjectId(stringId)) {
-    return res.sendStatus(400)
-  }
-  const objectId = new mongoose.Types.ObjectId(stringId)
+  const objectId = new mongoose.Types.ObjectId(req.params.id)
   const payload = <UpdateUserDto>req.params.body
 
   const user = await userService.update(objectId, payload)
@@ -54,12 +45,7 @@ export const updateUser = async (req: Request, res: Response) => {
 }
 
 export const deleteUser = async (req: Request, res: Response) => {
-  const stringId = req.params.id
-  if (!isValidObjectId(stringId)) {
-    return res.sendStatus(400)
-  }
-  const objectId = new mongoose.Types.ObjectId(stringId)
-
+  const objectId = new mongoose.Types.ObjectId(req.params.id)
   const user = await userService.delete(objectId)
   if (!user) {
     return res.sendStatus(404)
