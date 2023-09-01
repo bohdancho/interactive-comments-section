@@ -1,6 +1,6 @@
-import iconDelete from '@src/assets/icon-delete.svg'
-import iconEdit from '@src/assets/icon-edit.svg'
-import iconReply from '@src/assets/icon-reply.svg'
+import iconDelete from '@/assets/icon-delete.svg'
+import iconEdit from '@/assets/icon-edit.svg'
+import iconReply from '@/assets/icon-reply.svg'
 import SVG from 'react-inlinesvg'
 
 export function UIActionButton({ type, onClick }: { type: 'delete' | 'edit' | 'reply'; onClick?: () => void }) {

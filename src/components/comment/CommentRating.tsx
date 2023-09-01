@@ -1,7 +1,7 @@
-import iconMinus from '@src/assets/icon-minus.svg'
-import iconPlus from '@src/assets/icon-plus.svg'
-import { DataDispatchContext } from '@src/providers'
-import * as types from '@src/types'
+import iconMinus from '@/assets/icon-minus.svg'
+import iconPlus from '@/assets/icon-plus.svg'
+import { DataDispatchContext } from '@/providers'
+import * as types from '@/types'
 import { Dispatch, useContext } from 'react'
 import SVG from 'react-inlinesvg'
 

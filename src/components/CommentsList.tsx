@@ -1,5 +1,5 @@
-import { DataContext } from '@src/providers'
-import * as types from '@src/types'
+import { DataContext } from '@/providers'
+import * as types from '@/types'
 import { useContext, useState } from 'react'
 import { CommentItem } from '.'
 

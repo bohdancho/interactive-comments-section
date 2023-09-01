@@ -1,4 +1,4 @@
-import * as types from '@src/types'
+import * as types from '@/types'
 import { Dispatch, ReactNode, createContext, useEffect, useReducer } from 'react'
 
 export const DataDispatchContext = createContext<Dispatch<types.Action> | null>(null)

@@ -26,13 +26,9 @@ module.exports = {
     'import-alias/import-alias': [
       'error',
       {
-        relativeDepth: 1,
+        relativeDepth: 0,
         aliases: [
-          { alias: '@src/', matcher: '^src' },
-          { alias: '@server/src/', matcher: '^server' },
-          { alias: '@shared/types', matcher: '^shared/types' },
-          { alias: '@shared/dto', matcher: '^shared/dto' },
-          { alias: '@shared/constants', matcher: '^shared/constants' },
+          { alias: '@/', matcher: '^src' }, // src/modules/app/test -> @src/modules/app/test
         ],
       },
     ],
