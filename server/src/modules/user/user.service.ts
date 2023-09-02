@@ -1,6 +1,5 @@
 import { Repository, Service } from '@server/common'
 import { Types } from 'mongoose'
-import { userRepository } from './user.model'
 import { CreateUserDto, UpdateUserDto, UserDocument } from './user.types'
 
 export class UserService implements Service<UserDocument> {
@@ -12,5 +11,3 @@ export class UserService implements Service<UserDocument> {
   update = (id: Types.ObjectId, payload: UpdateUserDto) => this.repository.update(id, payload)
   delete = (id: Types.ObjectId) => this.repository.delete(id)
 }
-
-export const userService = new UserService(userRepository)
