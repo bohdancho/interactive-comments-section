@@ -29,20 +29,20 @@ export const updateUser = async (req: Request, res: Response) => {
   const objectId = new mongoose.Types.ObjectId(req.params.id)
   const payload = <UpdateUserDto>req.body
 
-  const user = await userService.update(objectId, payload)
-  if (!user) {
-    return res.sendStatus(404)
+  try {
+    const user = await userService.update(objectId, payload)
+    res.send(user)
+  } catch (error) {
+    res.sendStatus(404)
   }
-
-  res.send(user)
 }
 
 export const deleteUser = async (req: Request, res: Response) => {
   const objectId = new mongoose.Types.ObjectId(req.params.id)
-  const user = await userService.delete(objectId)
-  if (!user) {
+  try {
+    await userService.delete(objectId)
+    res.sendStatus(200)
+  } catch (error) {
     return res.sendStatus(404)
   }
-
-  res.sendStatus(200)
 }

@@ -16,11 +16,14 @@ export class UserService implements Service<UserDocument> {
   }
 
   async update(id: Types.ObjectId, payload: UpdateUserDto) {
-    return await UserModel.findByIdAndUpdate(id, payload, { new: true })
+    const user = await UserModel.findByIdAndUpdate(id, payload, { new: true })
+    if (!user) throw Error('User not found')
+    return user
   }
 
   async delete(id: Types.ObjectId) {
-    return await UserModel.findByIdAndDelete(id)
+    const user = await UserModel.findByIdAndDelete(id)
+    if (!user) throw Error('User not found')
   }
 }
 
