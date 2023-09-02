@@ -15,19 +15,12 @@ export const getUser = async (req: Request, res: Response) => {
 
 export const getAllUsers = async (req: Request, res: Response) => {
   const users = await userService.findAll()
-  if (!users) {
-    return res.sendStatus(500)
-  }
-
   res.send(users)
 }
 
 export const createUser = async (req: Request, res: Response) => {
   const payload = <CreateUserDto>req.body
   const user = await userService.create(payload)
-  if (!user) {
-    return res.sendStatus(404)
-  }
 
   res.send(user)
 }

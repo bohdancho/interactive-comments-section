@@ -6,4 +6,4 @@ const UserSchema = new Schema({
   username: String,
 })
 
-export const UserModel = model<UserDocument>('Users', UserSchema)
+export const UserModel = model<UserDocument>('User', UserSchema)

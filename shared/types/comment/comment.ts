@@ -1,10 +1,10 @@
 import { ObjectId } from 'mongoose'
-import { VotingData } from '../'
+import { UserData } from '../'
 
 export interface CommentData {
   _id: ObjectId
   createdAt: number
   body: string
-  author: ObjectId
-  voting: VotingData
+  author: ObjectId | UserData
+  // voting: VotingData
 }

@@ -1,5 +1,7 @@
+import { Types } from 'mongoose'
 import { CommentData } from '.'
 
 export type ReplyCommentData = CommentData & {
-  replyTo: { username: string }
+  rootCommentId: Types.ObjectId
+  replyToUser: string
 }

@@ -1,4 +1,5 @@
 import { UserData } from '@shared/types'
+import { Document } from 'mongoose'
 
 export type UserDocument = UserData & Document
 

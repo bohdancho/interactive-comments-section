@@ -29,7 +29,7 @@ module.exports = {
         relativeDepth: 1,
         aliases: [
           { alias: '@src/', matcher: '^src' },
-          { alias: '@server/src/', matcher: '^server' },
+          { alias: '@server/', matcher: '^server/src' },
           { alias: '@shared/types', matcher: '^shared/types' },
           { alias: '@shared/dto', matcher: '^shared/dto' },
           { alias: '@shared/constants', matcher: '^shared/constants' },

@@ -1,24 +1,25 @@
+import { Service } from '@server/common'
 import { Types } from 'mongoose'
 import { CreateUserDto, UpdateUserDto, UserDocument, UserModel } from '.'
 
-export class UserService {
-  async findOne(id: Types.ObjectId): Promise<UserDocument | null> {
+export class UserService implements Service<UserDocument> {
+  async findOne(id: Types.ObjectId) {
     return await UserModel.findById(id)
   }
 
-  async findAll(): Promise<UserDocument[]> {
+  async findAll() {
     return await UserModel.find()
   }
 
-  async create({ username, avatar }: CreateUserDto): Promise<UserDocument> {
+  async create({ username, avatar }: CreateUserDto) {
     return await new UserModel({ username, avatar }).save()
   }
 
-  async update(id: Types.ObjectId, payload: UpdateUserDto): Promise<UserDocument | null> {
+  async update(id: Types.ObjectId, payload: UpdateUserDto) {
     return await UserModel.findByIdAndUpdate(id, payload, { new: true })
   }
 
-  async delete(id: Types.ObjectId): Promise<UserDocument | null> {
+  async delete(id: Types.ObjectId) {
     return await UserModel.findByIdAndDelete(id)
   }
 }
