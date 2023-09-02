@@ -1,30 +1,16 @@
-import { ErrorNotFound, Service } from '@server/common'
+import { Repository, Service } from '@server/common'
 import { Types } from 'mongoose'
-import { CreateUserDto, UpdateUserDto, UserDocument, UserModel } from '.'
+import { userRepository } from './user.model'
+import { CreateUserDto, UpdateUserDto, UserDocument } from './user.types'
 
 export class UserService implements Service<UserDocument> {
-  async findOne(id: Types.ObjectId) {
-    return await UserModel.findById(id)
-  }
+  constructor(private repository: Repository<UserDocument, CreateUserDto, UpdateUserDto>) {}
 
-  async findAll() {
-    return await UserModel.find()
-  }
-
-  async create({ username, avatar }: CreateUserDto) {
-    return await new UserModel({ username, avatar }).save()
-  }
-
-  async update(id: Types.ObjectId, payload: UpdateUserDto) {
-    const user = await UserModel.findByIdAndUpdate(id, payload, { new: true })
-    if (!user) throw new ErrorNotFound()
-    return user
-  }
-
-  async delete(id: Types.ObjectId) {
-    const user = await UserModel.findByIdAndDelete(id)
-    if (!user) throw new ErrorNotFound()
-  }
+  findOne = (id: Types.ObjectId) => this.repository.findOne(id)
+  findAll = () => this.repository.findAll()
+  create = (payload: CreateUserDto) => this.repository.create(payload)
+  update = (id: Types.ObjectId, payload: UpdateUserDto) => this.repository.update(id, payload)
+  delete = (id: Types.ObjectId) => this.repository.delete(id)
 }
 
-export const userService = new UserService()
+export const userService = new UserService(userRepository)

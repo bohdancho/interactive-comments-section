@@ -1,5 +1,6 @@
+import { Repository } from '@server/common'
 import { Schema, model } from 'mongoose'
-import { UserDocument } from '.'
+import { CreateUserDto, UpdateUserDto, UserDocument } from '.'
 
 const UserSchema = new Schema({
   avatar: String,
@@ -7,3 +8,4 @@ const UserSchema = new Schema({
 })
 
 export const UserModel = model<UserDocument>('User', UserSchema)
+export const userRepository = new Repository<UserDocument, CreateUserDto, UpdateUserDto>(UserModel)
