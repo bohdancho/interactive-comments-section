@@ -1,4 +1,4 @@
-import { Service } from '@server/common'
+import { ErrorNotFound, Service } from '@server/common'
 import { Types } from 'mongoose'
 import { CreateUserDto, UpdateUserDto, UserDocument, UserModel } from '.'
 
@@ -17,13 +17,13 @@ export class UserService implements Service<UserDocument> {
 
   async update(id: Types.ObjectId, payload: UpdateUserDto) {
     const user = await UserModel.findByIdAndUpdate(id, payload, { new: true })
-    if (!user) throw Error('User not found')
+    if (!user) throw new ErrorNotFound()
     return user
   }
 
   async delete(id: Types.ObjectId) {
     const user = await UserModel.findByIdAndDelete(id)
-    if (!user) throw Error('User not found')
+    if (!user) throw new ErrorNotFound()
   }
 }
 

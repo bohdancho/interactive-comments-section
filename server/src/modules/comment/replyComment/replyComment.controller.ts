@@ -29,20 +29,20 @@ export const updateReplyComment = async (req: Request, res: Response) => {
   const objectId = new mongoose.Types.ObjectId(req.params.id)
   const payload = <UpdateReplyCommentDto>req.body
 
-  const comment = await replyCommentService.update(objectId, payload)
-  if (!comment) {
+  try {
+    const comment = await replyCommentService.update(objectId, payload)
+    res.send(comment)
+  } catch (error) {
     return res.sendStatus(404)
   }
-
-  res.send(comment)
 }
 
 export const deleteReplyComment = async (req: Request, res: Response) => {
   const objectId = new mongoose.Types.ObjectId(req.params.id)
-  const comment = await replyCommentService.delete(objectId)
-  if (!comment) {
-    return res.sendStatus(404)
+  try {
+    await replyCommentService.delete(objectId)
+    res.sendStatus(200)
+  } catch (error) {
+    res.sendStatus(404)
   }
-
-  res.sendStatus(200)
 }

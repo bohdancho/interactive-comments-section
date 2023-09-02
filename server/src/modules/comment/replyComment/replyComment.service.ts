@@ -1,4 +1,4 @@
-import { Service } from '@server/common'
+import { ErrorNotFound, Service } from '@server/common'
 import { Types } from 'mongoose'
 import { RootCommentModel, rootCommentService } from '../rootComment'
 import { ReplyCommentModel } from './replyComment.model'
@@ -15,7 +15,7 @@ export class ReplyCommentService implements Service<ReplyCommentDocument> {
 
   async create({ author, replyToUser, rootCommentId }: CreateReplyCommentDto) {
     const rootComment = await rootCommentService.findOne(rootCommentId)
-    if (!rootComment) return null
+    if (!rootComment) throw new ErrorNotFound()
 
     const replyComment = new ReplyCommentModel({
       body: '',
@@ -34,19 +34,19 @@ export class ReplyCommentService implements Service<ReplyCommentDocument> {
   }
 
   async update(id: Types.ObjectId, payload: UpdateReplyCommentDto) {
-    return await ReplyCommentModel.findByIdAndUpdate(id, payload, { new: true })
+    const comment = await ReplyCommentModel.findByIdAndUpdate(id, payload, { new: true })
+    if (!comment) throw new ErrorNotFound()
+    return comment
   }
 
   async delete(id: Types.ObjectId) {
     const replyComment = await ReplyCommentModel.findById(id)
     const rootComment = await RootCommentModel.findById(replyComment?.rootCommentId)
 
-    if (!replyComment || !rootComment) return null
+    if (!replyComment || !rootComment) throw new ErrorNotFound()
 
     replyComment.deleteOne()
     rootComment.updateOne({ $pull: { replies: id } })
-
-    return replyComment
   }
 }
 

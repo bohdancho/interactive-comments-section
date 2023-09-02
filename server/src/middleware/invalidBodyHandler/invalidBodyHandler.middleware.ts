@@ -3,7 +3,7 @@ import { ErrorWithStatus } from './invalidBodyHandler.types'
 
 export const invalidBodyHandlerMiddleware = (err: ErrorWithStatus, req: Request, res: Response, next: NextFunction) => {
   if (err instanceof SyntaxError && err.status === 400 && req.body) {
-    res.status(400).send('Invalid body')
+    res.status(400).send('Invalid JSON request body')
     return
   }
 
