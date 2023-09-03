@@ -5,3 +5,4 @@ export const CommentCommonSchema = {
   body: { type: String, required: true },
   author: { type: Schema.Types.ObjectId, ref: 'User', required: true },
 }
+export const commentCommonPopulatePaths = ['author']

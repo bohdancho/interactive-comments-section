@@ -5,4 +5,3 @@ import { Document } from 'mongoose'
 export type RootCommentDocument = RootCommentData & Document
 
 export type CreateRootCommentDto = ExtractObjectId<Pick<RootCommentData, 'author' | 'body'>>
-export type UpdateRootCommentDto = Partial<Pick<RootCommentData, 'body'>>

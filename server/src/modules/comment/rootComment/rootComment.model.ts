@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose'
-import { CommentCommonSchema } from '../common'
+import { CommentCommonSchema, commentCommonPopulatePaths } from '../common'
 import { RootCommentDocument } from './rootComment.types'
 
 const RootCommentSchema = new Schema({
@@ -9,3 +9,4 @@ const RootCommentSchema = new Schema({
 })
 
 export const RootCommentModel = model<RootCommentDocument>('RootComment', RootCommentSchema)
+export const rootPopulatePaths = [...commentCommonPopulatePaths, 'replies']

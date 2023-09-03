@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose'
 import { ReplyCommentDocument } from '.'
-import { CommentCommonSchema } from '../common'
+import { CommentCommonSchema, commentCommonPopulatePaths } from '../common'
 
 const ReplyCommentSchema = new Schema({
   ...CommentCommonSchema,
@@ -10,3 +10,4 @@ const ReplyCommentSchema = new Schema({
 })
 
 export const ReplyCommentModel = model<ReplyCommentDocument>('ReplyComment', ReplyCommentSchema)
+export const replyPopulatePaths = [...commentCommonPopulatePaths, 'replyToUser', 'rootComment']

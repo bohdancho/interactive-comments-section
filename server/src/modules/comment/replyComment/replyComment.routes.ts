@@ -1,14 +1,15 @@
 import { Controller, ObjectIdParamsSchema, Repository } from '@server/common'
 import { validateParams, validatePayload } from '@server/middleware'
 import express from 'express'
+import { UpdateCommentDto } from '../common/comment.dto'
 import { ReplyCommentModel } from './replyComment.model'
 import { ReplyCommentService } from './replyComment.service'
-import { CreateReplyCommentDto, ReplyCommentDocument, UpdateReplyCommentDto } from './replyComment.types'
+import { CreateReplyCommentDto, ReplyCommentDocument } from './replyComment.types'
 import { CreateReplyCommentSchema, UpdateReplyCommentSchema } from './replyComment.validation'
 
 const repository = new Repository<ReplyCommentDocument>(ReplyCommentModel)
 const service = new ReplyCommentService(repository)
-const controller = new Controller<ReplyCommentDocument, CreateReplyCommentDto, UpdateReplyCommentDto>(service)
+const controller = new Controller<ReplyCommentDocument, CreateReplyCommentDto, UpdateCommentDto>(service)
 
 const router = express.Router()
 

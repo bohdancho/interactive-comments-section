@@ -1,15 +1,17 @@
 import { ErrorNotFound, IService, Repository } from '@server/common'
 import mongoose from 'mongoose'
+import { UpdateCommentDto } from '../common/comment.dto'
 import { replyCommentService } from '../replyComment'
-import { CreateRootCommentDto, RootCommentDocument, UpdateRootCommentDto } from './rootComment.types'
+import { rootPopulatePaths } from './rootComment.model'
+import { CreateRootCommentDto, RootCommentDocument } from './rootComment.types'
 
 export class RootCommentService implements IService<RootCommentDocument> {
   constructor(private repository: Repository<RootCommentDocument>) {}
 
-  findOne = (id: mongoose.Types.ObjectId) => this.repository.findOne(id)
-  findAll = () => this.repository.findAll()
+  findOne = (id: mongoose.Types.ObjectId) => this.repository.findOne(id).populate(rootPopulatePaths)
+  findAll = () => this.repository.findAll().populate(rootPopulatePaths)
   create = (payload: CreateRootCommentDto) => this.repository.create({ ...payload, createdAt: Date.now() })
-  update = (id: mongoose.Types.ObjectId, payload: UpdateRootCommentDto) => this.repository.update(id, payload)
+  update = (id: mongoose.Types.ObjectId, payload: UpdateCommentDto) => this.repository.update(id, payload)
   delete = async (id: mongoose.Types.ObjectId) => {
     const comment = await this.findOne(id)
     if (!comment) {

@@ -7,4 +7,3 @@ export type ReplyCommentDocument = ReplyCommentData & mongoose.Document
 export type CreateReplyCommentDto = ExtractObjectId<
   Pick<ReplyCommentData, 'author' | 'body' | 'replyToUser' | 'rootComment'>
 >
-export type UpdateReplyCommentDto = Pick<ReplyCommentData, 'body'>
