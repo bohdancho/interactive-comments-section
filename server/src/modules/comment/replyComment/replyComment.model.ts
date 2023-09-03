@@ -5,7 +5,8 @@ const ReplyCommentSchema = new Schema({
   createdAt: Number,
   body: String,
   author: { type: Schema.Types.ObjectId, ref: 'User' },
-  replyTo: Schema.Types.ObjectId,
+  replyToUser: { type: Schema.Types.ObjectId, ref: 'User' },
+  rootComment: { type: Schema.Types.ObjectId, ref: 'RootComment' },
   // voting: String,
 })
 

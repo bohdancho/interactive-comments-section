@@ -1,8 +1,27 @@
-// import { ErrorNotFound, IOService, Repository } from '@server/common'
-// import { Types, UpdateQuery } from 'mongoose'
-// import { RootCommentModel, rootCommentService } from '../rootComment'
-// import { ReplyCommentModel } from './replyComment.model'
-// import { ReplyCommentDocument, UpdateReplyCommentDto } from './replyComment.types'
+import { IService, Repository } from '@server/common'
+import mongoose from 'mongoose'
+import { rootCommentsService } from '../rootComment'
+import { CreateReplyCommentDto } from './replyComment.types'
+
+export class ReplyCommentService<
+  D extends mongoose.Document,
+  CreateDto extends CreateReplyCommentDto,
+  UpdateDto extends mongoose.UpdateQuery<D>,
+> implements IService<D, CreateDto, UpdateDto>
+{
+  constructor(private repository: Repository<D, CreateDto, UpdateDto>) {}
+
+  findOne = (id: mongoose.Types.ObjectId) => this.repository.findOne(id)
+  findAll = () => this.repository.findAll()
+  create = async (payload: CreateDto) => {
+    const reply = await this.repository.create(payload)
+    await rootCommentsService.addReply(reply.id, payload.rootComment)
+
+    return reply
+  }
+  update = (id: mongoose.Types.ObjectId, payload: UpdateDto) => this.repository.update(id, payload)
+  delete = (id: mongoose.Types.ObjectId) => this.repository.delete(id)
+}
 
 // export class ReplyCommentService<D extends ReplyCommentDocument, CreateDto, UpdateDto extends UpdateQuery<D>>
 //   implements IOService<ReplyCommentDocument>

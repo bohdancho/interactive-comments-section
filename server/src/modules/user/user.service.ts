@@ -4,7 +4,7 @@ import mongoose from 'mongoose'
 export class UserService<D extends mongoose.Document, CreateDto, UpdateDto extends mongoose.UpdateQuery<D>>
   implements IService<D, CreateDto, UpdateDto>
 {
-  constructor(private repository: Repository<D, CreateDto, UpdateDto>) {}
+  constructor(private repository: Repository<D>) {}
 
   findOne = (id: mongoose.Types.ObjectId) => this.repository.findOne(id)
   findAll = () => this.repository.findAll()

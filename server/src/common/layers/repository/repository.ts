@@ -20,9 +20,9 @@ export class Repository<D extends mongoose.Document, CreateQuery, UpdateQuery ex
   }
 
   async update(id: mongoose.Types.ObjectId, payload: UpdateQuery) {
-    const newItem = await this.model.findByIdAndUpdate(id, payload, { new: true })
-    if (!newItem) throw new ErrorNotFound()
-    return newItem
+    const updated = await this.model.findByIdAndUpdate(id, payload, { new: true })
+    if (!updated) throw new ErrorNotFound()
+    return updated
   }
 
   async delete(id: mongoose.Types.ObjectId) {

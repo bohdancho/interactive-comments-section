@@ -6,7 +6,7 @@ import { RootCommentService } from './rootComment.service'
 import { CreateRootCommentDto, RootCommentDocument, UpdateRootCommentDto } from './rootComment.types'
 import { CreateRootCommentSchema, UpdateRootCommentSchema } from './rootComment.validation'
 
-const repository = new Repository<RootCommentDocument, CreateRootCommentDto, UpdateRootCommentDto>(RootCommentModel)
+const repository = new Repository<RootCommentDocument>(RootCommentModel)
 const service = new RootCommentService<RootCommentDocument, CreateRootCommentDto, UpdateRootCommentDto>(repository)
 const controller = new Controller<RootCommentDocument, CreateRootCommentDto, UpdateRootCommentDto>(service)
 
@@ -24,4 +24,5 @@ router.put(
 )
 router.delete('/:id', validateParams(ObjectIdParamsSchema), controller.delete.bind(controller))
 
+export const rootCommentsService = service
 export const rootCommentsRouter = router

@@ -1,7 +1,9 @@
-import { Types } from 'mongoose'
-import { CommentData } from '.'
+import mongoose from 'mongoose'
+import { UserData } from '../user'
+import { CommentData } from './comment'
+import { RootCommentData } from './root-comment'
 
 export type ReplyCommentData = CommentData & {
-  rootCommentId: Types.ObjectId
-  replyToUser: string
+  rootComment: mongoose.Types.ObjectId | RootCommentData
+  replyToUser: mongoose.Types.ObjectId | UserData
 }

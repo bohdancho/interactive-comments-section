@@ -6,7 +6,7 @@ import { UserService } from './user.service'
 import { CreateUserDto, UpdateUserDto, UserDocument } from './user.types'
 import { CreateUserSchema, UpdateUserSchema } from './user.validation'
 
-const repository = new Repository<UserDocument, CreateUserDto, UpdateUserDto>(UserModel)
+const repository = new Repository<UserDocument>(UserModel)
 const service = new UserService<UserDocument, CreateUserDto, UpdateUserDto>(repository)
 const controller = new Controller<UserDocument, CreateUserDto, UpdateUserDto>(service)
 

@@ -2,9 +2,9 @@ import { ObjectIdSchema } from '@server/common'
 import Joi from 'joi'
 
 export const CreateReplyCommentSchema = Joi.object({
-  author: Joi.string().required(),
-  replyToUser: Joi.string().required(),
-  rootCommentId: ObjectIdSchema.required(),
+  author: ObjectIdSchema.required(),
+  replyToUser: ObjectIdSchema.required(),
+  rootComment: ObjectIdSchema.required(),
 })
 
 export const UpdateReplyCommentSchema = Joi.object({

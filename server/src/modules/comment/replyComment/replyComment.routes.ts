@@ -1,17 +1,27 @@
+import { Controller, ObjectIdParamsSchema, Repository } from '@server/common'
+import { validateParams, validatePayload } from '@server/middleware'
 import express from 'express'
+import { ReplyCommentModel } from './replyComment.model'
+import { ReplyCommentService } from './replyComment.service'
+import { CreateReplyCommentDto, ReplyCommentDocument, UpdateReplyCommentDto } from './replyComment.types'
+import { CreateReplyCommentSchema, UpdateReplyCommentSchema } from './replyComment.validation'
 
-const replyCommentsRouter = express.Router()
+const repository = new Repository<ReplyCommentDocument>(ReplyCommentModel)
+const service = new ReplyCommentService<ReplyCommentDocument, CreateReplyCommentDto, UpdateReplyCommentDto>(repository)
+const controller = new Controller<ReplyCommentDocument, CreateReplyCommentDto, UpdateReplyCommentDto>(service)
 
-// replyCommentsRouter.get('/', getAllReplyComments)
-// replyCommentsRouter.get('/:id', validateParams(ObjectIdSchema), getReplyComment)
+const router = express.Router()
 
-// replyCommentsRouter.post('/', validatePayload(CreateReplyCommentSchema), createReplyComment)
-// replyCommentsRouter.put(
-//   '/:id',
-//   validateParams(ObjectIdSchema),
-//   validatePayload(UpdateReplyCommentSchema),
-//   updateReplyComment,
-// )
-// replyCommentsRouter.delete('/:id', validateParams(ObjectIdSchema), deleteReplyComment)
+router.get('/', controller.getAll.bind(controller))
+router.get('/:id', validateParams(ObjectIdParamsSchema), controller.getOne.bind(controller))
 
-export const replyCommentsRouteMiddleware = replyCommentsRouter
+router.post('/', validatePayload(CreateReplyCommentSchema), controller.create.bind(controller))
+router.put(
+  '/:id',
+  validateParams(ObjectIdParamsSchema),
+  validatePayload(UpdateReplyCommentSchema),
+  controller.update.bind(controller),
+)
+router.delete('/:id', validateParams(ObjectIdParamsSchema), controller.delete.bind(controller))
+
+export const replyCommentRouter = router
