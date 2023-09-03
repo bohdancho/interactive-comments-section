@@ -12,7 +12,6 @@ export class RootCommentService implements IService<RootCommentDocument> {
   update = (id: mongoose.Types.ObjectId, payload: UpdateRootCommentDto) => this.repository.update(id, payload)
   delete = async (id: mongoose.Types.ObjectId) => {
     const comment = await this.findOne(id)
-    console.log(comment, id)
     if (!comment) {
       throw new ErrorNotFound()
     }
