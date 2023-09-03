@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose'
-import { UserDocument } from '.'
+import { UserDocument } from './user.types'
 
 const UserSchema = new Schema({
   avatar: String,

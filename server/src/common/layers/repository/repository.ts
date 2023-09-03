@@ -1,7 +1,10 @@
 import { ErrorNotFound } from '@server/common'
 import { Document, Model, Types, UpdateQuery } from 'mongoose'
+import { IRepository } from './repository.interface'
 
-export class Repository<D extends Document, CreateDto, UpdateDto extends UpdateQuery<D>> {
+export class Repository<D extends Document, CreateDto, UpdateDto extends UpdateQuery<D>>
+  implements IRepository<D, CreateDto, UpdateDto>
+{
   constructor(private model: Model<D>) {}
 
   findOne(id: Types.ObjectId): Promise<D | null> {

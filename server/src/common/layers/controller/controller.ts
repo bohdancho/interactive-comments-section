@@ -1,15 +1,17 @@
 import express from 'express'
 import mongoose from 'mongoose'
-import { Service } from '../models'
+import { Service } from '../service.interface/service.interface'
+import { IController } from './controller.interface'
 
-export class Controller<D extends mongoose.Document, CreateDto, UpdateDto> {
+export class Controller<D extends mongoose.Document, CreateDto, UpdateDto> implements IController {
   constructor(private service: Service<D>) {}
 
   async getOne(req: express.Request, res: express.Response) {
     const objectId = new mongoose.Types.ObjectId(req.params.id)
     const user = await this.service.findOne(objectId)
     if (!user) {
-      return res.sendStatus(404)
+      res.sendStatus(404)
+      return
     }
 
     res.send(user)
@@ -45,7 +47,7 @@ export class Controller<D extends mongoose.Document, CreateDto, UpdateDto> {
       await this.service.delete(objectId)
       res.sendStatus(200)
     } catch (error) {
-      return res.sendStatus(404)
+      res.sendStatus(404)
     }
   }
 }
