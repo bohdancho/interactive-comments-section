@@ -17,7 +17,7 @@ export class Controller<D extends mongoose.Document, CreateDto, UpdateDto> imple
     res.send(user)
   }
 
-  async getAll(req: express.Request, res: express.Response) {
+  async getAll(_req: express.Request, res: express.Response) {
     const users = await this.service.findAll()
     res.send(users)
   }
