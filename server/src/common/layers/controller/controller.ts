@@ -6,29 +6,33 @@ import { IController } from './controller.interface'
 export class Controller<D extends mongoose.Document, CreateDto, UpdateDto extends UpdateQuery<D>>
   implements IController
 {
-  constructor(private service: IService<D, CreateDto, UpdateDto>) {}
+  constructor(private service: IService<D>) {}
 
   async getOne(req: express.Request, res: express.Response) {
     const objectId = new mongoose.Types.ObjectId(req.params.id)
-    const user = await this.service.findOne(objectId)
-    if (!user) {
+    const item = await this.service.findOne(objectId)
+    if (!item) {
       res.sendStatus(404)
       return
     }
 
-    res.send(user)
+    res.send(item)
   }
 
   async getAll(_req: express.Request, res: express.Response) {
-    const users = await this.service.findAll()
-    res.send(users)
+    const items = await this.service.findAll()
+    res.send(items)
   }
 
   async create(req: express.Request, res: express.Response) {
     const payload = <CreateDto>req.body
-    const user = await this.service.create(payload)
 
-    res.send(user)
+    try {
+      const item = await this.service.create(payload)
+      res.send(item)
+    } catch (error) {
+      res.sendStatus(400)
+    }
   }
 
   async update(req: express.Request, res: express.Response) {
@@ -36,10 +40,10 @@ export class Controller<D extends mongoose.Document, CreateDto, UpdateDto extend
     const payload = <UpdateDto>req.body
 
     try {
-      const user = await this.service.update(objectId, payload)
-      res.send(user)
+      const item = await this.service.update(objectId, payload)
+      res.send(item)
     } catch (error) {
-      res.sendStatus(404)
+      res.sendStatus(400)
     }
   }
 

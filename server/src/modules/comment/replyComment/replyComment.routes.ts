@@ -7,7 +7,7 @@ import { CreateReplyCommentDto, ReplyCommentDocument, UpdateReplyCommentDto } fr
 import { CreateReplyCommentSchema, UpdateReplyCommentSchema } from './replyComment.validation'
 
 const repository = new Repository<ReplyCommentDocument>(ReplyCommentModel)
-const service = new ReplyCommentService<ReplyCommentDocument, CreateReplyCommentDto, UpdateReplyCommentDto>(repository)
+const service = new ReplyCommentService(repository)
 const controller = new Controller<ReplyCommentDocument, CreateReplyCommentDto, UpdateReplyCommentDto>(service)
 
 const router = express.Router()
@@ -25,3 +25,4 @@ router.put(
 router.delete('/:id', validateParams(ObjectIdParamsSchema), controller.delete.bind(controller))
 
 export const replyCommentRouter = router
+export const replyCommentService = service

@@ -1,17 +1,26 @@
-import { IService, Repository } from '@server/common'
+import { ErrorNotFound, IService, Repository } from '@server/common'
 import mongoose from 'mongoose'
-import { RootCommentDocument } from '.'
+import { replyCommentService } from '../replyComment'
+import { CreateRootCommentDto, RootCommentDocument, UpdateRootCommentDto } from './rootComment.types'
 
-export class RootCommentService<D extends RootCommentDocument, CreateDto, UpdateDto extends mongoose.UpdateQuery<D>>
-  implements IService<D>
-{
-  constructor(private repository: Repository<D>) {}
+export class RootCommentService implements IService<RootCommentDocument> {
+  constructor(private repository: Repository<RootCommentDocument>) {}
 
   findOne = (id: mongoose.Types.ObjectId) => this.repository.findOne(id)
   findAll = () => this.repository.findAll()
-  create = (payload: CreateDto) => this.repository.create(payload)
-  update = (id: mongoose.Types.ObjectId, payload: UpdateDto) => this.repository.update(id, payload)
-  delete = (id: mongoose.Types.ObjectId) => this.repository.delete(id)
+  create = (payload: CreateRootCommentDto) => this.repository.create(payload)
+  update = (id: mongoose.Types.ObjectId, payload: UpdateRootCommentDto) => this.repository.update(id, payload)
+  delete = async (id: mongoose.Types.ObjectId) => {
+    const comment = await this.findOne(id)
+    console.log(comment, id)
+    if (!comment) {
+      throw new ErrorNotFound()
+    }
+
+    const replies = <mongoose.Types.ObjectId[]>(<unknown>comment.replies)
+    replies.forEach(async (replyId) => await replyCommentService.delete(replyId, false))
+    return this.repository.delete(id)
+  }
 
   addReply = (id: mongoose.Types.ObjectId, replyId: mongoose.Types.ObjectId) =>
     this.repository.update(id, { $push: { replies: replyId } })

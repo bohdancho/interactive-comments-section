@@ -7,7 +7,7 @@ import { CreateRootCommentDto, RootCommentDocument, UpdateRootCommentDto } from 
 import { CreateRootCommentSchema, UpdateRootCommentSchema } from './rootComment.validation'
 
 const repository = new Repository<RootCommentDocument>(RootCommentModel)
-const service = new RootCommentService<RootCommentDocument, CreateRootCommentDto, UpdateRootCommentDto>(repository)
+const service = new RootCommentService(repository)
 const controller = new Controller<RootCommentDocument, CreateRootCommentDto, UpdateRootCommentDto>(service)
 
 const router = express.Router()
