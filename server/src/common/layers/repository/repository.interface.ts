@@ -1,9 +1,8 @@
-import { Document, Types, UpdateQuery } from 'mongoose'
-
-export interface IRepository<D extends Document, CreateDto, UpdateDto extends UpdateQuery<D>> {
-  findOne(id: Types.ObjectId): Promise<D | null>
+import mongoose from 'mongoose'
+export interface IRepository<D extends mongoose.Document, CreateQuery, UpdateQuery> {
+  findOne(id: mongoose.Types.ObjectId): Promise<D | null>
   findAll(): Promise<D[]>
-  create(payload: CreateDto): Promise<D>
-  update(id: Types.ObjectId, payload: UpdateDto): Promise<D>
-  delete(id: Types.ObjectId): Promise<void>
+  create(payload: CreateQuery): Promise<D>
+  update(id: mongoose.Types.ObjectId, payload: UpdateQuery): Promise<D>
+  delete(id: mongoose.Types.ObjectId): Promise<void>
 }
