@@ -4,10 +4,10 @@ import {
   API_ROUTE_USER_PREFIX,
 } from '@shared/constants'
 import { Router } from 'express'
-import { replyCommentsRouteMiddleware, rootCommentsRouteMiddleware, userRouteMiddleware } from './modules'
+import { replyCommentRouter, rootCommentsRouter, userRouter } from './modules'
 
 export const roudeMiddlewares: Array<{ prefix: string; router: Router }> = [
-  { prefix: API_ROUTE_USER_PREFIX, router: userRouteMiddleware },
-  { prefix: API_ROUTE_ROOT_COMMENTS_PREFIX, router: rootCommentsRouteMiddleware },
-  { prefix: API_ROUTE_REPLY_COMMENTS_PREFIX, router: replyCommentsRouteMiddleware },
+  { prefix: API_ROUTE_USER_PREFIX, router: userRouter },
+  { prefix: API_ROUTE_ROOT_COMMENTS_PREFIX, router: rootCommentsRouter },
+  { prefix: API_ROUTE_REPLY_COMMENTS_PREFIX, router: replyCommentRouter },
 ]

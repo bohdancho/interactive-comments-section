@@ -6,40 +6,22 @@ import { RootCommentService } from './rootComment.service'
 import { CreateRootCommentDto, RootCommentDocument, UpdateRootCommentDto } from './rootComment.types'
 import { CreateRootCommentSchema, UpdateRootCommentSchema } from './rootComment.validation'
 
-const rootCommentRepository = new Repository<RootCommentDocument, CreateRootCommentDto, UpdateRootCommentDto>(
-  RootCommentModel,
-)
-const rootCommentService = new RootCommentService<RootCommentDocument, CreateRootCommentDto, UpdateRootCommentDto>(
-  rootCommentRepository,
-)
-const rootCommentController = new Controller<RootCommentDocument, CreateRootCommentDto, UpdateRootCommentDto>(
-  rootCommentService,
-)
+const repository = new Repository<RootCommentDocument, CreateRootCommentDto, UpdateRootCommentDto>(RootCommentModel)
+const service = new RootCommentService<RootCommentDocument, CreateRootCommentDto, UpdateRootCommentDto>(repository)
+const controller = new Controller<RootCommentDocument, CreateRootCommentDto, UpdateRootCommentDto>(service)
 
-const rootCommentsRouter = express.Router()
+const router = express.Router()
 
-rootCommentsRouter.get('/', rootCommentController.getAll.bind(rootCommentController))
-rootCommentsRouter.get(
-  '/:id',
-  validateParams(ObjectIdParamsSchema),
-  rootCommentController.getOne.bind(rootCommentController),
-)
+router.get('/', controller.getAll.bind(controller))
+router.get('/:id', validateParams(ObjectIdParamsSchema), controller.getOne.bind(controller))
 
-rootCommentsRouter.post(
-  '/',
-  validatePayload(CreateRootCommentSchema),
-  rootCommentController.create.bind(rootCommentController),
-)
-rootCommentsRouter.put(
+router.post('/', validatePayload(CreateRootCommentSchema), controller.create.bind(controller))
+router.put(
   '/:id',
   validateParams(ObjectIdParamsSchema),
   validatePayload(UpdateRootCommentSchema),
-  rootCommentController.update.bind(rootCommentController),
+  controller.update.bind(controller),
 )
-rootCommentsRouter.delete(
-  '/:id',
-  validateParams(ObjectIdParamsSchema),
-  rootCommentController.delete.bind(rootCommentController),
-)
+router.delete('/:id', validateParams(ObjectIdParamsSchema), controller.delete.bind(controller))
 
-export const rootCommentsRouteMiddleware = rootCommentsRouter
+export const rootCommentsRouter = router

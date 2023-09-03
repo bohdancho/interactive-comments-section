@@ -6,28 +6,23 @@ import { UserService } from './user.service'
 import { CreateUserDto, UpdateUserDto, UserDocument } from './user.types'
 import { CreateUserSchema, UpdateUserSchema } from './user.validation'
 
-const userRepository = new Repository<UserDocument, CreateUserDto, UpdateUserDto>(UserModel)
-const userService = new UserService<UserDocument, CreateUserDto, UpdateUserDto>(userRepository)
-const userController = new Controller<UserDocument, CreateUserDto, UpdateUserDto>(userService)
+const repository = new Repository<UserDocument, CreateUserDto, UpdateUserDto>(UserModel)
+const service = new UserService<UserDocument, CreateUserDto, UpdateUserDto>(repository)
+const controller = new Controller<UserDocument, CreateUserDto, UpdateUserDto>(service)
 
-const userRouter = express.Router()
+const router = express.Router()
 
-userRouter.get('/', userController.getAll.bind(userController))
-userRouter.get('/:id', validateParams(ObjectIdParamsSchema), userController.getOne.bind(userController))
+router.get('/', controller.getAll.bind(controller))
+router.get('/:id', validateParams(ObjectIdParamsSchema), controller.getOne.bind(controller))
 
-userRouter.post('/', validateAdminOnly, validatePayload(CreateUserSchema), userController.create.bind(userController))
-userRouter.put(
+router.post('/', validateAdminOnly, validatePayload(CreateUserSchema), controller.create.bind(controller))
+router.put(
   '/:id',
   validateAdminOnly,
   validateParams(ObjectIdParamsSchema),
   validatePayload(UpdateUserSchema),
-  userController.update.bind(userController),
+  controller.update.bind(controller),
 )
-userRouter.delete(
-  '/:id',
-  validateAdminOnly,
-  validateParams(ObjectIdParamsSchema),
-  userController.delete.bind(userController),
-)
+router.delete('/:id', validateAdminOnly, validateParams(ObjectIdParamsSchema), controller.delete.bind(controller))
 
-export const userRouteMiddleware = userRouter
+export const userRouter = router
