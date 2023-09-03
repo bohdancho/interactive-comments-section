@@ -1,7 +1,10 @@
-// export const CreateRootCommentSchema = Joi.object({
-//   author: Joi.string().required(),
-// })
+import { StringObjectIdSchema } from '@server/middleware'
+import Joi from 'joi'
 
-// export const UpdateRootCommentSchema = Joi.object({
-//   body: Joi.string(),
-// }).min(1)
+export const CreateRootCommentSchema = Joi.object({
+  author: StringObjectIdSchema,
+})
+
+export const UpdateRootCommentSchema = Joi.object({
+  body: Joi.string(),
+}).min(1)

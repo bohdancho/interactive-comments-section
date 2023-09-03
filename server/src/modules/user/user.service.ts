@@ -1,13 +1,14 @@
-import { Repository, Service } from '@server/common'
-import { Types } from 'mongoose'
-import { CreateUserDto, UpdateUserDto, UserDocument } from './user.types'
+import { IService, Repository } from '@server/common'
+import mongoose from 'mongoose'
 
-export class UserService implements Service<UserDocument> {
-  constructor(private repository: Repository<UserDocument, CreateUserDto, UpdateUserDto>) {}
+export class UserService<D extends mongoose.Document, CreateDto, UpdateDto extends mongoose.UpdateQuery<D>>
+  implements IService<D, CreateDto, UpdateDto>
+{
+  constructor(private repository: Repository<D, CreateDto, UpdateDto>) {}
 
-  findOne = (id: Types.ObjectId) => this.repository.findOne(id)
+  findOne = (id: mongoose.Types.ObjectId) => this.repository.findOne(id)
   findAll = () => this.repository.findAll()
-  create = (payload: CreateUserDto) => this.repository.create(payload)
-  update = (id: Types.ObjectId, payload: UpdateUserDto) => this.repository.update(id, payload)
-  delete = (id: Types.ObjectId) => this.repository.delete(id)
+  create = (payload: CreateDto) => this.repository.create(payload)
+  update = (id: mongoose.Types.ObjectId, payload: UpdateDto) => this.repository.update(id, payload)
+  delete = (id: mongoose.Types.ObjectId) => this.repository.delete(id)
 }

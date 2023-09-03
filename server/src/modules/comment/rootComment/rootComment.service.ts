@@ -1,30 +1,15 @@
-import { ErrorNotFound, Service } from '@server/common'
-import { Types } from 'mongoose'
-import { CreateRootCommentDto, RootCommentDocument, RootCommentModel, UpdateRootCommentDto } from '.'
+import { IService, Repository } from '@server/common'
+import mongoose from 'mongoose'
+import { RootCommentDocument } from '.'
 
-export class RootCommentService implements Service<RootCommentDocument> {
-  async findOne(id: Types.ObjectId) {
-    return await RootCommentModel.findById(id)
-  }
+export class RootCommentService<D extends RootCommentDocument, CreateDto, UpdateDto extends mongoose.UpdateQuery<D>>
+  implements IService<D, CreateDto, UpdateDto>
+{
+  constructor(private repository: Repository<D, CreateDto, UpdateDto>) {}
 
-  async findAll() {
-    return await RootCommentModel.find()
-  }
-
-  async create({ author }: CreateRootCommentDto) {
-    return await new RootCommentModel({ body: '', author, createdAt: Date.now(), replies: [] }).save()
-  }
-
-  async update(id: Types.ObjectId, payload: UpdateRootCommentDto) {
-    const comment = await RootCommentModel.findByIdAndUpdate(id, payload, { new: true })
-    if (!comment) throw new ErrorNotFound()
-    return comment
-  }
-
-  async delete(id: Types.ObjectId) {
-    const comment = await RootCommentModel.findByIdAndDelete(id)
-    if (!comment) throw new ErrorNotFound()
-  }
+  findOne = (id: mongoose.Types.ObjectId) => this.repository.findOne(id)
+  findAll = () => this.repository.findAll()
+  create = (payload: CreateDto) => this.repository.create(payload)
+  update = (id: mongoose.Types.ObjectId, payload: UpdateDto) => this.repository.update(id, payload)
+  delete = (id: mongoose.Types.ObjectId) => this.repository.delete(id)
 }
-
-export const rootCommentService = new RootCommentService()

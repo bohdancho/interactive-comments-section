@@ -1,10 +1,12 @@
 import express from 'express'
-import mongoose from 'mongoose'
-import { Service } from '../service.interface/service.interface'
+import mongoose, { UpdateQuery } from 'mongoose'
+import { IService } from '../service.interface/service.interface'
 import { IController } from './controller.interface'
 
-export class Controller<D extends mongoose.Document, CreateDto, UpdateDto> implements IController {
-  constructor(private service: Service<D>) {}
+export class Controller<D extends mongoose.Document, CreateDto, UpdateDto extends UpdateQuery<D>>
+  implements IController
+{
+  constructor(private service: IService<D, CreateDto, UpdateDto>) {}
 
   async getOne(req: express.Request, res: express.Response) {
     const objectId = new mongoose.Types.ObjectId(req.params.id)

@@ -1,9 +1,8 @@
-import { Document, Types } from 'mongoose'
+import { Document, UpdateQuery } from 'mongoose'
+import { IRepository } from './../repository/repository.interface'
 
-export interface Service<D extends Document> {
-  findOne(id: Types.ObjectId): Promise<D | null>
-  findAll(): Promise<D[]>
-  create(...args: unknown[]): Promise<D>
-  update(...args: unknown[]): Promise<D>
-  delete(id: Types.ObjectId): Promise<void>
-}
+export type IService<D extends Document, CreateDto, UpdateDto extends UpdateQuery<D>> = IRepository<
+  D,
+  CreateDto,
+  UpdateDto
+>

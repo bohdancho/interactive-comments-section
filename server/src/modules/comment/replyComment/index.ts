@@ -1,4 +1,3 @@
-export * from './replyComment.controller'
 export * from './replyComment.model'
 export * from './replyComment.routes'
 export * from './replyComment.service'

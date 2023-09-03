@@ -1,53 +1,53 @@
-import { ErrorNotFound, Service } from '@server/common'
-import { Types } from 'mongoose'
-import { RootCommentModel, rootCommentService } from '../rootComment'
-import { ReplyCommentModel } from './replyComment.model'
-import { CreateReplyCommentDto, ReplyCommentDocument, UpdateReplyCommentDto } from './replyComment.types'
+// import { ErrorNotFound, IOService, Repository } from '@server/common'
+// import { Types, UpdateQuery } from 'mongoose'
+// import { RootCommentModel, rootCommentService } from '../rootComment'
+// import { ReplyCommentModel } from './replyComment.model'
+// import { ReplyCommentDocument, UpdateReplyCommentDto } from './replyComment.types'
 
-export class ReplyCommentService implements Service<ReplyCommentDocument> {
-  async findOne(id: Types.ObjectId) {
-    return await ReplyCommentModel.findById(id)
-  }
+// export class ReplyCommentService<D extends ReplyCommentDocument, CreateDto, UpdateDto extends UpdateQuery<D>>
+//   implements IOService<ReplyCommentDocument>
+// {
+//   constructor(private repository: Repository<D, CreateDto, UpdateDto>) {}
 
-  async findAll() {
-    return await ReplyCommentModel.find()
-  }
+//   async findOne(id: Types.ObjectId) {
+//     return await ReplyCommentModel.findById(id)
+//   }
 
-  async create({ author, replyToUser, rootCommentId }: CreateReplyCommentDto) {
-    const rootComment = await rootCommentService.findOne(rootCommentId)
-    if (!rootComment) throw new ErrorNotFound()
+//   async findAll() {
+//     return await ReplyCommentModel.find()
+//   }
 
-    const replyComment = new ReplyCommentModel({
-      body: '',
-      author,
-      createdAt: Date.now(),
-      replyToUser,
-      rootCommentId,
-    })
+//   async create({ author, replyToUser, rootCommentId }: CreateDto) {
+//     const rootComment = await rootCommentService.findOne(rootCommentId)
+//     if (!rootComment) throw new ErrorNotFound()
 
-    rootComment.replies.push(replyComment.id)
+//     const replyComment = new ReplyCommentModel({
+//       body: '',
+//       author,
+//       createdAt: Date.now(),
+//       replyToUser,
+//       rootCommentId,
+//     })
 
-    await rootComment.save()
-    await replyComment.save()
+//     rootComment.replies.push(replyComment.id)
 
-    return replyComment
-  }
+//     await rootComment.save()
+//     await replyComment.save()
 
-  async update(id: Types.ObjectId, payload: UpdateReplyCommentDto) {
-    const comment = await ReplyCommentModel.findByIdAndUpdate(id, payload, { new: true })
-    if (!comment) throw new ErrorNotFound()
-    return comment
-  }
+//     return replyComment
+//   }
 
-  async delete(id: Types.ObjectId) {
-    const replyComment = await ReplyCommentModel.findById(id)
-    const rootComment = await RootCommentModel.findById(replyComment?.rootCommentId)
+//   update(id: Types.ObjectId, payload: UpdateReplyCommentDto)
 
-    if (!replyComment || !rootComment) throw new ErrorNotFound()
+//   async delete(id: Types.ObjectId) {
+//     const replyComment = await ReplyCommentModel.findById(id)
+//     const rootComment = await RootCommentModel.findById(replyComment?.rootCommentId)
 
-    replyComment.deleteOne()
-    rootComment.updateOne({ $pull: { replies: id } })
-  }
-}
+//     if (!replyComment || !rootComment) throw new ErrorNotFound()
 
-export const replyCommentService = new ReplyCommentService()
+//     replyComment.deleteOne()
+//     rootComment.updateOne({ $pull: { replies: id } })
+//   }
+// }
+
+// export const replyCommentService = new ReplyCommentService()

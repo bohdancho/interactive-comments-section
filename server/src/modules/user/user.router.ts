@@ -7,7 +7,7 @@ import { CreateUserDto, UpdateUserDto, UserDocument } from './user.types'
 import { CreateUserSchema, UpdateUserSchema } from './user.validation'
 
 const userRepository = new Repository<UserDocument, CreateUserDto, UpdateUserDto>(UserModel)
-const userService = new UserService(userRepository)
+const userService = new UserService<UserDocument, CreateUserDto, UpdateUserDto>(userRepository)
 const userController = new Controller<UserDocument, CreateUserDto, UpdateUserDto>(userService)
 
 const userRouter = express.Router()
