@@ -3,7 +3,7 @@ import mongoose from 'mongoose'
 import { RootCommentDocument } from '.'
 
 export class RootCommentService<D extends RootCommentDocument, CreateDto, UpdateDto extends mongoose.UpdateQuery<D>>
-  implements IService<D, CreateDto, UpdateDto>
+  implements IService<D>
 {
   constructor(private repository: Repository<D>) {}
 
