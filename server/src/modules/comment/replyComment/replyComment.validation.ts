@@ -1,10 +1,10 @@
-import { StringObjectIdSchema } from '@server/middleware'
+import { ObjectIdSchema } from '@server/common'
 import Joi from 'joi'
 
 export const CreateReplyCommentSchema = Joi.object({
   author: Joi.string().required(),
   replyToUser: Joi.string().required(),
-  rootCommentId: StringObjectIdSchema.required(),
+  rootCommentId: ObjectIdSchema.required(),
 })
 
 export const UpdateReplyCommentSchema = Joi.object({

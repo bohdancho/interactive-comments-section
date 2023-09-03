@@ -1,5 +1,5 @@
-import { Controller, Repository } from '@server/common'
-import { ObjectIdSchema, validateParams, validatePayload } from '@server/middleware'
+import { Controller, ObjectIdParamsSchema, Repository } from '@server/common'
+import { validateParams, validatePayload } from '@server/middleware'
 import express from 'express'
 import { RootCommentModel } from './rootComment.model'
 import { RootCommentService } from './rootComment.service'
@@ -19,7 +19,11 @@ const rootCommentController = new Controller<RootCommentDocument, CreateRootComm
 const rootCommentsRouter = express.Router()
 
 rootCommentsRouter.get('/', rootCommentController.getAll.bind(rootCommentController))
-rootCommentsRouter.get('/:id', validateParams(ObjectIdSchema), rootCommentController.getOne.bind(rootCommentController))
+rootCommentsRouter.get(
+  '/:id',
+  validateParams(ObjectIdParamsSchema),
+  rootCommentController.getOne.bind(rootCommentController),
+)
 
 rootCommentsRouter.post(
   '/',
@@ -28,13 +32,13 @@ rootCommentsRouter.post(
 )
 rootCommentsRouter.put(
   '/:id',
-  validateParams(ObjectIdSchema),
+  validateParams(ObjectIdParamsSchema),
   validatePayload(UpdateRootCommentSchema),
   rootCommentController.update.bind(rootCommentController),
 )
 rootCommentsRouter.delete(
   '/:id',
-  validateParams(ObjectIdSchema),
+  validateParams(ObjectIdParamsSchema),
   rootCommentController.delete.bind(rootCommentController),
 )
 
