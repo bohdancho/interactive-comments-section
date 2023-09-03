@@ -31,7 +31,7 @@ export class Controller<D extends mongoose.Document, CreateDto, UpdateDto extend
       const item = await this.service.create(payload)
       res.send(item)
     } catch (error) {
-      res.sendStatus(400)
+      res.status(400).send(error)
     }
   }
 
@@ -43,7 +43,7 @@ export class Controller<D extends mongoose.Document, CreateDto, UpdateDto extend
       const item = await this.service.update(objectId, payload)
       res.send(item)
     } catch (error) {
-      res.sendStatus(400)
+      res.status(400).send(error)
     }
   }
 
@@ -53,7 +53,7 @@ export class Controller<D extends mongoose.Document, CreateDto, UpdateDto extend
       await this.service.delete(objectId)
       res.sendStatus(200)
     } catch (error) {
-      res.sendStatus(404)
+      res.status(404).send(error)
     }
   }
 }

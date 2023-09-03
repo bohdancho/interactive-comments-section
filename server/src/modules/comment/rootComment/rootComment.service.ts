@@ -8,7 +8,7 @@ export class RootCommentService implements IService<RootCommentDocument> {
 
   findOne = (id: mongoose.Types.ObjectId) => this.repository.findOne(id)
   findAll = () => this.repository.findAll()
-  create = (payload: CreateRootCommentDto) => this.repository.create(payload)
+  create = (payload: CreateRootCommentDto) => this.repository.create({ ...payload, createdAt: Date.now() })
   update = (id: mongoose.Types.ObjectId, payload: UpdateRootCommentDto) => this.repository.update(id, payload)
   delete = async (id: mongoose.Types.ObjectId) => {
     const comment = await this.findOne(id)

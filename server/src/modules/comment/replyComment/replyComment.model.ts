@@ -4,8 +4,8 @@ import { CommentCommonSchema } from '../common'
 
 const ReplyCommentSchema = new Schema({
   ...CommentCommonSchema,
-  replyToUser: { type: Schema.Types.ObjectId, ref: 'User' },
-  rootComment: { type: Schema.Types.ObjectId, ref: 'RootComment' },
+  replyToUser: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+  rootComment: { type: Schema.Types.ObjectId, ref: 'RootComment', required: true },
   // voting: String,
 })
 

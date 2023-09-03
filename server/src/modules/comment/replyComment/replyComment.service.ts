@@ -9,18 +9,18 @@ export class ReplyCommentService implements IService<ReplyCommentDocument> {
   findOne = (id: mongoose.Types.ObjectId) => this.repository.findOne(id)
   findAll = () => this.repository.findAll()
   create = async (payload: CreateReplyCommentDto) => {
-    const rootComment = rootCommentsService.findOne(payload.rootComment)
+    const rootComment = await rootCommentsService.findOne(payload.rootComment)
     if (!rootComment) {
       throw new ErrorNotFound()
     }
 
-    const reply = await this.repository.create(payload)
+    const reply = await this.repository.create({ ...payload, createdAt: Date.now() })
     await rootCommentsService.addReply(payload.rootComment, reply.id)
 
     return reply
   }
   update = (id: mongoose.Types.ObjectId, payload: UpdateReplyCommentDto) => this.repository.update(id, payload)
-  delete = async (id: mongoose.Types.ObjectId, removeFromRootComment = false) => {
+  delete = async (id: mongoose.Types.ObjectId, removeFromRootComment = true) => {
     if (removeFromRootComment) {
       await this.removeFromRootComment(id)
     }
