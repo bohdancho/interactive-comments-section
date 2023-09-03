@@ -2,7 +2,7 @@ import { IService, Repository } from '@server/common'
 import mongoose from 'mongoose'
 
 export class UserService<D extends mongoose.Document, CreateDto, UpdateDto extends mongoose.UpdateQuery<D>>
-  implements IService<D, CreateDto, UpdateDto>
+  implements IService<D>
 {
   constructor(private repository: Repository<D>) {}
 

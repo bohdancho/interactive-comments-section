@@ -1,7 +1,7 @@
-import { ObjectId } from 'mongoose'
+import mongoose from 'mongoose'
 
 export interface UserData {
-  _id: ObjectId
+  _id: mongoose.Types.ObjectId
   avatar: string
   username: string
 }
