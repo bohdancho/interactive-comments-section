@@ -1,10 +1,9 @@
 import { Schema, model } from 'mongoose'
+import { CommentCommonSchema } from '../common'
 import { RootCommentDocument } from './rootComment.types'
 
 const RootCommentSchema = new Schema({
-  createdAt: Number,
-  body: String,
-  author: { type: Schema.Types.ObjectId, ref: 'User' },
+  ...CommentCommonSchema,
   replies: [{ type: Schema.Types.ObjectId, ref: 'ReplyComment' }],
   // voting: String,
 })
