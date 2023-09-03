@@ -9,13 +9,13 @@ export class ReplyCommentService<
   UpdateDto extends mongoose.UpdateQuery<D>,
 > implements IService<D, CreateDto, UpdateDto>
 {
-  constructor(private repository: Repository<D, CreateDto, UpdateDto>) {}
+  constructor(private repository: Repository<D>) {}
 
   findOne = (id: mongoose.Types.ObjectId) => this.repository.findOne(id)
   findAll = () => this.repository.findAll()
   create = async (payload: CreateDto) => {
     const reply = await this.repository.create(payload)
-    await rootCommentsService.addReply(reply.id, payload.rootComment)
+    await rootCommentsService.addReply(payload.rootComment, reply.id)
 
     return reply
   }

@@ -1,11 +1,11 @@
 import { IService, Repository } from '@server/common'
-import mongoose, { UpdateQuery } from 'mongoose'
+import mongoose from 'mongoose'
 import { RootCommentDocument } from '.'
 
 export class RootCommentService<D extends RootCommentDocument, CreateDto, UpdateDto extends mongoose.UpdateQuery<D>>
   implements IService<D, CreateDto, UpdateDto>
 {
-  constructor(private repository: Repository<D, CreateDto, UpdateQuery<D>>) {}
+  constructor(private repository: Repository<D>) {}
 
   findOne = (id: mongoose.Types.ObjectId) => this.repository.findOne(id)
   findAll = () => this.repository.findAll()
