@@ -1,7 +1,5 @@
 {
   "watch": ["server", ".env"],
   "ext": "ts",
-  "execMap": {
-    "ts": "vite-node"
-  }
+  "exec": "tsx ./server/index.ts"
 }

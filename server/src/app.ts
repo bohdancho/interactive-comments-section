@@ -1,9 +1,12 @@
-import express from 'express'
+import { PrismaClient } from '@prisma/client'
+import { initTRPC } from '@trpc/server'
+import { getUserRouter } from './modules'
 
-const apiRouter = express.Router()
+const t = initTRPC.create()
+export const router = t.router
+export const publicProcedure = t.procedure
 
-apiRouter.get('/test', async (_req, res) => {
-  res.status(200).json({ message: 'test success' })
-})
+export const prisma = new PrismaClient()
 
-export const apiRouteMiddleware = apiRouter
+export const appRouter = router({ user: getUserRouter() })
+export type AppRouter = typeof appRouter
