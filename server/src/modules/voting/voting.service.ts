@@ -1,13 +1,13 @@
 import { ErrorNotFound, IService, Repository } from '@server/common'
 import mongoose from 'mongoose'
-import { CreateVotingDto, UpdateVotingDto, VotingChoiceEnum, VotingDocument } from './voting.types'
+import { UpdateVotingDto, VotingChoiceEnum, VotingDocument } from './voting.types'
 
 export class VotingService implements IService<VotingDocument> {
   constructor(protected repository: Repository<VotingDocument>) {}
 
   findOne = (id: mongoose.Types.ObjectId) => this.repository.findOne(id)
   findAll = () => this.repository.findAll()
-  create = (payload: CreateVotingDto) => this.repository.create(payload)
+  create = () => this.repository.create()
   update = async (id: mongoose.Types.ObjectId, { action, user }: UpdateVotingDto) => {
     const voting = await this.findOne(id)
     if (!voting) throw new ErrorNotFound()
@@ -26,13 +26,6 @@ export class VotingService implements IService<VotingDocument> {
       return VotingChoiceEnum.upvote
     }
     return VotingChoiceEnum.null
-  }
-
-  private static computeNewChoice(oldVote: VotingChoiceEnum, action: VotingChoiceEnum): VotingChoiceEnum {
-    if (oldVote === action) {
-      return VotingChoiceEnum.null
-    }
-    return action
   }
 
   private static getUpdateQuery(

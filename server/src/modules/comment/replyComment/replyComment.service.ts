@@ -1,4 +1,5 @@
 import { ErrorNotFound, IService, Repository } from '@server/common'
+import { votingService } from '@server/modules/voting'
 import mongoose from 'mongoose'
 import { UpdateCommentDto } from '../common/comment.dto'
 import { rootCommentsService } from '../rootComment'
@@ -16,7 +17,8 @@ export class ReplyCommentService implements IService<ReplyCommentDocument> {
       throw new ErrorNotFound()
     }
 
-    const reply = await this.repository.create({ ...payload, createdAt: Date.now() })
+    const voting = await votingService.create()
+    const reply = await this.repository.create({ ...payload, createdAt: Date.now(), voting: voting._id })
     await rootCommentsService.addReply(payload.rootComment, reply.id)
 
     return reply
@@ -27,6 +29,10 @@ export class ReplyCommentService implements IService<ReplyCommentDocument> {
       await this.removeFromRootComment(id)
     }
 
+    const comment = <ReplyCommentDocument>await this.findOne(id)
+    const voting = comment.voting
+
+    votingService.delete(voting._id)
     return this.repository.delete(id)
   }
 
@@ -35,8 +41,8 @@ export class ReplyCommentService implements IService<ReplyCommentDocument> {
     if (!reply) {
       throw new ErrorNotFound()
     }
-    const rootCommentId = <mongoose.Types.ObjectId>reply.rootComment
+    const rootComment = reply.rootComment
 
-    await rootCommentsService.removeReply(rootCommentId, reply.id)
+    await rootCommentsService.removeReply(rootComment._id, reply.id)
   }
 }

@@ -13,7 +13,7 @@ export class Repository<D extends mongoose.Document> implements IRepository<D> {
     return this.model.find()
   }
 
-  create(payload: unknown) {
+  create(payload?: unknown) {
     return new this.model(payload).save()
   }
 

@@ -1,10 +1,10 @@
 import mongoose from 'mongoose'
-import { UserData } from '../'
+import { UserData, VotingData } from '../'
 
 export interface CommentData {
   _id: mongoose.Types.ObjectId
   createdAt: number
   body: string
   author: mongoose.Types.ObjectId | UserData
-  // voting: VotingData
+  voting: mongoose.Types.ObjectId | VotingData
 }

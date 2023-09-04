@@ -3,7 +3,7 @@ import mongoose from 'mongoose'
 
 export type VotingDocument = VotingData & mongoose.Document
 
-export type CreateVotingDto = Pick<VotingData, 'comment'>
+export type CreateVotingDto = null
 export interface UpdateVotingDto {
   action: VotingChoiceEnum
   user: mongoose.Types.ObjectId

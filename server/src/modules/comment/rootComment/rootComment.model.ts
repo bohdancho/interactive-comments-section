@@ -1,12 +1,20 @@
 import { Schema, model } from 'mongoose'
-import { CommentCommonSchema, commentCommonPopulatePaths } from '../common'
+import { CommentCommonSchema } from '../common'
+import { ReplyCommentModel, replyPopulatePaths } from '../replyComment'
 import { RootCommentDocument } from './rootComment.types'
 
 const RootCommentSchema = new Schema({
   ...CommentCommonSchema,
   replies: [{ type: Schema.Types.ObjectId, ref: 'ReplyComment' }],
-  // voting: String,
 })
 
+console.log(replyPopulatePaths)
 export const RootCommentModel = model<RootCommentDocument>('RootComment', RootCommentSchema)
-export const rootPopulatePaths = [...commentCommonPopulatePaths, 'replies']
+export const rootPopulatePaths = [
+  // ...commentPopulatePaths,
+  {
+    path: 'replies',
+    model: ReplyCommentModel,
+    populate: [...replyPopulatePaths],
+  },
+]

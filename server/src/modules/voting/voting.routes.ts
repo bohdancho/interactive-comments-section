@@ -20,3 +20,4 @@ router.put(
 )
 
 export const votingRouter = router
+export const votingService = service
