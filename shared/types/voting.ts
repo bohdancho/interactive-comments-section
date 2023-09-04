@@ -1,6 +1,11 @@
-import { VotingChoiceEnum } from '@server/modules'
 import mongoose from 'mongoose'
 import { CommentData } from './comment'
+
+export enum VotingChoiceEnum {
+  null,
+  'upvote',
+  'downvote',
+}
 
 export interface VotingData {
   _id: mongoose.Types.ObjectId

@@ -1,5 +1,0 @@
-export * from './user.model'
-export * from './user.router'
-export * from './user.service'
-export * from './user.types'
-export * from './user.validation'

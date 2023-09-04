@@ -29,9 +29,7 @@
     "paths": {
       "@src/*": ["./src/*"],
       "@server/*": ["./server/src/*"],
-      "@shared/types": ["./shared/types/index.ts"],
-      "@shared/dto": ["./shared/dto/index.ts"],
-      "@shared/constants": ["./shared/constants/index.ts"]
+      "@shared/types": ["./shared/types/index.ts"]
     }
   },
   "include": ["src", "server"],

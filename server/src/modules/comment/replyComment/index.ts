@@ -1,5 +1,0 @@
-export * from './replyComment.model'
-export * from './replyComment.routes'
-export * from './replyComment.service'
-export * from './replyComment.types'
-export * from './replyComment.validation'
