@@ -1,11 +1,14 @@
 import { PrismaClient } from '@prisma/client'
 import { TRPCError, initTRPC } from '@trpc/server'
 import { z } from 'zod'
+import { fetchUser } from './user'
+import { Context } from './user/user.context'
 
-const defaultUserName = 'juliusomo'
-const t = initTRPC.create()
+const t = initTRPC.context<Context>().create()
+
 export const router = t.router
-export const publicProcedure = t.procedure
+export const middleware = t.middleware
+export const publicProcedure = t.procedure.use(fetchUser())
 
 export const prisma = new PrismaClient()
 
@@ -31,16 +34,30 @@ export const appRouter = router({
     }),
     addComment: publicProcedure
       .input(z.object({ body: z.string(), rootCommentId: z.number().optional() }))
-      .mutation(async ({ input: { body, rootCommentId } }) => {
-        const user = await prisma.user.findUnique({ where: { name: defaultUserName } })
-        if (!user) {
+      .mutation(async ({ input: { body, rootCommentId }, ctx }) => {
+        return prisma.comment.create({
+          data: {
+            authorId: ctx.user.id,
+            body,
+            rootCommentId,
+          },
+        })
+      }),
+    editComment: publicProcedure
+      .input(z.object({ body: z.string(), id: z.number() }))
+      .mutation(async ({ input: { body, id }, ctx }) => {
+        const comment = await prisma.comment.findUnique({ where: { id } })
+        if (comment?.authorId !== ctx.user.id) {
           throw new TRPCError({
-            code: 'INTERNAL_SERVER_ERROR',
-            message: 'Default user not found in the database.',
+            code: 'UNAUTHORIZED',
+            message: 'You are not allowed to edit this comment.',
           })
         }
 
-        return prisma.comment.create({ data: { authorId: user.id, body, rootCommentId } })
+        return prisma.comment.update({
+          where: { id },
+          data: { body },
+        })
       }),
   }),
 })
