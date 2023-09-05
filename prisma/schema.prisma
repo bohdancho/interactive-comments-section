@@ -18,13 +18,16 @@ model User {
 }
 
 model Comment {
-  id        Int        @id @default(autoincrement())
-  createdAt Int
-  body      String
-  author    User       @relation(fields: [authorId], references: [id])
-  authorId  Int
-  rating    Int        @default(0)
-  userVotes UserVote[]
+  id            Int        @id @default(autoincrement())
+  createdAt     DateTime   @default(now())
+  body          String
+  author        User       @relation(fields: [authorId], references: [id])
+  authorId      Int
+  rating        Int        @default(0)
+  userVotes     UserVote[]
+  replies       Comment[]  @relation("RootCommentReplies")
+  rootComment   Comment?   @relation("RootCommentReplies", fields: [rootCommentId], references: [id])
+  rootCommentId Int?
 }
 
 model UserVote {
