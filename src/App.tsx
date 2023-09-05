@@ -5,7 +5,7 @@ import './App.css'
 import { trpc } from './utils'
 
 function ApiTest() {
-  const usersList = trpc.user.usersList.useQuery()
+  const usersList = trpc.comment.getAllRootComments.useQuery()
   console.log(usersList.data)
   return <>users list</>
 }
