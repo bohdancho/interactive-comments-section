@@ -1,14 +1,13 @@
 import { PrismaClient } from '@prisma/client'
 import { initTRPC } from '@trpc/server'
-import { commentRouter } from './comment'
-import { Context, fetchUser } from './user'
-import { votingRouter } from './voting'
+import { Context } from './context'
+import { commentRouter, votingRouter } from './routers'
 
 const t = initTRPC.context<Context>().create()
 
 export const router = t.router
 export const middleware = t.middleware
-export const publicProcedure = t.procedure.use(fetchUser())
+export const publicProcedure = t.procedure
 
 export const prisma = new PrismaClient()
 

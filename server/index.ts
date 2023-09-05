@@ -1,4 +1,5 @@
 import { appRouter } from '@server/app'
+import { createContext } from '@server/context'
 import * as trpcExpress from '@trpc/server/adapters/express'
 import { config } from 'dotenv'
 import express from 'express'
@@ -9,7 +10,7 @@ const { PORT } = process.env as { PORT: string }
 
 const app = express()
 
-app.use('/trpc', trpcExpress.createExpressMiddleware({ router: appRouter }))
+app.use('/trpc', trpcExpress.createExpressMiddleware({ router: appRouter, createContext }))
 
 app.use(express.static('dist/app'))
 app.get('*', (_req, res) => {
