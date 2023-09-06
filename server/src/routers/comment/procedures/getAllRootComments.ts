@@ -18,5 +18,8 @@ export const getAllRootComments = () =>
           select: { ...findCommentDto },
         },
       },
+      orderBy: {
+        id: 'asc',
+      },
     })
   })

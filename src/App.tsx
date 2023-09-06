@@ -1,3 +1,4 @@
+import { Vote } from '@prisma/client'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { httpBatchLink } from '@trpc/client'
 import { useState } from 'react'
@@ -7,11 +8,19 @@ import { trpc } from './utils'
 function ApiTest() {
   const allComments = trpc.comment.getAllRootComments.useQuery()
   const addComment = trpc.comment.addComment.useMutation()
+  const vote = trpc.voting.vote.useMutation()
 
   function addCommentHandler() {
     const firstComment = allComments.data?.at(0)
     if (!firstComment) return
     addComment.mutate({ body: 'newBody', rootCommentId: firstComment.id })
+  }
+
+  function voteHandler(choice: Vote) {
+    const firstComment = allComments.data?.at(0)
+    if (!firstComment) return
+    console.log(firstComment.id, choice)
+    vote.mutate({ commentId: firstComment.id, vote: choice })
   }
 
   return (
@@ -26,6 +35,12 @@ function ApiTest() {
       ))}
       <button type='button' onClick={addCommentHandler}>
         add comment
+      </button>
+      <button type='button' onClick={() => voteHandler(Vote.Downvote)}>
+        downvote
+      </button>
+      <button type='button' onClick={() => voteHandler(Vote.Upvote)}>
+        upvote
       </button>
     </>
   )
