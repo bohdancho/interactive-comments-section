@@ -31,7 +31,7 @@ model Comment {
 }
 
 model UserVote {
-  vote      Vote
+  choice    Vote
   comment   Comment @relation(fields: [commentId], references: [id], onDelete: Cascade)
   commentId Int
   user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)

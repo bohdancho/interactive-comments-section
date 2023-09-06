@@ -20,7 +20,7 @@ function ApiTest() {
     const firstComment = allComments.data?.at(0)
     if (!firstComment) return
     console.log(firstComment.id, choice)
-    vote.mutate({ commentId: firstComment.id, vote: choice })
+    vote.mutate({ commentId: firstComment.id, clickedChoice: choice })
   }
 
   return (
