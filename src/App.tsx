@@ -12,8 +12,11 @@ function ApiTest() {
 
   function addCommentHandler() {
     const firstComment = allComments.data?.at(0)
-    if (!firstComment) return
-    addComment.mutate({ body: 'newBody', rootCommentId: firstComment.id })
+    if (!firstComment) {
+      addComment.mutate({ body: 'root' })
+      return
+    }
+    addComment.mutate({ body: 'reply', rootCommentId: firstComment.id })
   }
 
   function voteHandler(choice: Vote) {

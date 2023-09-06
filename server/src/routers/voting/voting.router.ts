@@ -1,5 +1,6 @@
 import { Vote } from '@prisma/client'
 import { prisma, publicProcedure, router } from '@server/app'
+import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
 
 export const votingRouter = () =>
@@ -7,7 +8,6 @@ export const votingRouter = () =>
     vote: publicProcedure
       .input(z.object({ commentId: z.number(), clickedChoice: z.nativeEnum(Vote) }))
       .mutation(async ({ input: { commentId, clickedChoice }, ctx }) => {
-        console.log('started')
         const previousChoice = (
           await prisma.userVote.findUnique({
             where: { commentId_userId: { commentId, userId: ctx.user.id } },
@@ -56,12 +56,19 @@ function getRatingIncrement({
     return getChoiceValue(clickedChoice)
   }
   if (previousChoice !== clickedChoice) {
-    return getChoiceValue(clickedChoice)
+    return 2 * getChoiceValue(clickedChoice)
   }
-  return 0
+  if (previousChoice === clickedChoice) {
+    return -1 * getChoiceValue(clickedChoice)
+  }
+
+  throw new TRPCError({
+    code: 'INTERNAL_SERVER_ERROR',
+    message: 'Something went wrong with rating',
+  })
 }
 
-function getChoiceValue(choice: Vote) {
+function getChoiceValue(choice: Vote): 1 | -1 {
   switch (choice) {
     case 'Upvote':
       return 1
@@ -70,6 +77,6 @@ function getChoiceValue(choice: Vote) {
   }
 }
 
-function updateRating({ commentId, increment }: { commentId: number; increment: number }) {
-  prisma.comment.update({ where: { id: commentId }, data: { rating: { increment } } })
+async function updateRating({ commentId, increment }: { commentId: number; increment: number }): Promise<void> {
+  await prisma.comment.update({ where: { id: commentId }, data: { rating: { increment } } })
 }
