@@ -6,9 +6,8 @@ generator client {
 }
 
 datasource db {
-  provider     = "mysql"
-  relationMode = "prisma"
-  url          = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -27,7 +26,7 @@ model Comment {
   rating        Int        @default(0)
   userVotes     UserVote[]
   replies       Comment[]  @relation("RootCommentReplies")
-  rootComment   Comment?   @relation("RootCommentReplies", fields: [rootCommentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  rootComment   Comment?   @relation("RootCommentReplies", fields: [rootCommentId], references: [id], onDelete: Cascade)
   rootCommentId Int?
 
   @@index([authorId])
