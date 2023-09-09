@@ -1,6 +1,7 @@
 import { Vote } from '@prisma/client'
 import iconMinus from '@src/assets/icon-minus.svg'
 import iconPlus from '@src/assets/icon-plus.svg'
+import { api } from '@src/utils'
 import SVG from 'react-inlinesvg'
 
 const icon = {
@@ -9,16 +10,14 @@ const icon = {
 }
 
 export function CommentRating({ id, rating, myVote }: { id: number; rating: number; myVote: Vote | undefined }) {
-  // const dataDispatch = useContext(DataDispatchContext) as Dispatch<types.Action>
-  // const vote = (isUpvote: boolean) => dataDispatch({ type: 'vote', payload: { id, isUpvote } })
+  const voteQuery = api.voting.vote.useMutation()
 
   const getButton = (vote: Vote) => {
-    // const isActive = (upvotedByMe && isUpvote) || (downvotedByMe && !isUpvote)
     const isActive = vote === myVote
 
     return (
       <button
-        // onClick={() => vote(isUpvote)}
+        onClick={() => voteQuery.mutate({ commentId: id, clickedChoice: vote })}
         className={`${
           isActive ? 'text-moderate-blue' : 'text-light-grayish-blue'
         } base-transition flex h-40 w-40 items-center justify-center hover:text-moderate-blue active:text-dark-blue`}

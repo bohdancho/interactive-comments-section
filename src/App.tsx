@@ -5,12 +5,12 @@ import { useState } from 'react'
 import './App.css'
 import { CommentsSection } from './components'
 import { UserProvider } from './providers'
-import { trpc } from './utils'
+import { api } from './utils'
 
 function ApiTest() {
-  const allComments = trpc.comment.getAllRootComments.useQuery()
-  const addComment = trpc.comment.addComment.useMutation()
-  const vote = trpc.voting.vote.useMutation()
+  const allComments = api.comment.getAllRootComments.useQuery()
+  const addComment = api.comment.addComment.useMutation()
+  const vote = api.voting.vote.useMutation()
 
   function addCommentHandler() {
     const firstComment = allComments.data?.at(0)
@@ -54,7 +54,7 @@ function ApiTest() {
 function App() {
   const [queryClient] = useState(() => new QueryClient())
   const [trpcClient] = useState(() =>
-    trpc.createClient({
+    api.createClient({
       links: [
         httpBatchLink({
           url: 'http://localhost:4200/trpc',
@@ -65,7 +65,7 @@ function App() {
   )
 
   return (
-    <trpc.Provider client={trpcClient} queryClient={queryClient}>
+    <api.Provider client={trpcClient} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>
         <UserProvider>
           <div className='min-h-screen bg-very-light-gray px-16 py-32'>
@@ -75,7 +75,7 @@ function App() {
           </div>
         </UserProvider>
       </QueryClientProvider>
-    </trpc.Provider>
+    </api.Provider>
   )
 
   // return (

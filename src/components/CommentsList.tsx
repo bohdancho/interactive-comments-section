@@ -1,9 +1,9 @@
-import { trpc } from '@src/utils'
+import { api } from '@src/utils'
 import { useState } from 'react'
 import { CommentItem } from './comment/CommentItem'
 
 export function CommentsList() {
-  const comments = trpc.comment.getAllRootComments.useQuery().data
+  const comments = api.comment.getAllRootComments.useQuery().data
 
   const [editingCommentId, setEditingCommentId] = useState<number | null>(null)
   const [replyingCommentId, setReplyingCommentId] = useState<number | null>(null)
