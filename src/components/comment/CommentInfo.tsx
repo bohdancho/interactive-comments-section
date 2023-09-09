@@ -1,25 +1,24 @@
+import { User } from '@prisma/client'
 import { UserContext } from '@src/providers'
-import * as types from '@src/types'
-import { UIImage } from '@src/ui'
 import { formatTimeDifference } from '@src/utils'
 import { useContext } from 'react'
 
-export function CommentInfo({ info }: { info: Pick<types.Comment, 'user' | 'createdAt'> }) {
-  const currentUser = useContext(UserContext) as types.User
+export function CommentInfo({ author, createdAt }: { author: User; createdAt: string }) {
+  const currentUser = useContext(UserContext) as User
 
   return (
     <div className='flex items-center gap-16'>
       <div className='flex items-center'>
-        <UIImage className='mr-16 block w-32' image={info.user.image} alt={info.user.username}></UIImage>
-        <span className='font-medium text-dark-blue'>{info.user.username}</span>
-        {info.user.username === currentUser.username && (
+        <img className='mr-16 block w-32' src={`./avatars/image-${author.name}.webp`} alt={author.name}></img>
+        <span className='font-medium text-dark-blue'>{author.name}</span>
+        {author.name === currentUser.name && (
           <span className='text-medium ml-8 rounded-sm bg-moderate-blue px-[6px] pt-[1px] pb-[3px] text-sm text-white'>
             you
           </span>
         )}
       </div>
       <span className='text-grayish-blue'>
-        {typeof info.createdAt === 'number' ? formatTimeDifference(info.createdAt) : info.createdAt}
+        {typeof createdAt === 'number' ? formatTimeDifference(createdAt) : createdAt}
       </span>
     </div>
   )

@@ -3,6 +3,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { httpBatchLink } from '@trpc/client'
 import { useState } from 'react'
 import './App.css'
+import { CommentsSection } from './components'
+import { UserProvider } from './providers'
 import { trpc } from './utils'
 
 function ApiTest() {
@@ -65,7 +67,13 @@ function App() {
   return (
     <trpc.Provider client={trpcClient} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>
-        <ApiTest></ApiTest>
+        <UserProvider>
+          <div className='flex min-h-screen justify-center bg-very-light-gray px-16 py-32'>
+            <div className='max-w-[730px]'>
+              <CommentsSection />
+            </div>
+          </div>
+        </UserProvider>
       </QueryClientProvider>
     </trpc.Provider>
   )

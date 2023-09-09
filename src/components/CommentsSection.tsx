@@ -1,4 +1,3 @@
-import { AddComment } from './AddComment'
 import { CommentsList } from './CommentsList'
 
 export function CommentsSection() {
@@ -7,7 +6,7 @@ export function CommentsSection() {
       <div className='mb-16'>
         <CommentsList></CommentsList>
       </div>
-      <AddComment></AddComment>
+      {/* <AddComment></AddComment> */}
     </>
   )
 }

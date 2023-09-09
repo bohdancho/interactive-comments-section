@@ -1,6 +1,7 @@
+import { Prisma } from '@prisma/client'
 import { prisma, publicProcedure } from '@server/app'
 
-const findCommentDto = {
+const findCommentDto: Prisma.CommentSelect = {
   id: true,
   createdAt: true,
   body: true,
@@ -15,11 +16,16 @@ export const getAllRootComments = () =>
       select: {
         ...findCommentDto,
         replies: {
-          select: { ...findCommentDto },
+          select: {
+            ...findCommentDto,
+            rootComment: {
+              select: { author: { select: { name: true } } },
+            },
+          },
         },
       },
       orderBy: {
-        id: 'asc',
+        rating: 'desc',
       },
     })
   })

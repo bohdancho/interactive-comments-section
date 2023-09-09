@@ -1,8 +1,5 @@
 import iconMinus from '@src/assets/icon-minus.svg'
 import iconPlus from '@src/assets/icon-plus.svg'
-import { DataDispatchContext } from '@src/providers'
-import * as types from '@src/types'
-import { Dispatch, useContext } from 'react'
 import SVG from 'react-inlinesvg'
 
 export function CommentRating({
@@ -16,8 +13,8 @@ export function CommentRating({
   upvotedByMe: boolean
   downvotedByMe: boolean
 }) {
-  const dataDispatch = useContext(DataDispatchContext) as Dispatch<types.Action>
-  const vote = (isUpvote: boolean) => dataDispatch({ type: 'vote', payload: { id, isUpvote } })
+  // const dataDispatch = useContext(DataDispatchContext) as Dispatch<types.Action>
+  // const vote = (isUpvote: boolean) => dataDispatch({ type: 'vote', payload: { id, isUpvote } })
 
   const getButton = (isUpvote: boolean) => {
     const isActive = (upvotedByMe && isUpvote) || (downvotedByMe && !isUpvote)

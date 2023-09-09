@@ -1,9 +1,12 @@
-import { DataDispatchContext, UserContext } from '@src/providers'
-import * as types from '@src/types'
+import { AppRouter } from '@server/app'
 import { UIButton, UITextarea } from '@src/ui'
-import { Dispatch, useContext, useState } from 'react'
-import { CommentActions, CommentInfo, CommentRating } from '.'
-import { AddComment } from '..'
+import { inferRouterOutputs } from '@trpc/server'
+import { useState } from 'react'
+import { AddComment } from '../AddComment'
+import { CommentInfo } from './CommentInfo'
+
+type Comment = inferRouterOutputs<AppRouter>['comment']['getAllRootComments'][number]
+type Reply = Comment['replies'][number]
 
 export function CommentItem({
   comment,
@@ -12,15 +15,15 @@ export function CommentItem({
   toggleReplying,
   toggleEditing,
 }: {
-  comment: types.Comment | types.Reply
+  comment: Comment | Reply
   isReplying: boolean
   isEditing: boolean
   toggleReplying: () => void
   toggleEditing: () => void
 }) {
-  const currentUser = useContext(UserContext) as types.User
-  const dataDispatch = useContext(DataDispatchContext) as Dispatch<types.Action>
-  const [editValue, setEditValue] = useState(comment.content)
+  // const currentUser = useContext(UserContext) as types.User
+  // const dataDispatch = useContext(DataDispatchContext) as Dispatch<types.Action>
+  const [editValue, setEditValue] = useState(comment.body)
   const [focusEditTextarea, setFocusEditTextarea] = useState(false)
 
   const editComment = () => {
@@ -32,21 +35,25 @@ export function CommentItem({
       return
     }
 
-    dataDispatch({
-      type: 'editComment',
-      payload: { id: comment.id, newText: editValue },
-    })
+    // dataDispatch({
+    //   type: 'editComment',
+    //   payload: { id: comment.id, newText: editValue },
+    // })
     toggleEditing()
     setEditValue(editValue.trim())
   }
 
-  const replyTo = 'replyingTo' in comment ? comment.replyingTo : null
+  const replyTo = comment.rootComment
+    ? 'author' in comment.rootComment
+      ? comment.rootComment.author.name
+      : null
+    : null
 
   return (
     <>
       <div className='grid grid-cols-[auto_auto] gap-16 rounded bg-white p-16 tablet:grid-cols-[min-content_1fr_min-content] tablet:grid-rows-[min-content_1fr] tablet:gap-24 tablet:p-24'>
         <div className='col-span-2 tablet:col-span-1 tablet:col-start-2 tablet:row-start-1'>
-          <CommentInfo info={{ user: comment.user, createdAt: comment.createdAt }}></CommentInfo>
+          <CommentInfo author={comment.author} createdAt={comment.createdAt}></CommentInfo>
         </div>
         <div className='col-span-2'>
           {isEditing ? (
@@ -69,30 +76,30 @@ export function CommentItem({
           ) : (
             <p className='text-grayish-blue'>
               {replyTo ? <span className='font-medium text-moderate-blue'>@{replyTo} </span> : null}
-              {comment.content}
+              {comment.body}
             </p>
           )}
         </div>
         <div className='tablet:row-span-2 tablet:row-start-1'>
-          <CommentRating
+          {/* <CommentRating
             id={comment.id}
             rating={comment.upvotedBy.length - comment.downvotedBy.length}
-            upvotedByMe={comment.upvotedBy.includes(currentUser.username)}
-            downvotedByMe={comment.downvotedBy.includes(currentUser.username)}
-          ></CommentRating>
+            upvotedByMe={comment.upvotedBy.includes(currentUser.name)}
+            downvotedByMe={comment.downvotedBy.includes(currentUser.name)}
+          ></CommentRating> */}
         </div>
         <div className='flex justify-end tablet:col-start-3 tablet:row-start-1'>
-          <CommentActions
-            isOwnComment={comment.user.username === currentUser.username}
+          {/* <CommentActions
+            isOwnComment={comment.author.name === currentUser.name}
             commentId={comment.id}
             toggleReplying={toggleReplying}
             toggleEditing={toggleEditing}
-          ></CommentActions>
+          ></CommentActions> */}
         </div>
       </div>
       {isReplying ? (
         <div className='mt-8'>
-          <AddComment onReply={toggleReplying} replyToUser={comment.user.username} replyToId={comment.id}></AddComment>
+          <AddComment onReply={toggleReplying} replyToUser={comment.author.name} replyToId={comment.id}></AddComment>
         </div>
       ) : null}
     </>

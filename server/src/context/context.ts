@@ -1,7 +1,7 @@
 import { prisma } from '@server/app'
 import { TRPCError } from '@trpc/server'
 
-const DEFAULT_USER_NAME = 'juliusomo'
+export const DEFAULT_USER_NAME = 'juliusomo'
 
 export const createContext = async () => {
   const user = await prisma.user.findUnique({ where: { name: DEFAULT_USER_NAME } })

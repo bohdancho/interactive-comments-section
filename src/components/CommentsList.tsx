@@ -1,17 +1,9 @@
-import { DataContext } from '@src/providers'
-import * as types from '@src/types'
-import { useContext, useState } from 'react'
-import { CommentItem } from '.'
-
-const sortByScore: (a: types.Comment, b: types.Comment) => number = (a, b) => {
-  const ratingA = a.upvotedBy.length - a.downvotedBy.length
-  const ratingB = b.upvotedBy.length - b.downvotedBy.length
-  return ratingB - ratingA
-}
+import { trpc } from '@src/utils'
+import { useState } from 'react'
+import { CommentItem } from './comment/CommentItem'
 
 export function CommentsList() {
-  const data = useContext(DataContext)
-  const comments = data?.comments
+  const comments = trpc.comment.getAllRootComments.useQuery().data
 
   const [editingCommentId, setEditingCommentId] = useState<number | null>(null)
   const [replyingCommentId, setReplyingCommentId] = useState<number | null>(null)
@@ -37,7 +29,7 @@ export function CommentsList() {
   return (
     <>
       {comments
-        ? comments.sort(sortByScore).map((comment) => (
+        ? comments.map((comment) => (
             <div key={comment.id} className='mb-16 last:mb-0 tablet:mb-20'>
               <CommentItem
                 comment={comment}
@@ -47,7 +39,7 @@ export function CommentsList() {
                 toggleReplying={() => toggleReplying(comment.id)}
               ></CommentItem>
               {comment.replies.length ? (
-                <div className='mt-16 border-l-[2px] border-light-gray pl-16 tablet:mt-20 tablet:ml-40 tablet:pl-40'>
+                <div className='mt-16 border-l-[2px] border-light-gray pl-16 tablet:ml-40 tablet:mt-20 tablet:pl-40'>
                   {comment.replies.map((reply) => (
                     <div key={reply.id} className='mb-16 last:mb-0 tablet:mb-20'>
                       <CommentItem

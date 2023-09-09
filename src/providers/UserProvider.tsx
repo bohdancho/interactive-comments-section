@@ -1,11 +1,10 @@
-import * as types from '@src/types'
-import { ReactNode, createContext, useContext } from 'react'
-import { DataContext } from './DataProvider'
+import { User } from '@prisma/client'
+import { trpc } from '@src/utils'
+import { ReactNode, createContext } from 'react'
 
-export const UserContext = createContext<types.User | null>(null)
+export const UserContext = createContext<User | null>(null)
 
 export function UserProvider({ children }: { children: ReactNode }) {
-  const data = useContext(DataContext)
-
-  return data ? <UserContext.Provider value={data.currentUser}>{children}</UserContext.Provider> : null
+  const user = trpc.getUser.useQuery().data
+  return user ? <UserContext.Provider value={user}>{children}</UserContext.Provider> : null
 }
