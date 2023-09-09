@@ -1,11 +1,11 @@
-import { AppRouter } from '@server/app'
 import { UIButton, UITextarea } from '@src/ui'
-import { inferRouterOutputs } from '@trpc/server'
+import { RouterOutputs } from '@src/utils'
 import { useState } from 'react'
 import { AddComment } from '../AddComment'
 import { CommentInfo } from './CommentInfo'
+import { CommentRating } from './CommentRating'
 
-type Comment = inferRouterOutputs<AppRouter>['comment']['getAllRootComments'][number]
+type Comment = RouterOutputs['comment']['getAllRootComments'][number]
 type Reply = Comment['replies'][number]
 
 export function CommentItem({
@@ -21,7 +21,7 @@ export function CommentItem({
   toggleReplying: () => void
   toggleEditing: () => void
 }) {
-  // const currentUser = useContext(UserContext) as types.User
+  // const currentUser = useContext(UserContext) as User
   // const dataDispatch = useContext(DataDispatchContext) as Dispatch<types.Action>
   const [editValue, setEditValue] = useState(comment.body)
   const [focusEditTextarea, setFocusEditTextarea] = useState(false)
@@ -81,12 +81,7 @@ export function CommentItem({
           )}
         </div>
         <div className='tablet:row-span-2 tablet:row-start-1'>
-          {/* <CommentRating
-            id={comment.id}
-            rating={comment.upvotedBy.length - comment.downvotedBy.length}
-            upvotedByMe={comment.upvotedBy.includes(currentUser.name)}
-            downvotedByMe={comment.downvotedBy.includes(currentUser.name)}
-          ></CommentRating> */}
+          <CommentRating id={comment.id} rating={comment.rating} myVote={comment.myVote}></CommentRating>
         </div>
         <div className='flex justify-end tablet:col-start-3 tablet:row-start-1'>
           {/* <CommentActions

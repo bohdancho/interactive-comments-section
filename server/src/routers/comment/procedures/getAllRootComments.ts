@@ -7,11 +7,12 @@ const findCommentDto: Prisma.CommentSelect = {
   body: true,
   author: true,
   rating: true,
+  userVotes: true,
 }
 
 export const getAllRootComments = () =>
-  publicProcedure.query(() => {
-    return prisma.comment.findMany({
+  publicProcedure.query(async ({ ctx }) => {
+    const comments = await prisma.comment.findMany({
       where: { rootComment: null },
       select: {
         ...findCommentDto,
@@ -28,4 +29,15 @@ export const getAllRootComments = () =>
         rating: 'desc',
       },
     })
+
+    return comments.map((comment) => ({
+      ...comment,
+      replies: comment.replies.map((reply) => ({
+        ...reply,
+        userVotes: undefined,
+        myVote: reply.userVotes.find((vote) => vote.userId === ctx.user.id)?.choice,
+      })),
+      userVotes: undefined,
+      myVote: comment.userVotes.find((vote) => vote.userId === ctx.user.id)?.choice,
+    }))
   })
