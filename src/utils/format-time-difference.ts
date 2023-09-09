@@ -1,11 +1,13 @@
+import dayjs from 'dayjs'
+
 const MINUTE_IN_MS = 60000
 const HOUR_IN_MS = MINUTE_IN_MS * 60
 const DAY_IN_MS = HOUR_IN_MS * 24
 const WEEK_IN_MS = DAY_IN_MS * 7
 const MONTHS_IN_MS = DAY_IN_MS * 30
 
-export function formatTimeDifference(timestamp: number): string {
-  const timeDiff = Date.now() - timestamp
+export function formatTimeDifference(timestamp: string): string {
+  const timeDiff = Date.now() - dayjs(timestamp).toDate().getTime()
 
   if (timeDiff < MINUTE_IN_MS) {
     return 'less than a minute ago'

@@ -17,9 +17,7 @@ export function CommentInfo({ author, createdAt }: { author: User; createdAt: st
           </span>
         )}
       </div>
-      <span className='text-grayish-blue'>
-        {typeof createdAt === 'number' ? formatTimeDifference(createdAt) : createdAt}
-      </span>
+      <span className='text-grayish-blue'>{formatTimeDifference(createdAt)}</span>
     </div>
   )
 }
