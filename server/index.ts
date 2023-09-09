@@ -1,14 +1,11 @@
 import { appRouter } from '@server/app'
 import { createContext } from '@server/context'
 import * as trpcExpress from '@trpc/server/adapters/express'
-import { config } from 'dotenv'
 import express from 'express'
 import path from 'path'
 
-config()
-const { PORT } = process.env as { PORT: string }
-
 const app = express()
+const PORT = Number(Bun.env.PORT)
 
 app.use('/trpc', trpcExpress.createExpressMiddleware({ router: appRouter, createContext }))
 

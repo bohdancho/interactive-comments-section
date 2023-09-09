@@ -1,5 +1,0 @@
-{
-  "watch": ["server", ".env"],
-  "ext": "ts",
-  "exec": "tsx ./server/index.ts"
-}
