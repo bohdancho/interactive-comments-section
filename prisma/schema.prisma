@@ -6,8 +6,9 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider     = "mysql"
+  relationMode = "prisma"
+  url          = env("DATABASE_URL")
 }
 
 model User {
@@ -26,8 +27,11 @@ model Comment {
   rating        Int        @default(0)
   userVotes     UserVote[]
   replies       Comment[]  @relation("RootCommentReplies")
-  rootComment   Comment?   @relation("RootCommentReplies", fields: [rootCommentId], references: [id])
+  rootComment   Comment?   @relation("RootCommentReplies", fields: [rootCommentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   rootCommentId Int?
+
+  @@index([authorId])
+  @@index([rootCommentId])
 }
 
 model UserVote {
@@ -38,6 +42,8 @@ model UserVote {
   userId    Int
 
   @@id([commentId, userId])
+  @@index([commentId])
+  @@index([userId])
 }
 
 enum Vote {

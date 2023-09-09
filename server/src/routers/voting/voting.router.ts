@@ -1,6 +1,5 @@
-import { Vote } from '@prisma/client'
+import { UserVote, Vote } from '@prisma/client'
 import { prisma, publicProcedure, router } from '@server/app'
-import { TRPCError } from '@trpc/server'
 import { z } from 'zod'
 
 export const votingRouter = () =>
@@ -14,69 +13,43 @@ export const votingRouter = () =>
             select: { choice: true },
           })
         )?.choice
-        const newChoice = previousChoice === clickedChoice ? undefined : clickedChoice
-        const increment = getRatingIncrement({ previousChoice, clickedChoice })
 
-        await upsertOrDeleteVote({ commentId, userId: ctx.user.id, newChoice })
-        await updateRating({ commentId, increment })
+        const newChoice = previousChoice === clickedChoice ? undefined : clickedChoice
+        const updatedVotesList = (await deleteOrUpsertVote({ newChoice, commentId, userId: ctx.user.id })).userVotes
+        await prisma.comment.update({ where: { id: commentId }, data: { rating: getNewRating(updatedVotesList) } })
       }),
   })
 
-async function upsertOrDeleteVote({
+async function deleteOrUpsertVote({
+  newChoice,
   commentId,
   userId,
-  newChoice,
 }: {
+  newChoice: Vote | undefined
   commentId: number
   userId: number
-  newChoice: Vote | undefined
 }) {
-  const commentId_userId = { commentId, userId }
-
-  if (!newChoice) {
-    await prisma.userVote.delete({ where: { commentId_userId } })
-    return
-  }
-
-  await prisma.userVote.upsert({
-    where: { commentId_userId },
-    update: { choice: newChoice },
-    create: { choice: newChoice, userId, commentId },
+  return await prisma.comment.update({
+    where: { id: commentId },
+    data: {
+      userVotes: {
+        delete: newChoice ? undefined : { commentId_userId: { commentId, userId } },
+        upsert: newChoice
+          ? {
+              where: { commentId_userId: { commentId, userId } },
+              update: { choice: newChoice },
+              create: { choice: newChoice, userId },
+            }
+          : undefined,
+      },
+    },
+    select: { userVotes: true },
   })
 }
 
-function getRatingIncrement({
-  previousChoice,
-  clickedChoice,
-}: {
-  previousChoice: Vote | undefined
-  clickedChoice: Vote
-}): number {
-  if (!previousChoice) {
-    return getChoiceValue(clickedChoice)
-  }
-  if (previousChoice !== clickedChoice) {
-    return 2 * getChoiceValue(clickedChoice)
-  }
-  if (previousChoice === clickedChoice) {
-    return -1 * getChoiceValue(clickedChoice)
-  }
-
-  throw new TRPCError({
-    code: 'INTERNAL_SERVER_ERROR',
-    message: 'Something went wrong with rating',
-  })
-}
-
-function getChoiceValue(choice: Vote): 1 | -1 {
-  switch (choice) {
-    case 'Upvote':
-      return 1
-    case 'Downvote':
-      return -1
-  }
-}
-
-async function updateRating({ commentId, increment }: { commentId: number; increment: number }): Promise<void> {
-  await prisma.comment.update({ where: { id: commentId }, data: { rating: { increment } } })
+function getNewRating(updatedVotesList: UserVote[]): number {
+  let upvotes = 0
+  let downvotes = 0
+  updatedVotesList.forEach((vote) => (vote.choice === 'Upvote' ? upvotes++ : downvotes++))
+  return upvotes - downvotes
 }
