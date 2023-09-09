@@ -68,8 +68,8 @@ function App() {
     <trpc.Provider client={trpcClient} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>
         <UserProvider>
-          <div className='flex min-h-screen justify-center bg-very-light-gray px-16 py-32'>
-            <div className='max-w-[730px]'>
+          <div className='min-h-screen bg-very-light-gray px-16 py-32'>
+            <div className='mx-auto max-w-[730px]'>
               <CommentsSection />
             </div>
           </div>
