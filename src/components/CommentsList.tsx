@@ -1,4 +1,4 @@
-import { api } from '@src/utils'
+import { RouterOutputs, api } from '@src/utils'
 import { useState } from 'react'
 import { CommentItem } from './comment/CommentItem'
 
@@ -29,7 +29,7 @@ export function CommentsList() {
   return (
     <>
       {comments
-        ? comments.map((comment) => (
+        ? sortComments(comments).map((comment) => (
             <div key={comment.id} className='mb-16 last:mb-0 tablet:mb-20'>
               <CommentItem
                 comment={comment}
@@ -40,7 +40,7 @@ export function CommentsList() {
               ></CommentItem>
               {comment.replies.length ? (
                 <div className='mt-16 border-l-[2px] border-light-gray pl-16 tablet:ml-40 tablet:mt-20 tablet:pl-40'>
-                  {comment.replies.map((reply) => (
+                  {sortComments(comment.replies).map((reply) => (
                     <div key={reply.id} className='mb-16 last:mb-0 tablet:mb-20'>
                       <CommentItem
                         comment={reply}
@@ -58,4 +58,17 @@ export function CommentsList() {
         : null}
     </>
   )
+}
+
+type Comment = RouterOutputs['comment']['getAllRootComments'][number]
+type Reply = Comment['replies'][number]
+function sortComments<T extends Comment | Reply>(list: T[] | T[]): T[] {
+  return list.sort(sortById).sort(sortByScore)
+}
+
+function sortById<T extends Comment | Reply>(a: T, b: T): number {
+  return b.id - a.id
+}
+function sortByScore<T extends Comment | Reply>(a: T, b: T): number {
+  return b.rating - a.rating
 }

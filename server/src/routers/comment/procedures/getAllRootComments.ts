@@ -25,9 +25,6 @@ export const getAllRootComments = () =>
           },
         },
       },
-      orderBy: {
-        rating: 'desc',
-      },
     })
 
     return comments.map((comment) => ({
