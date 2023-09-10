@@ -5,11 +5,11 @@ import { useContext, useState } from 'react'
 
 export function AddComment({
   replyToUser,
-  replyToId,
+  rootCommentId,
   onReply,
 }: {
   replyToUser?: string
-  replyToId?: number
+  rootCommentId?: number
   onReply?: () => void
 }) {
   const currentUser = useContext(UserContext) as User
@@ -47,11 +47,11 @@ export function AddComment({
         placeholder={!replyToUser ? 'Add a comment...' : undefined}
         onEnter={addComment}
       ></UITextarea>
-      {/* <UIImage
-        className='w-32 tablet:col-start-1 tablet:row-start-1 tablet:mt-4 tablet:w-40'
-        image={currentUser.image}
-        alt={currentUser.username}
-      ></UIImage> */}
+      <img
+        className='w-32 tablet:col-start-1 tablet:row-start-1 tablet:mt-4 tablet:min-w-[40px]'
+        src={`./avatars/image-${currentUser.name}.webp`}
+        alt={currentUser.name}
+      ></img>
       <UIButton onClick={addComment} className='justify-self-end'>
         {replyToUser ? 'Reply' : 'Send'}
       </UIButton>

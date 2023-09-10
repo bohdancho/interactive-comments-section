@@ -124,7 +124,11 @@ export function CommentItem({
       </div>
       {isReplying ? (
         <div className='mt-8'>
-          <AddComment onReply={toggleReplying} replyToUser={comment.author.name} replyToId={comment.id}></AddComment>
+          <AddComment
+            onReply={toggleReplying}
+            replyToUser={comment.author.name}
+            rootCommentId={comment.rootCommentId ?? comment.id}
+          ></AddComment>
         </div>
       ) : null}
     </>
