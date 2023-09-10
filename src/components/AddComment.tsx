@@ -1,18 +1,64 @@
 import { User } from '@prisma/client'
 import { UserContext } from '@src/providers'
 import { UIButton, UITextarea } from '@src/ui'
+import { api } from '@src/utils'
+import dayjs from 'dayjs'
 import { useContext, useState } from 'react'
 
 export function AddComment({
-  replyToUser,
-  rootCommentId,
-  onReply,
+  reply,
 }: {
-  replyToUser?: string
-  rootCommentId?: number
-  onReply?: () => void
+  reply?: {
+    replyToUser: string
+    rootCommentId: number
+    onReply: () => void
+  }
 }) {
   const currentUser = useContext(UserContext) as User
+  const utils = api.useContext()
+  const mutation = api.comment.addComment.useMutation({
+    async onMutate({ body, rootCommentId }) {
+      await utils.comment.getAllRootComments.cancel()
+      const prevData = utils.comment.getAllRootComments.getData()
+      utils.comment.getAllRootComments.setData(undefined, (old) => {
+        const optimisticComment = {
+          createdAt: dayjs().toISOString(),
+          body,
+          author: currentUser,
+          authorId: currentUser.id,
+          _count: {
+            userVotes: 0,
+            author: 1,
+            replies: 0,
+            rootComment: 0,
+          },
+          replies: [],
+          rootCommentId: rootCommentId ?? null,
+          rootComment: null,
+          rating: 0,
+          id: Math.random(),
+        }
+
+        if (!old) return [optimisticComment]
+        if (!rootCommentId) {
+          return [...old, optimisticComment]
+        }
+        return old.map((comment) => {
+          const optimisticReply: (typeof comment.replies)[number] = optimisticComment
+
+          return comment.id === rootCommentId ? { ...comment, replies: [...comment.replies, optimisticReply] } : comment
+        })
+      })
+
+      return { prevData }
+    },
+    onError(_err, _newPost, ctx) {
+      utils.comment.getAllRootComments.setData(undefined, ctx?.prevData)
+    },
+    onSettled() {
+      utils.comment.getAllRootComments.invalidate()
+    },
+  })
   const [focusTextarea, setFocusTextarea] = useState(false)
   const [commentText, setCommentText] = useState('')
 
@@ -25,13 +71,11 @@ export function AddComment({
       return
     }
 
-    // if (replyToId && onReply) {
-    //   onReply()
-    //   dataDispatch({ type: 'reply', payload: { text: trimmedValue, replyToId } })
-    // } else {
-    //   dataDispatch({ type: 'comment', payload: { text: trimmedValue } })
-    // }
-    // setCommentText('')
+    if (reply) {
+      reply.onReply()
+    }
+    mutation.mutate({ body: trimmedValue, rootCommentId: reply?.rootCommentId })
+    setCommentText('')
   }
 
   return (
@@ -40,11 +84,11 @@ export function AddComment({
         value={commentText}
         setValue={setCommentText}
         className='col-span-2 tablet:col-span-1 tablet:col-start-2'
-        prefix={replyToUser ? `@${replyToUser} ` : undefined}
-        focusOnInit={!!replyToUser}
+        prefix={reply ? `@${reply.replyToUser} ` : undefined}
+        focusOnInit={!!reply}
         focusTrigger={focusTextarea}
         setFocusTrigger={setFocusTextarea}
-        placeholder={!replyToUser ? 'Add a comment...' : undefined}
+        placeholder={!reply ? 'Add a comment...' : undefined}
         onEnter={addComment}
       ></UITextarea>
       <img
@@ -53,7 +97,7 @@ export function AddComment({
         alt={currentUser.name}
       ></img>
       <UIButton onClick={addComment} className='justify-self-end'>
-        {replyToUser ? 'Reply' : 'Send'}
+        {reply ? 'Reply' : 'Send'}
       </UIButton>
     </form>
   )

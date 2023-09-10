@@ -11,14 +11,16 @@ import { CommentRating } from './CommentRating'
 type Comment = RouterOutputs['comment']['getAllRootComments'][number]
 type Reply = Comment['replies'][number]
 
-export function CommentItem({
+export function CommentItem<T extends Comment | Reply>({
   comment,
+  rootComment,
   isReplying,
   isEditing,
   toggleReplying,
   toggleEditing,
 }: {
-  comment: Comment | Reply
+  comment: T
+  rootComment: T extends Comment ? undefined : Reply
   isReplying: boolean
   isEditing: boolean
   toggleReplying: () => void
@@ -73,11 +75,7 @@ export function CommentItem({
     setEditValue(editValue.trim())
   }
 
-  const replyTo = comment.rootComment
-    ? 'author' in comment.rootComment
-      ? comment.rootComment.author.name
-      : null
-    : null
+  const replyTo = rootComment?.author.name
 
   return (
     <>
@@ -125,9 +123,11 @@ export function CommentItem({
       {isReplying ? (
         <div className='mt-8'>
           <AddComment
-            onReply={toggleReplying}
-            replyToUser={comment.author.name}
-            rootCommentId={comment.rootCommentId ?? comment.id}
+            reply={{
+              replyToUser: comment.author.name,
+              rootCommentId: rootComment?.id ?? comment.id,
+              onReply: toggleReplying,
+            }}
           ></AddComment>
         </div>
       ) : null}

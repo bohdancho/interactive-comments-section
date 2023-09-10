@@ -1,4 +1,5 @@
 import { RouterOutputs, api } from '@src/utils'
+import dayjs from 'dayjs'
 import { useState } from 'react'
 import { CommentItem } from './comment/CommentItem'
 
@@ -33,6 +34,7 @@ export function CommentsList() {
             <div key={comment.id} className='mb-16 last:mb-0 tablet:mb-20'>
               <CommentItem
                 comment={comment}
+                rootComment={undefined}
                 isEditing={editingCommentId === comment.id}
                 isReplying={replyingCommentId === comment.id}
                 toggleEditing={() => toggleEditing(comment.id)}
@@ -43,6 +45,7 @@ export function CommentsList() {
                   {sortComments(comment.replies).map((reply) => (
                     <div key={reply.id} className='mb-16 last:mb-0 tablet:mb-20'>
                       <CommentItem
+                        rootComment={comment}
                         comment={reply}
                         isEditing={editingCommentId === reply.id}
                         isReplying={replyingCommentId === reply.id}
@@ -63,11 +66,11 @@ export function CommentsList() {
 type Comment = RouterOutputs['comment']['getAllRootComments'][number]
 type Reply = Comment['replies'][number]
 function sortComments<T extends Comment | Reply>(list: T[] | T[]): T[] {
-  return list.sort(sortById).sort(sortByScore)
+  return list.sort(sortByCreatedTime).sort(sortByScore)
 }
 
-function sortById<T extends Comment | Reply>(a: T, b: T): number {
-  return b.id - a.id
+function sortByCreatedTime<T extends Comment | Reply>(a: T, b: T): number {
+  return dayjs(a.createdAt).diff(dayjs(b.createdAt))
 }
 function sortByScore<T extends Comment | Reply>(a: T, b: T): number {
   return b.rating - a.rating
