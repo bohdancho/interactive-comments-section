@@ -10,14 +10,47 @@ const icon = {
 }
 
 export function CommentRating({ id, rating, myVote }: { id: number; rating: number; myVote: Vote | undefined }) {
-  const voteQuery = api.voting.vote.useMutation()
+  const utils = api.useContext()
+  const voteMutation = api.voting.vote.useMutation({
+    async onMutate({ clickedChoice }) {
+      console.log(clickedChoice)
+      await utils.comment.getAllRootComments.cancel()
+      const prevData = utils.comment.getAllRootComments.getData()
+      utils.comment.getAllRootComments.setData(
+        undefined,
+        (old) =>
+          old?.map((comment) => {
+            if (comment.id === id) {
+              return getOptimisticComment(comment, clickedChoice, rating)
+            }
+
+            return {
+              ...comment,
+              replies: comment.replies.map((reply) =>
+                reply.id === id ? getOptimisticComment(reply, clickedChoice, rating) : reply,
+              ),
+            }
+          }),
+      )
+
+      return { prevData }
+    },
+    onError(_err, _newPost, ctx) {
+      // If the mutation fails, use the context-value from onMutate
+      utils.comment.getAllRootComments.setData(undefined, ctx?.prevData)
+    },
+    onSettled() {
+      // Sync with server once mutation has settled
+      utils.comment.getAllRootComments.invalidate()
+    },
+  })
 
   const getButton = (vote: Vote) => {
     const isActive = vote === myVote
 
     return (
       <button
-        onClick={() => voteQuery.mutate({ commentId: id, clickedChoice: vote })}
+        onClick={() => voteMutation.mutate({ commentId: id, clickedChoice: vote })}
         className={`${
           isActive ? 'text-moderate-blue' : 'text-light-grayish-blue'
         } base-transition flex h-40 w-40 items-center justify-center hover:text-moderate-blue active:text-dark-blue`}
@@ -34,4 +67,44 @@ export function CommentRating({ id, rating, myVote }: { id: number; rating: numb
       {getButton(Vote.Downvote)}
     </div>
   )
+}
+
+function getOptimisticComment<TComment extends { myVote?: Vote }>(
+  comment: TComment,
+  clickedChoice: Vote,
+  rating: number,
+): TComment {
+  const newChoice = comment.myVote === clickedChoice ? undefined : clickedChoice
+  return {
+    ...comment,
+    myVote: newChoice,
+    rating: getOptimisticRating({ rating, oldChoice: comment.myVote, clickedChoice }),
+  }
+}
+
+function getOptimisticRating({
+  rating,
+  oldChoice,
+  clickedChoice,
+}: {
+  rating: number
+  oldChoice: Vote | undefined
+  clickedChoice: Vote
+}): number {
+  if (oldChoice === undefined) {
+    return rating + getVoteValue(clickedChoice)
+  }
+  if (oldChoice === clickedChoice) {
+    return rating - getVoteValue(clickedChoice)
+  }
+  return rating + 2 * getVoteValue(clickedChoice)
+}
+
+function getVoteValue(vote: Vote): number {
+  switch (vote) {
+    case Vote.Downvote:
+      return -1
+    case Vote.Upvote:
+      return 1
+  }
 }
