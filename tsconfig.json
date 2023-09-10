@@ -23,6 +23,7 @@
     /* Linting */
     "strict": true,
     "noFallthroughCasesInSwitch": true,
+    "noErrorTruncation": true,
 
     /* Paths */
     // "baseUrl": "src",
