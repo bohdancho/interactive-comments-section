@@ -1,7 +1,10 @@
+import { User } from '@prisma/client'
+import { UserContext } from '@src/providers'
 import { UIButton, UITextarea } from '@src/ui'
-import { RouterOutputs } from '@src/utils'
-import { useState } from 'react'
+import { RouterOutputs, api } from '@src/utils'
+import { useContext, useState } from 'react'
 import { AddComment } from '../AddComment'
+import { CommentActions } from './CommentActions'
 import { CommentInfo } from './CommentInfo'
 import { CommentRating } from './CommentRating'
 
@@ -21,8 +24,38 @@ export function CommentItem({
   toggleReplying: () => void
   toggleEditing: () => void
 }) {
-  // const currentUser = useContext(UserContext) as User
-  // const dataDispatch = useContext(DataDispatchContext) as Dispatch<types.Action>
+  const currentUser = useContext(UserContext) as User
+  const utils = api.useContext()
+  const editMutation = api.comment.editComment.useMutation({
+    async onMutate({ id, body }) {
+      await utils.comment.getAllRootComments.cancel()
+      const prevData = utils.comment.getAllRootComments.getData()
+      utils.comment.getAllRootComments.setData(
+        undefined,
+        (old) =>
+          old?.map((comment) => {
+            if (comment.id === id) {
+              return { ...comment, body }
+            }
+
+            return {
+              ...comment,
+              replies: comment.replies.map((reply) => (reply.id === id ? { ...reply, body } : reply)),
+            }
+          }),
+      )
+
+      return { prevData }
+    },
+    onError(_err, _newPost, ctx) {
+      // If the mutation fails, use the context-value from onMutate
+      utils.comment.getAllRootComments.setData(undefined, ctx?.prevData)
+    },
+    onSettled() {
+      // Sync with server once mutation has settled
+      utils.comment.getAllRootComments.invalidate()
+    },
+  })
   const [editValue, setEditValue] = useState(comment.body)
   const [focusEditTextarea, setFocusEditTextarea] = useState(false)
 
@@ -35,10 +68,7 @@ export function CommentItem({
       return
     }
 
-    // dataDispatch({
-    //   type: 'editComment',
-    //   payload: { id: comment.id, newText: editValue },
-    // })
+    editMutation.mutate({ id: comment.id, body: trimmedValue })
     toggleEditing()
     setEditValue(editValue.trim())
   }
@@ -84,12 +114,12 @@ export function CommentItem({
           <CommentRating id={comment.id} rating={comment.rating} myVote={comment.myVote}></CommentRating>
         </div>
         <div className='flex justify-end tablet:col-start-3 tablet:row-start-1'>
-          {/* <CommentActions
+          <CommentActions
             isOwnComment={comment.author.name === currentUser.name}
             commentId={comment.id}
             toggleReplying={toggleReplying}
             toggleEditing={toggleEditing}
-          ></CommentActions> */}
+          ></CommentActions>
         </div>
       </div>
       {isReplying ? (

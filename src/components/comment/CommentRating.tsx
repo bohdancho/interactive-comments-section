@@ -12,22 +12,21 @@ const icon = {
 export function CommentRating({ id, rating, myVote }: { id: number; rating: number; myVote: Vote | undefined }) {
   const utils = api.useContext()
   const voteMutation = api.voting.vote.useMutation({
-    async onMutate({ clickedChoice }) {
-      console.log(clickedChoice)
+    async onMutate({ commentId, clickedChoice }) {
       await utils.comment.getAllRootComments.cancel()
       const prevData = utils.comment.getAllRootComments.getData()
       utils.comment.getAllRootComments.setData(
         undefined,
         (old) =>
           old?.map((comment) => {
-            if (comment.id === id) {
+            if (comment.id === commentId) {
               return getOptimisticComment(comment, clickedChoice, rating)
             }
 
             return {
               ...comment,
               replies: comment.replies.map((reply) =>
-                reply.id === id ? getOptimisticComment(reply, clickedChoice, rating) : reply,
+                reply.id === commentId ? getOptimisticComment(reply, clickedChoice, rating) : reply,
               ),
             }
           }),
